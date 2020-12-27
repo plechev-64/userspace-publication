@@ -93,7 +93,7 @@ class Rcl_EditPost {
             }
         }
 
-        $this->user_can = apply_filters( 'rcl_public_update_user_can', $this->user_can, $this );
+        $this->user_can = apply_filters( 'uspp_public_update_user_can', $this->user_can, $this );
     }
 
     function update_thumbnail() {
@@ -219,7 +219,7 @@ class Rcl_EditPost {
 
         $postdata['post_status'] = $this->get_status_post( rcl_get_option( 'uspp_send_to_moderation', 1 ) );
 
-        $postdata = apply_filters( 'pre_update_postdata_rcl', $postdata, $this );
+        $postdata = apply_filters( 'uspp_pre_update_postdata', $postdata, $this );
 
         if ( ! $postdata )
             return false;

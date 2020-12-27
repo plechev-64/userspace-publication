@@ -54,9 +54,9 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
         $this->setup_user_can();
 
         if ( $this->user_can['publish'] && ! $user_ID )
-            add_filter( 'rcl_public_form_fields', array( $this, 'add_guest_fields' ), 10 );
+            add_filter( 'uspp_public_form_fields', array( $this, 'add_guest_fields' ), 10 );
 
-        add_filter( 'rcl_custom_fields', array( $this, 'init_public_form_fields_filter' ), 10 );
+        add_filter( 'usp_custom_fields', array( $this, 'init_public_form_fields_filter' ), 10 );
 
         parent::__construct( $this->post_type, array(
             'form_id' => $this->form_id
@@ -79,7 +79,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
     }
 
     function init_public_form_fields_filter( $fields ) {
-        return apply_filters( 'rcl_public_form_fields', $fields, $this->get_object_form(), $this );
+        return apply_filters( 'uspp_public_form_fields', $fields, $this->get_object_form(), $this );
     }
 
     function init_properties( $args ) {
@@ -134,7 +134,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
         $this->options['preview'] = rcl_get_option( 'uspp_public_preview' );
         $this->options['draft']   = rcl_get_option( 'uspp_public_draft' );
 
-        $this->options = apply_filters( 'rcl_public_form_options', $this->options, $this->get_object_form() );
+        $this->options = apply_filters( 'uspp_public_form_options', $this->options, $this->get_object_form() );
     }
 
     function setup_user_can() {
@@ -176,7 +176,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
             $this->user_can['delete'] = $this->user_can['edit'];
         }
 
-        $this->user_can = apply_filters( 'rcl_public_form_user_can', $this->user_can, $this->get_object_form() );
+        $this->user_can = apply_filters( 'uspp_public_form_user_can', $this->user_can, $this->get_object_form() );
     }
 
     function get_errors() {
@@ -197,7 +197,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
             $errors[] = __( 'You can not edit this publication :(', 'usp-publication' );
         }
 
-        $errors = apply_filters( 'rcl_public_form_errors', $errors, $this );
+        $errors = apply_filters( 'uspp_public_form_errors', $errors, $this );
 
         return $errors;
     }
@@ -250,7 +250,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
             'class'          => array( 'rcl-public-form' )
         );
 
-        $attrs = apply_filters( 'rcl_public_form_attributes', $attrs, $dataPost );
+        $attrs = apply_filters( 'uspp_public_form_attributes', $attrs, $dataPost );
 
         $attrsForm = array();
         foreach ( $attrs as $k => $v ) {
@@ -275,7 +275,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
             ];
         }
 
-        $buttons = apply_filters( 'rcl_public_form_top_manager_args', $buttons, $this );
+        $buttons = apply_filters( 'uspp_public_form_top_manager_args', $buttons, $this );
 
         if ( $buttons ) {
 
@@ -295,7 +295,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
             $content .= $this->get_content_form();
         }
 
-        $content .= apply_filters( 'rcl_public_form', '', $this->get_object_form() );
+        $content .= apply_filters( 'uspp_public_form', '', $this->get_object_form() );
 
         $content .= $this->get_primary_buttons();
 
@@ -317,7 +317,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
             $content .= '</div>';
         }
 
-        $content .= apply_filters( 'after_public_form_rcl', '', $this->get_object_form() );
+        $content .= apply_filters( 'uspp_after_public_form', '', $this->get_object_form() );
 
         $content .= '</div>';
 
@@ -365,7 +365,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
             'icon'    => 'fa-print'
         );
 
-        $buttons = apply_filters( 'rcl_public_form_primary_buttons', $buttons, $this->get_object_form(), $this );
+        $buttons = apply_filters( 'uspp_public_form_primary_buttons', $buttons, $this->get_object_form(), $this );
 
         if ( ! $buttons )
             return false;
@@ -691,7 +691,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
             )
         );
 
-        $args = apply_filters( 'rcl_public_form_tags', $args, $taxonomy, $this->get_object_form() );
+        $args = apply_filters( 'uspp_public_form_tags', $args, $taxonomy, $this->get_object_form() );
 
         $content = $this->get_tags_checklist( $taxonomy, $args['terms_cloud'] );
 
@@ -756,7 +756,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
             , 'parent'       => ''
         );
 
-        $args = apply_filters( 'rcl_public_form_hierarchical_terms', $args, $taxonomy, $this->get_object_form() );
+        $args = apply_filters( 'uspp_public_form_hierarchical_terms', $args, $taxonomy, $this->get_object_form() );
 
         $allcats = get_terms( $taxonomy, $args );
 
@@ -855,7 +855,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
             )
         );
 
-        $reasons = apply_filters( 'rcl_public_form_delete_reasons', $reasons, $this->get_object_form() );
+        $reasons = apply_filters( 'uspp_public_form_delete_reasons', $reasons, $this->get_object_form() );
 
         if ( ! $reasons )
             return false;

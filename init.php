@@ -8,7 +8,7 @@ function rcl_deleted_post_notice() {
         } );
 }
 
-add_filter( 'rcl_init_js_variables', 'rcl_init_js_public_variables', 10 );
+add_filter( 'usp_init_js_variables', 'rcl_init_js_public_variables', 10 );
 function rcl_init_js_public_variables( $data ) {
 
     $data['local']['preview']            = __( 'Preview', 'usp-publication' );

@@ -92,7 +92,7 @@ class Rcl_Public_Form_Manager extends Rcl_Public_Form_Fields {
                 ), $actionButtons );
         }
 
-        $actionButtons = apply_filters( 'rcl_public_form_admin_actions_args', $actionButtons, $this );
+        $actionButtons = apply_filters( 'uspp_public_form_admin_actions_args', $actionButtons, $this );
 
         if ( $actionButtons ) {
 

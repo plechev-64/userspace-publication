@@ -1,7 +1,7 @@
 <?php
 
-add_filter( 'rcl_options', 'rcl_get_publics_options_page' );
-function rcl_get_publics_options_page( $options ) {
+add_filter( 'usp_options', 'uspp_get_publics_options_page' );
+function uspp_get_publics_options_page( $options ) {
     global $_wp_additional_image_sizes, $wpdb;
 
     $_wp_additional_image_sizes['thumbnail'] = 1;

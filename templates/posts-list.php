@@ -65,7 +65,7 @@ $Table = new Rcl_Table( array(
             $content .= rcl_rating_block( array( 'value' => $rtng ) );
         }
         ?>
-        <?php $content .= apply_filters( 'content_postslist', '' ); ?>
+        <?php $content .= apply_filters( 'uspp_content_postslist', '' ); ?>
 
         <?php
 

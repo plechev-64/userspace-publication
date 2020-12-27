@@ -34,7 +34,7 @@ function uspp_autocomplete_scripts() {
     usp_enqueue_script( 'magicsuggest', plugin_dir_url( __FILE__ ) . 'assets/js/magicsuggest/magicsuggest-min.js' );
 }
 
-add_filter( 'rcl_init_js_variables', 'rcl_public_add_js_locale', 10 );
+add_filter( 'usp_init_js_variables', 'rcl_public_add_js_locale', 10 );
 function rcl_public_add_js_locale( $data ) {
     $data['errors']['cats_important'] = __( 'Choose a category', 'usp-publication' );
     return $data;
@@ -60,7 +60,7 @@ function rcl_restrict_media_library( $wp_query_obj ) {
     return;
 }
 
-add_filter( 'pre_update_postdata_rcl', 'rcl_update_postdata_excerpt' );
+add_filter( 'uspp_pre_update_postdata', 'rcl_update_postdata_excerpt' );
 function rcl_update_postdata_excerpt( $postdata ) {
     if ( ! isset( $_POST['post_excerpt'] ) )
         return $postdata;
@@ -164,7 +164,7 @@ function rcl_get_post_custom_fields_box( $post_id ) {
         'form_id' => get_post_meta( $post_id, 'publicform-id', 1 )
         ) );
 
-    $customFields = apply_filters( 'rcl_post_custom_fields', $formFields->get_custom_fields(), $post_id );
+    $customFields = apply_filters( 'uspp_post_custom_fields', $formFields->get_custom_fields(), $post_id );
 
     if ( ! $customFields )
         return false;
@@ -287,7 +287,7 @@ function rcl_setup_edit_post_button() {
     return false;
 }
 
-add_filter( 'pre_update_postdata_rcl', 'rcl_add_taxonomy_in_postdata', 50, 2 );
+add_filter( 'uspp_pre_update_postdata', 'rcl_add_taxonomy_in_postdata', 50, 2 );
 function rcl_add_taxonomy_in_postdata( $postdata, $data ) {
 
     $post_type = get_post_types( array( 'name' => $data->post_type ), 'objects' );
@@ -370,7 +370,7 @@ function rcl_set_object_terms_post( $post_id, $postdata, $update ) {
     }
 }
 
-add_filter( 'pre_update_postdata_rcl', 'rcl_register_author_post', 10 );
+add_filter( 'uspp_pre_update_postdata', 'rcl_register_author_post', 10 );
 function rcl_register_author_post( $postdata ) {
     global $user_ID;
 
@@ -512,7 +512,7 @@ function rcl_send_mail_about_new_post( $post_id, $postData, $update ) {
     rcl_mail( $email, $title, $textm );
 }
 
-add_filter( 'rcl_uploader_manager_items', 'rcl_add_post_uploader_image_buttons', 10, 3 );
+add_filter( 'usp_uploader_manager_items', 'rcl_add_post_uploader_image_buttons', 10, 3 );
 function rcl_add_post_uploader_image_buttons( $items, $attachment_id, $uploader ) {
 
     if ( ! in_array( $uploader->uploader_id, array( 'post_uploader', 'post_thumbnail' ) ) )
@@ -582,4 +582,27 @@ function rcl_get_post_gallery( $gallery_id, $attachment_ids ) {
             )
         )
         ) );
+}
+
+add_filter( 'uspp_public_form', 'uspp_add_public_form_captcha', 100 );
+function uspp_add_public_form_captcha( $form ) {
+    global $user_ID;
+
+    if ( $user_ID )
+        return $form;
+
+    $captcha = usp_get_simple_captcha( array( 'img_size' => array( 72, 29 ) ) );
+
+    if ( ! $captcha )
+        return $form;
+
+    $form .= '
+      <div class="form-block-usp">
+        <label>' . __( 'Enter characters', 'usp' ) . ' <span class="required">*</span></label>
+        <img src="' . $captcha->img_src . '" alt="captcha" width="' . $captcha->img_size[0] . '" height="' . $captcha->img_size[1] . '" />
+        <input id="usp_captcha_code" required name="usp_captcha_code" style="width: 160px;" size="' . $captcha->char_length . '" type="text" />
+        <input id="usp_captcha_prefix" name="usp_captcha_prefix" type="hidden" value="' . $captcha->prefix . '" />
+     </div>';
+
+    return $form;
 }

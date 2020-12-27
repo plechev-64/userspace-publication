@@ -82,7 +82,7 @@ function rcl_edit_postdata() {
     $post_array['post_title']   = sanitize_text_field( $_POST['post_title'] );
     $post_array['post_content'] = esc_textarea( $_POST['post_content'] );
 
-    $post_array = apply_filters( 'rcl_pre_edit_post', $post_array );
+    $post_array = apply_filters( 'uspp_pre_edit_post', $post_array );
 
     $result = $wpdb->update(
         $wpdb->posts, $post_array, array( 'ID' => intval( $_POST['post_id'] ) )
@@ -128,7 +128,7 @@ function rcl_get_like_tags() {
     wp_send_json( $tags );
 }
 
-add_filter( 'rcl_preview_post_content', 'rcl_add_registered_scripts' );
+add_filter( 'uspp_preview_post_content', 'rcl_add_registered_scripts' );
 rcl_ajax_action( 'rcl_preview_post', true );
 function rcl_preview_post() {
     global $user_ID;
@@ -263,7 +263,7 @@ function rcl_preview_post() {
         }
     }
 
-    $preview = apply_filters( 'rcl_preview_post_content', $post_content );
+    $preview = apply_filters( 'uspp_preview_post_content', $post_content );
 
     $preview .= rcl_get_notice( [
         'text' => __( 'If everything is correct – publish it! If not, you can go back to editing.', 'usp-publication' )

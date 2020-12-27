@@ -11,7 +11,7 @@ function rcl_get_custom_post_meta( $post_id ) {
         $show_custom_field = '';
         $cf                = new Rcl_Custom_Fields();
         foreach ( $get_fields as $custom_field ) {
-            $custom_field          = apply_filters( 'rcl_custom_post_meta', $custom_field );
+            $custom_field          = apply_filters( 'uspp_custom_post_meta', $custom_field );
             if ( ! $custom_field || ! isset( $custom_field['slug'] ) || ! $custom_field['slug'] )
                 continue;
             $custom_field['value'] = get_post_meta( $post_id, $custom_field['slug'], true );
@@ -324,7 +324,7 @@ function rcl_get_html_attachment( $attach_id, $mime_type, $addToClick = true ) {
 
     $content = "<li id='attachment-$attach_id' class='post-attachment attachment-$mime[0]' data-mime='$mime[0]' data-attachment-id='$attach_id'>";
     $content .= rcl_button_fast_delete_post( $attach_id );
-    $content .= sprintf( "<label>%s</label>", apply_filters( 'rcl_post_attachment_html', rcl_get_attachment_box( $attach_id, $mime[0], $addToClick ), $attach_id, $mime ) );
+    $content .= sprintf( "<label>%s</label>", apply_filters( 'uspp_post_attachment_html', rcl_get_attachment_box( $attach_id, $mime[0], $addToClick ), $attach_id, $mime ) );
     $content .= "</li>";
 
     return $content;
