@@ -2,295 +2,295 @@
 
 class Rcl_EditPost {
 
-	public $post_id; //идентификатор поста
-	public $post	 = array();
-	public $post_type; //тип записи
-	public $update	 = false; //действие
-	public $user_can = array(
-		'publish'	 => false,
-		'edit'		 => false,
-		'upload'	 => false
-	);
+    public $post_id; //идентификатор поста
+    public $post     = array();
+    public $post_type; //тип записи
+    public $update   = false; //действие
+    public $user_can = array(
+        'publish' => false,
+        'edit'    => false,
+        'upload'  => false
+    );
 
-	function __construct() {
+    function __construct() {
 
-		if ( isset( $_FILES ) ) {
-			require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-			require_once(ABSPATH . "wp-admin" . '/includes/file.php');
-			require_once(ABSPATH . "wp-admin" . '/includes/media.php');
-		}
+        if ( isset( $_FILES ) ) {
+            require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+            require_once(ABSPATH . "wp-admin" . '/includes/file.php');
+            require_once(ABSPATH . "wp-admin" . '/includes/media.php');
+        }
 
-		if ( isset( $_POST['post_type'] ) && $_POST['post_type'] ) {
-			$this->post_type = sanitize_text_field( $_POST['post_type'] );
-		}
+        if ( isset( $_POST['post_type'] ) && $_POST['post_type'] ) {
+            $this->post_type = sanitize_text_field( $_POST['post_type'] );
+        }
 
-		$post_id = isset( $_POST['post_ID'] ) && $_POST['post_ID'] ? $_POST['post_ID'] : (isset( $_POST['post_id'] ) && $_POST['post_id'] ? $_POST['post_id'] : 0);
+        $post_id = isset( $_POST['post_ID'] ) && $_POST['post_ID'] ? $_POST['post_ID'] : (isset( $_POST['post_id'] ) && $_POST['post_id'] ? $_POST['post_id'] : 0);
 
-		if ( $post_id ) {
+        if ( $post_id ) {
 
-			$this->post_id = intval( $post_id );
+            $this->post_id = intval( $post_id );
 
-			$post = get_post( $this->post_id );
+            $post = get_post( $this->post_id );
 
-			$this->post = $post;
+            $this->post = $post;
 
-			$this->post_type = $post->post_type;
+            $this->post_type = $post->post_type;
 
-			$this->update = true;
-		}
+            $this->update = true;
+        }
 
-		$this->setup_user_can();
+        $this->setup_user_can();
 
-		if ( ! $this->user_can )
-			$this->error( __( 'Error publishing!', 'usp-publication' ) . ' Error 100' );
+        if ( ! $this->user_can )
+            $this->error( __( 'Error publishing!', 'usp-publication' ) . ' Error 100' );
 
-		do_action( 'init_update_post_rcl', $this );
-	}
+        do_action( 'init_update_post_rcl', $this );
+    }
 
-	function error( $error ) {
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			wp_send_json( array( 'error' => $error ) );
-		} else {
-			wp_die( $error );
-		}
-	}
+    function error( $error ) {
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+            wp_send_json( array( 'error' => $error ) );
+        } else {
+            wp_die( $error );
+        }
+    }
 
-	function setup_user_can() {
-		global $user_ID;
+    function setup_user_can() {
+        global $user_ID;
 
-		if ( $this->update ) {
+        if ( $this->update ) {
 
-			if ( $this->post_type == 'post-group' ) {
+            if ( $this->post_type == 'post-group' ) {
 
-				if ( rcl_can_user_edit_post_group( $this->post_id ) )
-					$this->user_can['edit'] = true;
-			}else {
+                if ( rcl_can_user_edit_post_group( $this->post_id ) )
+                    $this->user_can['edit'] = true;
+            } else {
 
-				if ( current_user_can( 'edit_post', $this->post_id ) )
-					$this->user_can['edit'] = true;
+                if ( current_user_can( 'edit_post', $this->post_id ) )
+                    $this->user_can['edit'] = true;
 
-				if ( rcl_is_user_role( $user_ID, array( 'administrator', 'editor' ) ) || ! rcl_is_limit_editing( $this->post->post_date ) )
-					$this->user_can['edit'] = true;
-			}
-		}else {
+                if ( rcl_is_user_role( $user_ID, array( 'administrator', 'editor' ) ) || ! rcl_is_limit_editing( $this->post->post_date ) )
+                    $this->user_can['edit'] = true;
+            }
+        } else {
 
-			$this->user_can['publish'] = true;
+            $this->user_can['publish'] = true;
 
-			$user_can = rcl_get_option( 'user_public_access_recall' );
+            $user_can = rcl_get_option( 'uspp_access_publicform', 2 );
 
-			if ( $user_can ) {
+            if ( $user_can ) {
 
-				if ( $user_ID ) {
+                if ( $user_ID ) {
 
-					$userinfo = get_userdata( $user_ID );
+                    $userinfo = get_userdata( $user_ID );
 
-					if ( $userinfo->user_level < $user_can )
-						$this->user_can['publish'] = false;
-				}else {
+                    if ( $userinfo->user_level < $user_can )
+                        $this->user_can['publish'] = false;
+                } else {
 
-					$this->user_can['publish'] = false;
-				}
-			}
-		}
+                    $this->user_can['publish'] = false;
+                }
+            }
+        }
 
-		$this->user_can = apply_filters( 'rcl_public_update_user_can', $this->user_can, $this );
-	}
+        $this->user_can = apply_filters( 'rcl_public_update_user_can', $this->user_can, $this );
+    }
 
-	function update_thumbnail() {
+    function update_thumbnail() {
 
-		$thumbnail_id = isset( $_POST['post_thumbnail'] ) ? $_POST['post_thumbnail'] : 0;
+        $thumbnail_id = isset( $_POST['post_thumbnail'] ) ? $_POST['post_thumbnail'] : 0;
 
-		$currentThID = $this->post_id ? get_post_meta( $this->post_id, '_thumbnail_id', 1 ) : 0;
+        $currentThID = $this->post_id ? get_post_meta( $this->post_id, '_thumbnail_id', 1 ) : 0;
 
-		if ( $thumbnail_id ) {
+        if ( $thumbnail_id ) {
 
-			if ( $currentThID == $thumbnail_id )
-				return false;
+            if ( $currentThID == $thumbnail_id )
+                return false;
 
-			update_post_meta( $this->post_id, '_thumbnail_id', $thumbnail_id );
-		}else {
+            update_post_meta( $this->post_id, '_thumbnail_id', $thumbnail_id );
+        } else {
 
-			if ( $currentThID )
-				delete_post_meta( $this->post_id, '_thumbnail_id' );
-		}
-	}
+            if ( $currentThID )
+                delete_post_meta( $this->post_id, '_thumbnail_id' );
+        }
+    }
 
-	function add_attachments_from_temps( $user_id ) {
+    function add_attachments_from_temps( $user_id ) {
 
-		$temps = rcl_get_temp_media( array(
-			'user_id'			 => $user_id,
-			'uploader_id__in'	 => array( 'post_uploader', 'post_thumbnail' )
-			) );
+        $temps = rcl_get_temp_media( array(
+            'user_id'         => $user_id,
+            'uploader_id__in' => array( 'post_uploader', 'post_thumbnail' )
+            ) );
 
-		if ( $temps ) {
+        if ( $temps ) {
 
-			$thumbnail_id = isset( $_POST['post_thumbnail'] ) ? $_POST['post_thumbnail'] : 0;
+            $thumbnail_id = isset( $_POST['post_thumbnail'] ) ? $_POST['post_thumbnail'] : 0;
 
-			foreach ( $temps as $temp ) {
+            foreach ( $temps as $temp ) {
 
-				$attachData = array(
-					'ID'			 => $temp->media_id,
-					'post_parent'	 => $this->post_id,
-					'post_author'	 => $user_id
-				);
+                $attachData = array(
+                    'ID'          => $temp->media_id,
+                    'post_parent' => $this->post_id,
+                    'post_author' => $user_id
+                );
 
-				wp_update_post( $attachData );
-			}
-		}
+                wp_update_post( $attachData );
+            }
+        }
 
-		return $temps;
-	}
+        return $temps;
+    }
 
-	function update_post_gallery() {
+    function update_post_gallery() {
 
-		$postGallery = isset( $_POST['rcl-post-gallery'] ) ? $_POST['rcl-post-gallery'] : false;
+        $postGallery = isset( $_POST['rcl-post-gallery'] ) ? $_POST['rcl-post-gallery'] : false;
 
-		$gallery = array();
+        $gallery = array();
 
-		if ( $postGallery ) {
-			$postGallery = array_unique( $postGallery );
-			foreach ( $postGallery as $attachment_id ) {
-				$attachment_id	 = intval( $attachment_id );
-				if ( $attachment_id )
-					$gallery[]		 = $attachment_id;
-			}
-		}
+        if ( $postGallery ) {
+            $postGallery = array_unique( $postGallery );
+            foreach ( $postGallery as $attachment_id ) {
+                $attachment_id = intval( $attachment_id );
+                if ( $attachment_id )
+                    $gallery[]     = $attachment_id;
+            }
+        }
 
-		if ( $gallery ) {
-			update_post_meta( $this->post_id, 'rcl_post_gallery', $gallery );
-		} else {
-			delete_post_meta( $this->post_id, 'rcl_post_gallery' );
-		}
-	}
+        if ( $gallery ) {
+            update_post_meta( $this->post_id, 'rcl_post_gallery', $gallery );
+        } else {
+            delete_post_meta( $this->post_id, 'rcl_post_gallery' );
+        }
+    }
 
-	function get_status_post( $moderation ) {
-		global $user_ID;
+    function get_status_post( $moderation ) {
+        global $user_ID;
 
-		if ( isset( $_POST['save-as-draft'] ) )
-			return 'draft';
+        if ( isset( $_POST['save-as-draft'] ) )
+            return 'draft';
 
-		if ( rcl_is_user_role( $user_ID, array( 'administrator', 'editor' ) ) )
-			return 'publish';
+        if ( rcl_is_user_role( $user_ID, array( 'administrator', 'editor' ) ) )
+            return 'publish';
 
-		if ( $moderation == 1 ) {
+        if ( $moderation == 1 ) {
 
-			$types = rcl_get_option( 'post_types_moderation' );
+            $types = rcl_get_option( 'post_types_moderation' );
 
-			if ( $types ) {
-				$post_status = in_array( $this->post_type, $types ) ? 'pending' : 'publish';
-			} else {
-				$post_status = 'pending';
-			}
-		} else {
-			$post_status = 'publish';
-		}
+            if ( $types ) {
+                $post_status = in_array( $this->post_type, $types ) ? 'pending' : 'publish';
+            } else {
+                $post_status = 'pending';
+            }
+        } else {
+            $post_status = 'publish';
+        }
 
-		$rating = rcl_get_option( 'rating_no_moderation' );
+        $rating = rcl_get_option( 'rating_no_moderation' );
 
-		if ( $rating ) {
-			$all_r		 = rcl_get_user_rating( $user_ID );
-			if ( $all_r >= $rating )
-				$post_status = 'publish';
-		}
+        if ( $rating ) {
+            $all_r       = rcl_get_user_rating( $user_ID );
+            if ( $all_r >= $rating )
+                $post_status = 'publish';
+        }
 
-		return $post_status;
-	}
+        return $post_status;
+    }
 
-	function update_post() {
-		global $user_ID;
+    function update_post() {
+        global $user_ID;
 
-		$postdata = array(
-			'post_type'		 => $this->post_type,
-			'post_title'	 => (isset( $_POST['post_title'] )) ? sanitize_text_field( $_POST['post_title'] ) : '',
-			'post_excerpt'	 => (isset( $_POST['post_excerpt'] )) ? $_POST['post_excerpt'] : '',
-			'post_content'	 => (isset( $_POST['post_content'] )) ? $_POST['post_content'] : ''
-		);
+        $postdata = array(
+            'post_type'    => $this->post_type,
+            'post_title'   => (isset( $_POST['post_title'] )) ? sanitize_text_field( $_POST['post_title'] ) : '',
+            'post_excerpt' => (isset( $_POST['post_excerpt'] )) ? $_POST['post_excerpt'] : '',
+            'post_content' => (isset( $_POST['post_content'] )) ? $_POST['post_content'] : ''
+        );
 
-		if ( ! $this->post || ! $this->post->post_name ) {
-			$postdata['post_name'] = sanitize_title( $postdata['post_title'] );
-		}
+        if ( ! $this->post || ! $this->post->post_name ) {
+            $postdata['post_name'] = sanitize_title( $postdata['post_title'] );
+        }
 
-		if ( $this->post_id ) {
-			$postdata['ID']			 = $this->post_id;
-			$postdata['post_author'] = $this->post->post_author;
-		} else {
-			$postdata['post_author'] = $user_ID;
-		}
+        if ( $this->post_id ) {
+            $postdata['ID']          = $this->post_id;
+            $postdata['post_author'] = $this->post->post_author;
+        } else {
+            $postdata['post_author'] = $user_ID;
+        }
 
-		$postdata['post_status'] = $this->get_status_post( rcl_get_option( 'moderation_public_post' ) );
+        $postdata['post_status'] = $this->get_status_post( rcl_get_option( 'uspp_send_to_moderation', 1 ) );
 
-		$postdata = apply_filters( 'pre_update_postdata_rcl', $postdata, $this );
+        $postdata = apply_filters( 'pre_update_postdata_rcl', $postdata, $this );
 
-		if ( ! $postdata )
-			return false;
+        if ( ! $postdata )
+            return false;
 
-		do_action( 'pre_update_post_rcl', $postdata );
+        do_action( 'pre_update_post_rcl', $postdata );
 
-		if ( isset( $_POST['form_id'] ) ) {
-			$formID = intval( $_POST['form_id'] );
-		}
+        if ( isset( $_POST['form_id'] ) ) {
+            $formID = intval( $_POST['form_id'] );
+        }
 
-		if ( ! $this->post_id ) {
+        if ( ! $this->post_id ) {
 
-			$this->post_id = wp_insert_post( $postdata );
+            $this->post_id = wp_insert_post( $postdata );
 
-			if ( ! $this->post_id ) {
-				$this->error( __( 'Error publishing!', 'usp-publication' ) . ' Error 101' );
-			} else {
+            if ( ! $this->post_id ) {
+                $this->error( __( 'Error publishing!', 'usp-publication' ) . ' Error 101' );
+            } else {
 
-				if ( $formID > 1 )
-					add_post_meta( $this->post_id, 'publicform-id', $formID );
+                if ( $formID > 1 )
+                    add_post_meta( $this->post_id, 'publicform-id', $formID );
 
-				$post_name = wp_unique_post_slug( $postdata['post_name'], $this->post_id, 'publish', $postdata['post_type'], 0 );
+                $post_name = wp_unique_post_slug( $postdata['post_name'], $this->post_id, 'publish', $postdata['post_type'], 0 );
 
-				wp_update_post( [
-					'ID'		 => $this->post_id,
-					'post_name'	 => $post_name
-				] );
-			}
-		}else {
-			wp_update_post( $postdata );
-		}
+                wp_update_post( [
+                    'ID'        => $this->post_id,
+                    'post_name' => $post_name
+                ] );
+            }
+        } else {
+            wp_update_post( $postdata );
+        }
 
-		$this->update_thumbnail();
+        $this->update_thumbnail();
 
-		if ( ! $this->update ) {
-			$this->add_attachments_from_temps( $postdata['post_author'] );
-		}
+        if ( ! $this->update ) {
+            $this->add_attachments_from_temps( $postdata['post_author'] );
+        }
 
-		$this->update_post_gallery();
+        $this->update_post_gallery();
 
-		delete_post_meta( $this->post_id, 'recall_slider' );
+        delete_post_meta( $this->post_id, 'uspp_slider' );
 
-		rcl_update_post_custom_fields( $this->post_id, $formID );
+        rcl_update_post_custom_fields( $this->post_id, $formID );
 
-		rcl_delete_temp_media_by_args( array(
-			'user_id'			 => $user_ID,
-			'uploader_id__in'	 => array( 'post_uploader', 'post_thumbnail' )
-		) );
+        rcl_delete_temp_media_by_args( array(
+            'user_id'         => $user_ID,
+            'uploader_id__in' => array( 'post_uploader', 'post_thumbnail' )
+        ) );
 
-		do_action( 'update_post_rcl', $this->post_id, $postdata, $this->update, $this );
+        do_action( 'update_post_rcl', $this->post_id, $postdata, $this->update, $this );
 
-		if ( isset( $_POST['save-as-draft'] ) ) {
-			wp_redirect( get_permalink( rcl_get_option( 'public_form_page_rcl' ) ) . '?draft=saved&rcl-post-edit=' . $this->post_id );
-			exit;
-		}
+        if ( isset( $_POST['save-as-draft'] ) ) {
+            wp_redirect( get_permalink( rcl_get_option( 'uspp_public_form_page' ) ) . '?draft=saved&rcl-post-edit=' . $this->post_id );
+            exit;
+        }
 
-		if ( $postdata['post_status'] == 'pending' ) {
-			if ( $user_ID )
-				$redirect_url	 = get_bloginfo( 'wpurl' ) . '/?p=' . $this->post_id . '&preview=true';
-			else
-				$redirect_url	 = get_permalink( rcl_get_option( 'guest_post_redirect' ) );
-		}else {
-			$redirect_url = get_permalink( $this->post_id );
-		}
+        if ( $postdata['post_status'] == 'pending' ) {
+            if ( $user_ID )
+                $redirect_url = get_bloginfo( 'wpurl' ) . '/?p=' . $this->post_id . '&preview=true';
+            else
+                $redirect_url = get_permalink( rcl_get_option( 'guest_post_redirect' ) );
+        } else {
+            $redirect_url = get_permalink( $this->post_id );
+        }
 
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			wp_send_json( array( 'redirect' => $redirect_url ) );
-		}
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+            wp_send_json( array( 'redirect' => $redirect_url ) );
+        }
 
-		header( "Location: $redirect_url", true, 302 );
-		exit;
-	}
+        header( "Location: $redirect_url", true, 302 );
+        exit;
+    }
 
 }

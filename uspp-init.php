@@ -76,7 +76,7 @@ function rcl_post_gallery( $content ) {
     if ( ! is_single() || $post->post_type == 'products' )
         return $content;
 
-    $oldSlider = get_post_meta( $post->ID, 'recall_slider', 1 );
+    $oldSlider = get_post_meta( $post->ID, 'uspp_slider', 1 );
     $gallery   = get_post_meta( $post->ID, 'rcl_post_gallery', 1 );
 
     if ( ! $gallery && $oldSlider ) {
@@ -109,7 +109,7 @@ function rcl_post_gallery( $content ) {
 add_filter( 'the_content', 'rcl_author_info', 70 );
 function rcl_author_info( $content ) {
 
-    if ( ! rcl_get_option( 'info_author_recall' ) )
+    if ( ! rcl_get_option( 'uspp_author_box' ) )
         return $content;
 
     if ( ! is_single() )
@@ -138,7 +138,7 @@ function rcl_concat_post_meta( $content ) {
     if ( doing_filter( 'get_the_excerpt' ) )
         return $content;
 
-    $option = rcl_get_option( 'pm_rcl' );
+    $option = rcl_get_option( 'uspp_custom_fields', 1 );
 
     if ( ! $option )
         return $content;
@@ -150,7 +150,7 @@ function rcl_concat_post_meta( $content ) {
 
     $pm = rcl_get_post_custom_fields_box( $post->ID );
 
-    if ( rcl_get_option( 'pm_place' ) == 1 )
+    if ( rcl_get_option( 'uspp_cf_place' ) == 1 )
         $content .= $pm;
     else
         $content = $pm . $content;
@@ -235,12 +235,12 @@ if ( ! is_admin() )
 function rcl_edit_post_link( $admin_url, $post_id ) {
     global $user_ID;
 
-    $frontEdit = rcl_get_option( 'front_editing', array( 0 ) );
+    $frontEdit = rcl_get_option( 'uspp_front_post_edit', array( 0 ) );
 
     $user_info = get_userdata( $user_ID );
 
     if ( array_search( $user_info->user_level, $frontEdit ) !== false || $user_info->user_level < rcl_get_option( 'consol_access_rcl', 7 ) ) {
-        return add_query_arg( [ 'rcl-post-edit' => $post_id ], get_permalink( rcl_get_option( 'public_form_page_rcl' ) ) );
+        return add_query_arg( [ 'rcl-post-edit' => $post_id ], get_permalink( rcl_get_option( 'uspp_public_form_page' ) ) );
     } else {
         return $admin_url;
     }
@@ -267,7 +267,7 @@ function rcl_setup_edit_post_button() {
             return false;
     }
 
-    $frontEdit = rcl_get_option( 'front_editing', array( 0 ) );
+    $frontEdit = rcl_get_option( 'uspp_front_post_edit', array( 0 ) );
 
     if ( false !== array_search( $user_info->user_level, $frontEdit ) || $user_info->user_level >= rcl_get_option( 'consol_access_rcl', 7 ) ) {
 
@@ -374,7 +374,7 @@ add_filter( 'pre_update_postdata_rcl', 'rcl_register_author_post', 10 );
 function rcl_register_author_post( $postdata ) {
     global $user_ID;
 
-    if ( rcl_get_option( 'user_public_access_recall' ) || $user_ID )
+    if ( rcl_get_option( 'uspp_access_publicform', 2 ) || $user_ID )
         return $postdata;
 
     if ( ! $postdata['post_author'] ) {
@@ -405,7 +405,7 @@ function rcl_register_author_post( $postdata ) {
                 ] );
 
                 //Сразу авторизуем пользователя
-                if ( ! rcl_get_option( 'confirm_register_recall' ) ) {
+                if ( ! rcl_get_option( 'usp_confirm_register' ) ) {
                     $creds                  = array();
                     $creds['user_login']    = $email_new_user;
                     $creds['user_password'] = $random_password;

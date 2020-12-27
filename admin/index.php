@@ -9,10 +9,10 @@ function uspp_public_admin_scripts() {
 
 add_action( 'admin_menu', 'rcl_admin_page_publicform', 30 );
 function rcl_admin_page_publicform() {
-    add_submenu_page( 'manage-wprecall', __( 'Form of publication', 'usp-publication' ), __( 'Form of publication', 'usp-publication' ), 'manage_options', 'manage-public-form', 'rcl_public_form_manager' );
+    add_submenu_page( 'manage-userspace', __( 'Form of publication', 'usp-publication' ), __( 'Form of publication', 'usp-publication' ), 'manage_options', 'manage-public-form', 'uspp_public_form_manager' );
 }
 
-function rcl_public_form_manager() {
+function uspp_public_form_manager() {
 
     $post_type = (isset( $_GET['post-type'] )) ? $_GET['post-type'] : 'post';
     $form_id   = (isset( $_GET['form-id'] )) ? $_GET['form-id'] : 1;

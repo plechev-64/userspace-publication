@@ -142,7 +142,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
 
         $this->user_can['publish'] = true;
 
-        $user_can = rcl_get_option( 'user_public_access_recall' );
+        $user_can = rcl_get_option( 'uspp_access_publicform', 2 );
 
         if ( $user_can ) {
 
