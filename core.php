@@ -335,5 +335,5 @@ function rcl_button_fast_edit_post( $post_id ) {
 }
 
 function rcl_button_fast_delete_post( $post_id ) {
-    return '<a class="rcl-delete-post rcl-service-button" data-post="' . $post_id . '" onclick="return confirm(\'' . __( 'Are you sure?', 'usp-publication' ) . '\')? rcl_delete_post(this): false;"><i class="uspi fa-trash"></i></a>';
+    return '<a class="rcl-delete-post rcl-service-button" data-post="' . $post_id . '" onclick="return confirm(\'' . __( 'Are you sure?', 'usp-publication' ) . '\')? uspp_delete_post(this): false;"><i class="uspi fa-trash"></i></a>';
 }

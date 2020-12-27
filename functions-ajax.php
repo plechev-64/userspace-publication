@@ -106,9 +106,9 @@ function rcl_edit_post() {
 }
 
 //выборка меток по введенным значениям
-add_action( 'wp_ajax_rcl_get_like_tags', 'rcl_get_like_tags', 10 );
-add_action( 'wp_ajax_nopriv_rcl_get_like_tags', 'rcl_get_like_tags', 10 );
-function rcl_get_like_tags() {
+add_action( 'wp_ajax_uspp_get_like_tags', 'uspp_get_like_tags', 10 );
+add_action( 'wp_ajax_nopriv_uspp_get_like_tags', 'uspp_get_like_tags', 10 );
+function uspp_get_like_tags() {
 
     if ( ! $_POST['query'] ) {
         return array( array( 'id' => '' ) );
@@ -215,7 +215,7 @@ function rcl_preview_post() {
         $post_content = wpautop( do_shortcode( stripslashes_deep( $postContent ) ) );
     }
 
-    do_action( 'rcl_preview_post', $postdata );
+    do_action( 'uspp_preview_post', $postdata );
 
     if ( $postdata['publish'] ) {
         return [
@@ -269,7 +269,7 @@ function rcl_preview_post() {
         'text' => __( 'If everything is correct – publish it! If not, you can go back to editing.', 'usp-publication' )
         ] );
 
-    do_action( 'rcl_pre_send_preview_post', $postdata );
+    do_action( 'uspp_pre_send_preview_post', $postdata );
 
     return array(
         'title'   => $postdata['post_title'],
@@ -316,7 +316,7 @@ function rcl_set_post_thumbnail() {
     return $result;
 }
 
-add_action( 'rcl_upload', 'rcl_upload_post_thumbnail', 10, 2 );
+add_action( 'usp_upload', 'rcl_upload_post_thumbnail', 10, 2 );
 function rcl_upload_post_thumbnail( $uploads, $uploader ) {
 
     if ( $uploader->uploader_id != 'post_thumbnail' )
@@ -335,7 +335,7 @@ function rcl_upload_post_thumbnail( $uploads, $uploader ) {
         ) );
     }
 
-    do_action( 'rcl_upload_post_thumbnail', $thumbnail_id, $uploader );
+    do_action( 'uspp_upload_post_thumbnail', $thumbnail_id, $uploader );
 
     $uploader->uploader_id  = 'post_uploader';
     $uploader->input_attach = 'post_uploader';

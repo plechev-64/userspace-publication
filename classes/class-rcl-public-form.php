@@ -64,7 +64,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
 
         $this->init_options();
 
-        do_action( 'rcl_public_form_init', $this->get_object_form() );
+        do_action( 'uspp_public_form_init', $this->get_object_form() );
 
         if ( $this->options['preview'] )
             rcl_dialog_scripts();
@@ -75,7 +75,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
 
         $this->form_object = $this->get_object_form();
 
-        do_action( 'rcl_pre_get_public_form', $this );
+        do_action( 'uspp_pre_get_public_form', $this );
     }
 
     function init_public_form_fields_filter( $fields ) {
@@ -359,7 +359,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
         }
 
         $buttons['publish'] = array(
-            'onclick' => 'rcl_publish(this); return false;',
+            'onclick' => 'uspp_publish(this); return false;',
             'label'   => __( 'Publish', 'usp-publication' ),
             'id'      => 'rcl-publish-post',
             'icon'    => 'fa-print'
@@ -724,7 +724,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
 		jQuery(window).on('load', function(){
 			jQuery('#rcl-tags-" . $taxonomy . "').magicSuggest({
 				data: Rcl.ajaxurl,
-				dataUrlParams: { action: 'rcl_get_like_tags', taxonomy: '" . $taxonomy . "', ajax_nonce:Rcl.nonce },
+				dataUrlParams: { action: 'uspp_get_like_tags', taxonomy: '" . $taxonomy . "', ajax_nonce:Rcl.nonce },
 				noSuggestionText: '" . __( "Not found", "rcl-public" ) . "',
 				ajaxConfig: {
 					  xhrFields: {
@@ -878,7 +878,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
         $obj = $this->form_object;
 
         echo '<script type="text/javascript">'
-        . 'rcl_init_public_form({'
+        . 'uspp_init_public_form({'
         . 'post_type:"' . $obj->post_type . '",'
         . 'post_id:"' . $obj->post_id . '",'
         . 'post_status:"' . $obj->post_status . '",'

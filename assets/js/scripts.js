@@ -80,7 +80,7 @@ jQuery( document ).ready( function( $ ) {
 
 } );
 
-rcl_add_action( 'rcl_init_public_form', 'rcl_setup_async_upload' );
+rcl_add_action( 'uspp_init_public_form', 'rcl_setup_async_upload' );
 function rcl_setup_async_upload() {
 
 	if ( typeof wp == 'undefined' || !wp.Uploader )
@@ -102,8 +102,8 @@ function rcl_setup_async_upload() {
 
 }
 
-rcl_add_action( 'rcl_init', 'rcl_init_click_post_thumbnail' );
-function rcl_init_click_post_thumbnail() {
+rcl_add_action( 'usp_init', 'uspp_init_click_post_thumbnail' );
+function uspp_init_click_post_thumbnail() {
 	jQuery( ".rcl-public-form" ).on( 'click', '.thumb-foto', function() {
 		jQuery( ".rcl-public-form .thumb-foto" ).removeAttr( "checked" );
 		jQuery( this ).attr( "checked", 'checked' );
@@ -134,7 +134,7 @@ function rcl_remove_post_thumbnail() {
 	jQuery( '#rcl-thumbnail-post .thumbnail-id' ).val( '0' );
 }
 
-function rcl_delete_post( element ) {
+function uspp_delete_post( element ) {
 
 	rcl_preloader_show( jQuery( element ).parents( 'li' ) );
 
@@ -153,7 +153,7 @@ function rcl_delete_post( element ) {
 
 			data.post_id = objectData.post_id;
 
-			rcl_do_action( 'rcl_delete_post', data );
+			usp_do_action( 'uspp_delete_post', data );
 
 		}
 	} );
@@ -161,8 +161,8 @@ function rcl_delete_post( element ) {
 	return false;
 }
 
-rcl_add_action( 'rcl_delete_post', 'rcl_delete_thumbnail_attachment' );
-function rcl_delete_thumbnail_attachment( data ) {
+usp_add_action( 'uspp_delete_post', 'uspp_delete_thumbnail_attachment' );
+function uspp_delete_thumbnail_attachment( data ) {
 
 	if ( data['post_type'] != 'attachment' )
 		return false;
@@ -276,7 +276,7 @@ function rcl_preview( e ) {
 					label: Rcl.local.publish,
 					closeAfter: false,
 					method: function() {
-						rcl_publish();
+						uspp_publish();
 					}
 				};
 
@@ -322,7 +322,7 @@ function rcl_check_publish( e ) {
 	return true;
 }
 
-function rcl_publish( e ) {
+function uspp_publish( e ) {
 
 	var formblock = ( e ) ? jQuery( e ).parents( 'form' ) : jQuery( 'form.rcl-public-form' );
 
@@ -348,7 +348,7 @@ function rcl_publish( e ) {
 				jQuery( 'form.rcl-public-form' ).submit();
 			}
 
-			rcl_do_action( 'rcl_publish', data, e );
+			usp_do_action( 'uspp_publish', data, e );
 
 		}
 	} );
@@ -389,9 +389,9 @@ function rcl_preview_close( e ) {
 	ssi_modal.close();
 }
 
-function rcl_init_public_form( post ) {
+function uspp_init_public_form( post ) {
 
-	rcl_do_action( 'rcl_init_public_form', post );
+	usp_do_action( 'uspp_init_public_form', post );
 
 	var post_id = post.post_id;
 	var post_type = post.post_type;

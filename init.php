@@ -3,7 +3,7 @@
 add_action( 'wp', 'rcl_deleted_post_notice' );
 function rcl_deleted_post_notice() {
     if ( isset( $_GET['public'] ) && $_GET['public'] == 'deleted' )
-        add_action( 'rcl_area_notice', function() {
+        add_action( 'usp_area_notice', function() {
             echo rcl_get_notice( [ 'text' => __( 'The publication has been successfully removed!', 'usp-publication' ) ] );
         } );
 }
@@ -45,7 +45,7 @@ function rcl_setup_author_role() {
     }
 }
 
-add_action( 'rcl_init_tabs', 'rcl_init_publics_block', 20 );
+add_action( 'usp_init_tabs', 'rcl_init_publics_block', 20 );
 function rcl_init_publics_block() {
 
     if ( rcl_get_option( 'uspp_show_list_of_publications', 1 ) == 1 ) {

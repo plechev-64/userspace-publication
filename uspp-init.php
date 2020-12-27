@@ -22,7 +22,7 @@ if ( is_admin() ) {
 }
 
 if ( ! is_admin() ) {
-    add_action( 'rcl_enqueue_scripts', 'uspp_publics_scripts', 10 );
+    add_action( 'usp_enqueue_scripts', 'uspp_publics_scripts', 10 );
 }
 function uspp_publics_scripts() {
     usp_enqueue_style( 'uspp-publics', plugin_dir_url( __FILE__ ) . 'assets/css/style.css' );
@@ -181,14 +181,14 @@ function rcl_get_post_custom_fields_box( $post_id ) {
     return $content;
 }
 
-add_action( 'init', 'rcl_delete_post_activate' );
-function rcl_delete_post_activate() {
+add_action( 'init', 'uspp_delete_post_activate' );
+function uspp_delete_post_activate() {
     if ( isset( $_POST['rcl-delete-post'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'rcl-delete-post' ) ) {
-        add_action( 'wp', 'rcl_delete_post' );
+        add_action( 'wp', 'uspp_delete_post' );
     }
 }
 
-function rcl_delete_post() {
+function uspp_delete_post() {
     global $user_ID;
 
     $post_id = intval( $_POST['post_id'] );
@@ -210,13 +210,13 @@ function rcl_delete_post() {
         'post_status' => 'trash'
         ) );
 
-    do_action( 'after_delete_post_rcl', $post_id );
+    do_action( 'uspp_after_delete_post', $post_id );
 
     wp_redirect( add_query_arg( [ 'public' => 'deleted' ], rcl_get_user_url( $user_ID ) ) );
     exit;
 }
 
-add_action( 'after_delete_post_rcl', 'rcl_delete_notice_author_post' );
+add_action( 'uspp_after_delete_post', 'rcl_delete_notice_author_post' );
 function rcl_delete_notice_author_post( $post_id ) {
 
     if ( ! $_POST['reason_content'] )
@@ -247,7 +247,7 @@ function rcl_edit_post_link( $admin_url, $post_id ) {
     }
 }
 
-add_action( 'rcl_post_bar_setup', 'rcl_setup_edit_post_button', 10 );
+add_action( 'usp_post_bar_setup', 'rcl_setup_edit_post_button', 10 );
 function rcl_setup_edit_post_button() {
     global $post, $user_ID, $current_user;
 
@@ -331,7 +331,7 @@ function rcl_add_taxonomy_in_postdata( $postdata, $data ) {
     return $postdata;
 }
 
-add_action( 'update_post_rcl', 'rcl_update_postdata_product_tags', 10, 2 );
+add_action( 'uspp_update_post', 'rcl_update_postdata_product_tags', 10, 2 );
 function rcl_update_postdata_product_tags( $post_id, $postdata ) {
 
     if ( ! isset( $_POST['tags'] ) || $postdata['post_type'] == 'post' )
@@ -342,7 +342,7 @@ function rcl_update_postdata_product_tags( $post_id, $postdata ) {
     }
 }
 
-add_action( 'update_post_rcl', 'rcl_unset_postdata_tags', 20, 2 );
+add_action( 'uspp_update_post', 'rcl_unset_postdata_tags', 20, 2 );
 function rcl_unset_postdata_tags( $post_id, $postdata ) {
 
     if ( ! isset( $_POST['tags'] ) ) {
@@ -360,7 +360,7 @@ function rcl_unset_postdata_tags( $post_id, $postdata ) {
     }
 }
 
-add_action( 'update_post_rcl', 'rcl_set_object_terms_post', 10, 3 );
+add_action( 'uspp_update_post', 'rcl_set_object_terms_post', 10, 3 );
 function rcl_set_object_terms_post( $post_id, $postdata, $update ) {
 
     if ( $update || ! isset( $postdata['tax_input'] ) || ! $postdata['tax_input'] )
@@ -425,7 +425,7 @@ function rcl_register_author_post( $postdata ) {
 }
 
 //Сохранение данных публикации в редакторе userspace
-/* add_action( 'update_post_rcl', 'rcl_add_box_content', 10, 3 );
+/* add_action( 'uspp_update_post', 'rcl_add_box_content', 10, 3 );
   function rcl_add_box_content( $post_id, $postdata, $update ) {
 
   if ( ! isset( $_POST['post_content'] ) || ! is_array( $_POST['post_content'] ) )
@@ -496,7 +496,7 @@ function rcl_form_field( $args ) {
     return $field->get_field( $args );
 }
 
-add_action( 'update_post_rcl', 'rcl_send_mail_about_new_post', 10, 3 );
+add_action( 'uspp_update_post', 'rcl_send_mail_about_new_post', 10, 3 );
 function rcl_send_mail_about_new_post( $post_id, $postData, $update ) {
 
     if ( $update || rcl_check_access_console() )
@@ -606,4 +606,18 @@ function uspp_add_public_form_captcha( $form ) {
      </div>';
 
     return $form;
+}
+
+add_action( 'uspp_init_update_post', 'uspp_check_public_form_captcha', 10 );
+function uspp_check_public_form_captcha() {
+    global $user_ID;
+
+    if ( ! $user_ID && isset( $_POST['usp_captcha_prefix'] ) ) {
+
+        $usp_captcha_correct = usp_captcha_check_correct( $_POST['usp_captcha_code'], $_POST['usp_captcha_prefix'] );
+
+        if ( ! $usp_captcha_correct ) {
+            wp_die( __( 'Incorrect CAPTCHA!', 'usp' ) );
+        }
+    }
 }

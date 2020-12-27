@@ -44,7 +44,7 @@ class Rcl_EditPost {
         if ( ! $this->user_can )
             $this->error( __( 'Error publishing!', 'usp-publication' ) . ' Error 100' );
 
-        do_action( 'init_update_post_rcl', $this );
+        do_action( 'uspp_init_update_post', $this );
     }
 
     function error( $error ) {
@@ -224,7 +224,7 @@ class Rcl_EditPost {
         if ( ! $postdata )
             return false;
 
-        do_action( 'pre_update_post_rcl', $postdata );
+        do_action( 'uspp_pre_update_post', $postdata );
 
         if ( isset( $_POST['form_id'] ) ) {
             $formID = intval( $_POST['form_id'] );
@@ -269,7 +269,7 @@ class Rcl_EditPost {
             'uploader_id__in' => array( 'post_uploader', 'post_thumbnail' )
         ) );
 
-        do_action( 'update_post_rcl', $this->post_id, $postdata, $this->update, $this );
+        do_action( 'uspp_update_post', $this->post_id, $postdata, $this->update, $this );
 
         if ( isset( $_POST['save-as-draft'] ) ) {
             wp_redirect( get_permalink( rcl_get_option( 'uspp_public_form_page' ) ) . '?draft=saved&rcl-post-edit=' . $this->post_id );
