@@ -120,9 +120,9 @@ function rcl_author_info( $content ) {
     if ( $post->post_type == 'page' )
         return $content;
 
-    if ( rcl_get_option( 'post_types_authbox' ) ) {
+    if ( rcl_get_option( 'uspp_author_box_post_types' ) ) {
 
-        if ( ! in_array( $post->post_type, rcl_get_option( 'post_types_authbox' ) ) )
+        if ( ! in_array( $post->post_type, rcl_get_option( 'uspp_author_box_post_types' ) ) )
             return $content;
     }
 
@@ -143,7 +143,7 @@ function rcl_concat_post_meta( $content ) {
     if ( ! $option )
         return $content;
 
-    if ( $types = rcl_get_option( 'pm_post_types' ) ) {
+    if ( $types = rcl_get_option( 'uspp_cf_post_types' ) ) {
         if ( ! in_array( $post->post_type, $types ) )
             return $content;
     }

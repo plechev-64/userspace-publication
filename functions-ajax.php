@@ -225,7 +225,7 @@ function rcl_preview_post() {
 
     if ( rcl_get_option( 'uspp_custom_fields', 1 ) && $customFields = $formFields->get_custom_fields() ) {
 
-        $types = rcl_get_option( 'pm_post_types' );
+        $types = rcl_get_option( 'uspp_cf_post_types' );
 
         if ( ! $types || in_array( $postdata['post_type'], $types ) ) {
 

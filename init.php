@@ -61,9 +61,9 @@ function rcl_init_publics_block() {
             $types[$post_type->name] = $post_type->label;
         }
 
-        if ( rcl_get_option( 'post_types_list' ) ) {
+        if ( rcl_get_option( 'uspp_post_types_list' ) ) {
             foreach ( $types as $post_typen => $name ) {
-                $find = array_search( $post_typen, rcl_get_option( 'post_types_list' ) );
+                $find = array_search( $post_typen, rcl_get_option( 'uspp_post_types_list' ) );
                 if ( $find === false ) {
                     unset( $types[$post_typen] );
                 }

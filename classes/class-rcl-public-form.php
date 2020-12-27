@@ -131,8 +131,8 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
 
     function init_options() {
 
-        $this->options['preview'] = rcl_get_option( 'public_preview' );
-        $this->options['draft']   = rcl_get_option( 'public_draft' );
+        $this->options['preview'] = rcl_get_option( 'uspp_public_preview' );
+        $this->options['draft']   = rcl_get_option( 'uspp_public_draft' );
 
         $this->options = apply_filters( 'rcl_public_form_options', $this->options, $this->get_object_form() );
     }

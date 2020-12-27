@@ -34,7 +34,7 @@ function rcl_get_postslist( $post_type, $type_name ) {
 }
 
 function rcl_tab_postform( $master_id ) {
-    return do_shortcode( '[public-form form_id="' . rcl_get_option( 'form-lk', 1 ) . '"]' );
+    return do_shortcode( '[public-form form_id="' . rcl_get_option( 'uspp_id_public_form', 1 ) . '"]' );
 }
 
 //Прикрепление новой миниатюры к публикации из произвольного места на сервере
@@ -98,7 +98,7 @@ function rcl_get_editor_content( $post_content ) {
 
 function rcl_is_limit_editing( $post_date ) {
 
-    $timelimit = apply_filters( 'rcl_time_editing', rcl_get_option( 'time_editing' ) );
+    $timelimit = apply_filters( 'uspp_time_editing', rcl_get_option( 'uspp_time_editing' ) );
 
     if ( $timelimit ) {
         $hours = (strtotime( current_time( 'mysql' ) ) - strtotime( $post_date )) / 3600;
@@ -289,7 +289,7 @@ function rcl_get_attachment_box( $attachment_id, $mime = 'image', $addToClick = 
 
         if ( $addToClick ) {
 
-            if ( $default = rcl_get_option( 'default_size_thumb' ) )
+            if ( $default = rcl_get_option( 'uspp_default_thumb' ) )
                 $sizes   = wp_get_attachment_image_src( $attachment_id, $default );
             else
                 $sizes   = $small_url;

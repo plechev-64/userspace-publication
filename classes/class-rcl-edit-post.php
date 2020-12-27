@@ -174,7 +174,7 @@ class Rcl_EditPost {
 
         if ( $moderation == 1 ) {
 
-            $types = rcl_get_option( 'post_types_moderation' );
+            $types = rcl_get_option( 'uspp_post_types_moderation' );
 
             if ( $types ) {
                 $post_status = in_array( $this->post_type, $types ) ? 'pending' : 'publish';
@@ -280,7 +280,7 @@ class Rcl_EditPost {
             if ( $user_ID )
                 $redirect_url = get_bloginfo( 'wpurl' ) . '/?p=' . $this->post_id . '&preview=true';
             else
-                $redirect_url = get_permalink( rcl_get_option( 'guest_post_redirect' ) );
+                $redirect_url = get_permalink( rcl_get_option( 'uspp_guest_redirect' ) );
         } else {
             $redirect_url = get_permalink( $this->post_id );
         }

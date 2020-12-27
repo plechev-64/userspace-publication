@@ -52,7 +52,7 @@ function rcl_get_publics_options_page( $options ) {
                 1 => array(
                     array(
                         'type'   => 'checkbox',
-                        'slug'   => 'post_types_authbox',
+                        'slug'   => 'uspp_author_box_post_types',
                         'title'  => __( 'Types of write for the author`s block output', 'usp-publication' ),
                         'values' => $types,
                         'notice' => __( 'Select the types of writes where the author`s block should be displayed. If nothing is specified, it is displayed everywhere', 'usp-publication' )
@@ -69,7 +69,7 @@ function rcl_get_publics_options_page( $options ) {
                 1 => array(
                     array(
                         'type'   => 'checkbox',
-                        'slug'   => 'post_types_list',
+                        'slug'   => 'uspp_post_types_list',
                         'title'  => __( 'Type of post for output a list of writes', 'usp-publication' ),
                         'values' => $types,
                         'notice' => __( 'Select the type of post which will be to output its archive of writes in this tab. If nothing is specified, it will be outputed a writes all types', 'usp-publication' )
@@ -90,19 +90,19 @@ function rcl_get_publics_options_page( $options ) {
     ) )->add_options( array(
         array(
             'type'   => 'select',
-            'slug'   => 'public_preview',
+            'slug'   => 'uspp_public_preview',
             'title'  => __( 'Use preview', 'usp-publication' ),
             'values' => array( __( 'No', 'usp-publication' ), __( 'Yes', 'usp-publication' ) )
         ),
         array(
             'type'   => 'select',
-            'slug'   => 'public_draft',
+            'slug'   => 'uspp_public_draft',
             'title'  => __( 'Use draft', 'usp-publication' ),
             'values' => array( __( 'No', 'usp-publication' ), __( 'Yes', 'usp-publication' ) )
         ),
         array(
             'type'   => 'select',
-            'slug'   => 'default_size_thumb',
+            'slug'   => 'uspp_default_thumb',
             'title'  => __( 'The image size in editor by default', 'usp-publication' ),
             'values' => $d_sizes,
             'notice' => __( 'Select image size for the visual editor during publishing', 'usp-publication' )
@@ -117,7 +117,7 @@ function rcl_get_publics_options_page( $options ) {
                 1 => array(
                     array(
                         'type'   => 'number',
-                        'slug'   => 'form-lk',
+                        'slug'   => 'uspp_id_public_form',
                         'title'  => __( 'The form ID', 'usp-publication' ),
                         'notice' => __( 'Enter the form ID according to the personal Cabinet. The default is 1', 'usp-publication' )
                     )
@@ -143,7 +143,7 @@ function rcl_get_publics_options_page( $options ) {
                 array(
                     array(
                         'type'   => 'select',
-                        'slug'   => 'guest_post_redirect',
+                        'slug'   => 'uspp_guest_redirect',
                         'title'  => __( 'Redirect to', 'usp-publication' ),
                         'values' => $pages,
                         'notice' => __( 'Select the page to which the visitors will be redirected after a successful publication, if email authorization is included in the registration precess', 'usp-publication' )
@@ -161,7 +161,7 @@ function rcl_get_publics_options_page( $options ) {
                 1 => array(
                     array(
                         'type'   => 'checkbox',
-                        'slug'   => 'post_types_moderation',
+                        'slug'   => 'uspp_post_types_moderation',
                         'title'  => __( 'Type post', 'usp-publication' ),
                         'values' => $types,
                         'notice' => __( 'Select the types of posts that will be sent for moderation. If nothing is specified, then the moderation is valid for all types', 'usp-publication' )
@@ -186,7 +186,7 @@ function rcl_get_publics_options_page( $options ) {
         ),
         array(
             'type'   => 'number',
-            'slug'   => 'time_editing',
+            'slug'   => 'uspp_time_editing',
             'title'  => __( 'The time limit edit', 'usp-publication' ),
             'notice' => __( 'Limit editing time of publication in hours, by default: unlimited', 'usp-publication' )
         )
@@ -211,7 +211,7 @@ function rcl_get_publics_options_page( $options ) {
                     ),
                     array(
                         'type'   => 'checkbox',
-                        'slug'   => 'pm_post_types',
+                        'slug'   => 'uspp_cf_post_types',
                         'title'  => __( 'Types of posts for the output of custom fields', 'usp-publication' ),
                         'values' => $types,
                         'notice' => __( 'Select types of posts where the values of arbitrary fields will be displayed. If nothing is specified, it is displayed everywhere', 'usp-publication' )
