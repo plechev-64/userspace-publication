@@ -227,7 +227,8 @@ function rcl_delete_notice_author_post( $post_id ) {
     $subject  = __( 'Your post has been deleted', 'usp-publication' );
     $textmail = '<h3>' . __( 'Post', 'usp-publication' ) . ' "' . $post->post_title . '" ' . __( 'has been deleted', 'usp-publication' ) . '</h3>
     <p>' . __( 'Notice of a moderator', 'usp-publication' ) . ': ' . $_POST['reason_content'] . '</p>';
-    rcl_mail( get_the_author_meta( 'user_email', $post->post_author ), $subject, $textmail );
+
+    usp_mail( get_the_author_meta( 'user_email', $post->post_author ), $subject, $textmail );
 }
 
 if ( ! is_admin() )
@@ -509,7 +510,7 @@ function rcl_send_mail_about_new_post( $post_id, $postData, $update ) {
     $textm .= '<p>' . __( 'The author of the write', 'usp-publication' ) . ': <a href="' . rcl_get_user_url( $postData['post_author'] ) . '">' . get_the_author_meta( 'display_name', $postData['post_author'] ) . '</a>' . '</p>';
     $textm .= '<p>' . __( 'Don\'t forget to check this write, probably it is waiting for your moderation', 'usp-publication' ) . '.</p>';
 
-    rcl_mail( $email, $title, $textm );
+    usp_mail( $email, $title, $textm );
 }
 
 add_filter( 'usp_uploader_manager_items', 'rcl_add_post_uploader_image_buttons', 10, 3 );
