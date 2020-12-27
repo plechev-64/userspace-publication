@@ -78,7 +78,7 @@ function rcl_tab_postform( $master_id ) {
 
 function rcl_edit_post_button_html( $post_id ) {
     return '<p class="post-edit-button">'
-        . '<a title="' . __( 'Edit', 'wp-recall' ) . '" object-id="none" href="' . get_edit_post_link( $post_id ) . '">'
+        . '<a title="' . __( 'Edit', 'usp-publication' ) . '" object-id="none" href="' . get_edit_post_link( $post_id ) . '">'
         . '<i class="rcli fa-pencil-square-o"></i>'
         . '</a>'
         . '</p>';
@@ -248,7 +248,7 @@ function rcl_save_temp_async_uploaded_thumbnail() {
 
     if ( ! $attachment_id || ! $attachment_url ) {
         return array(
-            'error' => __( 'Error', 'wp-recall' )
+            'error' => __( 'Error', 'usp-publication' )
         );
     }
 
@@ -335,5 +335,5 @@ function rcl_button_fast_edit_post( $post_id ) {
 }
 
 function rcl_button_fast_delete_post( $post_id ) {
-    return '<a class="rcl-delete-post rcl-service-button" data-post="' . $post_id . '" onclick="return confirm(\'' . __( 'Are you sure?', 'wp-recall' ) . '\')? rcl_delete_post(this): false;"><i class="rcli fa-trash"></i></a>';
+    return '<a class="rcl-delete-post rcl-service-button" data-post="' . $post_id . '" onclick="return confirm(\'' . __( 'Are you sure?', 'usp-publication' ) . '\')? rcl_delete_post(this): false;"><i class="rcli fa-trash"></i></a>';
 }

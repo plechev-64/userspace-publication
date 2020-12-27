@@ -31,17 +31,17 @@ function rcl_ajax_delete_post() {
 	$post = get_post( intval( $_POST['post_id'] ) );
 
 	if ( ! $post ) {
-		$log['success']		 = __( 'Material successfully removed!', 'wp-recall' );
+		$log['success']		 = __( 'Material successfully removed!', 'usp-publication' );
 		$log['post_type']	 = 'attachment';
 	} else {
 
 		$res = wp_delete_post( $post->ID );
 
 		if ( $res ) {
-			$log['success']		 = __( 'Material successfully removed!', 'wp-recall' );
+			$log['success']		 = __( 'Material successfully removed!', 'usp-publication' );
 			$log['post_type']	 = $post->post_type;
 		} else {
-			$log['error'] = __( 'Deletion failed!', 'wp-recall' );
+			$log['error'] = __( 'Deletion failed!', 'usp-publication' );
 		}
 	}
 
@@ -60,14 +60,14 @@ function rcl_get_edit_postdata() {
 		$log['result']	 = 100;
 		$log['content']	 = "
         <form id='rcl-edit-form' method='post'>
-                <label>" . __( "Name", 'wp-recall' ) . ":</label>
+                <label>" . __( "Name", 'usp-publication' ) . ":</label>
                  <input type='text' name='post_title' value='$post->post_title'>
-                 <label>" . __( "Description", 'wp-recall' ) . ":</label>
+                 <label>" . __( "Description", 'usp-publication' ) . ":</label>
                  <textarea name='post_content' rows='10'>$post->post_content</textarea>
                  <input type='hidden' name='post_id' value='$post_id'>
         </form>";
 	} else {
-		$log['error'] = __( 'Failed to get the data', 'wp-recall' );
+		$log['error'] = __( 'Failed to get the data', 'usp-publication' );
 	}
 
 	return $log;
@@ -90,12 +90,12 @@ function rcl_edit_postdata() {
 
 	if ( ! $result ) {
 		return array(
-			'error' => __( 'Changes to be saved not found', 'wp-recall' )
+			'error' => __( 'Changes to be saved not found', 'usp-publication' )
 		);
 	}
 
 	return array(
-		'success'	 => __( 'Publication updated', 'wp-recall' ),
+		'success'	 => __( 'Publication updated', 'usp-publication' ),
 		'dialog'	 => array( 'close' )
 	);
 }
@@ -144,10 +144,10 @@ function rcl_preview_post() {
 		$name_new_user	 = $postdata['name-user'];
 
 		if ( ! $email_new_user ) {
-			$log['error'] = __( 'Enter your e-mail!', 'wp-recall' );
+			$log['error'] = __( 'Enter your e-mail!', 'usp-publication' );
 		}
 		if ( ! $name_new_user ) {
-			$log['error'] = __( 'Enter your name!', 'wp-recall' );
+			$log['error'] = __( 'Enter your name!', 'usp-publication' );
 		}
 
 		$res_email		 = email_exists( $email_new_user );
@@ -158,11 +158,11 @@ function rcl_preview_post() {
 		if ( $res_login || $res_email || ! $correctemail || ! $valid ) {
 
 			if ( ! $valid || ! $correctemail ) {
-				$log['error'] .= __( 'You have entered an invalid email!', 'wp-recall' );
+				$log['error'] .= __( 'You have entered an invalid email!', 'usp-publication' );
 			}
 			if ( $res_login || $res_email ) {
-				$log['error'] .= __( 'This email is already used!', 'wp-recall' ) . '<br>'
-					. __( 'If this is your email, then log in and publish your post', 'wp-recall' );
+				$log['error'] .= __( 'This email is already used!', 'usp-publication' ) . '<br>'
+					. __( 'If this is your email, then log in and publish your post', 'usp-publication' );
 			}
 		}
 
@@ -184,7 +184,7 @@ function rcl_preview_post() {
 			$max	 = $field->value_max;
 
 			if ( $value < $min || $value > $max ) {
-				return array( 'error' => __( 'Incorrect values of some fields, enter the correct values!', 'wp-recall' ) );
+				return array( 'error' => __( 'Incorrect values of some fields, enter the correct values!', 'usp-publication' ) );
 			}
 		}
 	}
@@ -196,7 +196,7 @@ function rcl_preview_post() {
 		$field = $formFields->get_field( 'post_thumbnail' );
 
 		if ( $field->get_prop( 'required' ) && ! $thumbnail_id ) {
-			return array( 'error' => __( 'Upload or specify an image as a thumbnail', 'wp-recall' ) );
+			return array( 'error' => __( 'Upload or specify an image as a thumbnail', 'usp-publication' ) );
 		}
 	}
 
@@ -209,7 +209,7 @@ function rcl_preview_post() {
 		$field = $formFields->get_field( 'post_content' );
 
 		if ( $field->get_prop( 'required' ) && ! $postContent ) {
-			return array( 'error' => __( 'Add contents of the publication!', 'wp-recall' ) );
+			return array( 'error' => __( 'Add contents of the publication!', 'usp-publication' ) );
 		}
 
 		$post_content = wpautop( do_shortcode( stripslashes_deep( $postContent ) ) );
@@ -266,7 +266,7 @@ function rcl_preview_post() {
 	$preview = apply_filters( 'rcl_preview_post_content', $post_content );
 
 	$preview .= rcl_get_notice( [
-		'text' => __( 'If everything is correct – publish it! If not, you can go back to editing.', 'wp-recall' )
+		'text' => __( 'If everything is correct – publish it! If not, you can go back to editing.', 'usp-publication' )
 		] );
 
 	do_action( 'rcl_pre_send_preview_post', $postdata );
@@ -291,7 +291,7 @@ function rcl_set_post_thumbnail() {
 
 	if ( ! $formFields->is_active_field( 'post_thumbnail' ) )
 		return [
-			'error' => __( 'The field of the thumbnail is inactive!', 'wp-recall' )
+			'error' => __( 'The field of the thumbnail is inactive!', 'usp-publication' )
 		];
 
 	if ( $parent_id ) {

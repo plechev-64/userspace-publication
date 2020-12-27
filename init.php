@@ -4,20 +4,20 @@ add_action( 'wp', 'rcl_deleted_post_notice' );
 function rcl_deleted_post_notice() {
 	if ( isset( $_GET['public'] ) && $_GET['public'] == 'deleted' )
 		add_action( 'rcl_area_notice', function() {
-			echo rcl_get_notice( ['text' => __( 'The publication has been successfully removed!', 'wp-recall' ) ] );
+			echo rcl_get_notice( ['text' => __( 'The publication has been successfully removed!', 'usp-publication' ) ] );
 		} );
 }
 
 add_filter( 'rcl_init_js_variables', 'rcl_init_js_public_variables', 10 );
 function rcl_init_js_public_variables( $data ) {
 
-	$data['local']['preview']			 = __( 'Preview', 'wp-recall' );
-	$data['local']['publish']			 = __( 'Publish', 'wp-recall' );
-	$data['local']['save_draft']		 = __( 'Save as Draft', 'wp-recall' );
-	$data['local']['edit']				 = __( 'Edit', 'wp-recall' );
-	$data['local']['edit_box_title']	 = __( 'Quick edit', 'wp-recall' );
-	$data['local']['allowed_downloads']	 = __( 'You have exceeded the allowed number of downloads! Max:', 'wp-recall' );
-	$data['local']['upload_size_public'] = __( 'Exceeds the maximum file size! Max:', 'wp-recall' );
+	$data['local']['preview']			 = __( 'Preview', 'usp-publication' );
+	$data['local']['publish']			 = __( 'Publish', 'usp-publication' );
+	$data['local']['save_draft']		 = __( 'Save as Draft', 'usp-publication' );
+	$data['local']['edit']				 = __( 'Edit', 'usp-publication' );
+	$data['local']['edit_box_title']	 = __( 'Quick edit', 'usp-publication' );
+	$data['local']['allowed_downloads']	 = __( 'You have exceeded the allowed number of downloads! Max:', 'usp-publication' );
+	$data['local']['upload_size_public'] = __( 'Exceeds the maximum file size! Max:', 'usp-publication' );
 
 	return $data;
 }
@@ -55,7 +55,7 @@ function rcl_init_publics_block() {
 			'_builtin'	 => false
 			), 'objects' );
 
-		$types = array( 'post' => __( 'Records', 'wp-recall' ) );
+		$types = array( 'post' => __( 'Records', 'usp-publication' ) );
 
 		foreach ( $post_types as $post_type ) {
 			$types[$post_type->name] = $post_type->label;
@@ -74,8 +74,8 @@ function rcl_init_publics_block() {
 
 			$tab_data = array(
 				'id'		 => 'publics',
-				'name'		 => __( 'Posts', 'wp-recall' ),
-				'title'		 => __( 'Published', 'wp-recall' ) . ' "' . __( 'Posts', 'wp-recall' ) . '"',
+				'name'		 => __( 'Posts', 'usp-publication' ),
+				'title'		 => __( 'Published', 'usp-publication' ) . ' "' . __( 'Posts', 'usp-publication' ) . '"',
 				'supports'	 => array( 'ajax', 'cache' ),
 				'public'	 => rcl_get_option( 'view_publics_block_rcl' ),
 				'icon'		 => 'fa-list',
@@ -87,7 +87,7 @@ function rcl_init_publics_block() {
 				$tab_data['content'][] = array(
 					'id'		 => 'type-' . $post_type,
 					'name'		 => $name,
-					'title'		 => __( 'Published', 'wp-recall' ) . ' "' . $name . '"',
+					'title'		 => __( 'Published', 'usp-publication' ) . ' "' . $name . '"',
 					'icon'		 => 'fa-list',
 					'callback'	 => array(
 						'name'	 => 'rcl_get_postslist',
@@ -105,8 +105,8 @@ function rcl_init_publics_block() {
 		rcl_tab(
 			array(
 				'id'		 => 'postform',
-				'name'		 => __( 'Publication', 'wp-recall' ),
-				'title'		 => __( 'Form of publication', 'wp-recall' ),
+				'name'		 => __( 'Publication', 'usp-publication' ),
+				'title'		 => __( 'Form of publication', 'usp-publication' ),
 				'public'	 => 0,
 				'icon'		 => 'fa-pencil',
 				'content'	 => array(

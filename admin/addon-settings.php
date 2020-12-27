@@ -19,7 +19,7 @@ function rcl_get_publics_options_page( $options ) {
 		'_builtin'	 => false
 		), 'objects' );
 
-	$types = array( 'post' => __( 'Records', 'wp-recall' ) );
+	$types = array( 'post' => __( 'Records', 'usp-publication' ) );
 
 	foreach ( $post_types as $post_type ) {
 		$types[$post_type->name] = $post_type->label;
@@ -28,34 +28,34 @@ function rcl_get_publics_options_page( $options ) {
 	$pages = rcl_get_pages_ids();
 
 	$options->add_box( 'publicpost', array(
-		'title'	 => __( 'Publication settings', 'wp-recall' ),
+		'title'	 => __( 'Publication settings', 'usp-publication' ),
 		'icon'	 => 'fa-pencil-square-o'
 	) )->add_group( 'general', array(
-		'title' => __( 'General settings', 'wp-recall' )
+		'title' => __( 'General settings', 'usp-publication' )
 	) )->add_options( array(
 		array(
 			'type'	 => 'select',
 			'slug'	 => 'public_form_page_rcl',
-			'title'	 => __( 'Publishing and editing', 'wp-recall' ),
+			'title'	 => __( 'Publishing and editing', 'usp-publication' ),
 			'values' => $pages,
-			'notice' => __( 'You are required to publish a links to managing publications, you must specify the page with the shortcode [public-form]', 'wp-recall' )
+			'notice' => __( 'You are required to publish a links to managing publications, you must specify the page with the shortcode [public-form]', 'usp-publication' )
 		),
 		array(
 			'type'		 => 'select',
 			'slug'		 => 'info_author_recall',
-			'title'		 => __( 'Display information about the author', 'wp-recall' ),
+			'title'		 => __( 'Display information about the author', 'usp-publication' ),
 			'values'	 => array(
-				__( 'Disabled', 'wp-recall' ),
-				__( 'Enabled', 'wp-recall' )
+				__( 'Disabled', 'usp-publication' ),
+				__( 'Enabled', 'usp-publication' )
 			),
 			'childrens'	 => array(
 				1 => array(
 					array(
 						'type'	 => 'checkbox',
 						'slug'	 => 'post_types_authbox',
-						'title'	 => __( 'Types of write for the author`s block output', 'wp-recall' ),
+						'title'	 => __( 'Types of write for the author`s block output', 'usp-publication' ),
 						'values' => $types,
-						'notice' => __( 'Select the types of writes where the author`s block should be displayed. If nothing is specified, it is displayed everywhere', 'wp-recall' )
+						'notice' => __( 'Select the types of writes where the author`s block should be displayed. If nothing is specified, it is displayed everywhere', 'usp-publication' )
 					)
 				)
 			)
@@ -63,22 +63,22 @@ function rcl_get_publics_options_page( $options ) {
 		array(
 			'type'		 => 'select',
 			'slug'		 => 'publics_block_rcl',
-			'title'		 => __( 'List of publications tab', 'wp-recall' ),
-			'values'	 => array( __( 'Disabled', 'wp-recall' ), __( 'Enabled', 'wp-recall' ) ),
+			'title'		 => __( 'List of publications tab', 'usp-publication' ),
+			'values'	 => array( __( 'Disabled', 'usp-publication' ), __( 'Enabled', 'usp-publication' ) ),
 			'childrens'	 => array(
 				1 => array(
 					array(
 						'type'	 => 'checkbox',
 						'slug'	 => 'post_types_list',
-						'title'	 => __( 'Type of post for output a list of writes', 'wp-recall' ),
+						'title'	 => __( 'Type of post for output a list of writes', 'usp-publication' ),
 						'values' => $types,
-						'notice' => __( 'Select the type of post which will be to output its archive of writes in this tab. If nothing is specified, it will be outputed a writes all types', 'wp-recall' )
+						'notice' => __( 'Select the type of post which will be to output its archive of writes in this tab. If nothing is specified, it will be outputed a writes all types', 'usp-publication' )
 					),
 					array(
 						'type'	 => 'select',
 						'slug'	 => 'view_publics_block_rcl',
-						'title'	 => __( 'List of publications of the user', 'wp-recall' ),
-						'values' => array( __( 'Only owner of the account', 'wp-recall' ), __( 'Show everyone including guests', 'wp-recall' ) )
+						'title'	 => __( 'List of publications of the user', 'usp-publication' ),
+						'values' => array( __( 'Only owner of the account', 'usp-publication' ), __( 'Show everyone including guests', 'usp-publication' ) )
 					)
 				)
 			)
@@ -86,40 +86,40 @@ function rcl_get_publics_options_page( $options ) {
 	) );
 
 	$options->box( 'publicpost' )->add_group( 'form', array(
-		'title' => __( 'Form of publication', 'wp-recall' )
+		'title' => __( 'Form of publication', 'usp-publication' )
 	) )->add_options( array(
 		array(
 			'type'	 => 'select',
 			'slug'	 => 'public_preview',
-			'title'	 => __( 'Use preview', 'wp-recall' ),
-			'values' => array( __( 'No', 'wp-recall' ), __( 'Yes', 'wp-recall' ) )
+			'title'	 => __( 'Use preview', 'usp-publication' ),
+			'values' => array( __( 'No', 'usp-publication' ), __( 'Yes', 'usp-publication' ) )
 		),
 		array(
 			'type'	 => 'select',
 			'slug'	 => 'public_draft',
-			'title'	 => __( 'Use draft', 'wp-recall' ),
-			'values' => array( __( 'No', 'wp-recall' ), __( 'Yes', 'wp-recall' ) )
+			'title'	 => __( 'Use draft', 'usp-publication' ),
+			'values' => array( __( 'No', 'usp-publication' ), __( 'Yes', 'usp-publication' ) )
 		),
 		array(
 			'type'	 => 'select',
 			'slug'	 => 'default_size_thumb',
-			'title'	 => __( 'The image size in editor by default', 'wp-recall' ),
+			'title'	 => __( 'The image size in editor by default', 'usp-publication' ),
 			'values' => $d_sizes,
-			'notice' => __( 'Select image size for the visual editor during publishing', 'wp-recall' )
+			'notice' => __( 'Select image size for the visual editor during publishing', 'usp-publication' )
 		),
 		array(
 			'type'		 => 'select',
 			'slug'		 => 'output_public_form_rcl',
-			'title'		 => __( 'Form of publication output in the personal cabinet', 'wp-recall' ),
-			'values'	 => array( __( 'Do not display', 'wp-recall' ), __( 'Output', 'wp-recall' ) ),
+			'title'		 => __( 'Form of publication output in the personal cabinet', 'usp-publication' ),
+			'values'	 => array( __( 'Do not display', 'usp-publication' ), __( 'Output', 'usp-publication' ) ),
 			'default'	 => 1,
 			'childrens'	 => array(
 				1 => array(
 					array(
 						'type'	 => 'number',
 						'slug'	 => 'form-lk',
-						'title'	 => __( 'The form ID', 'wp-recall' ),
-						'notice' => __( 'Enter the form ID according to the personal Cabinet. The default is 1', 'wp-recall' )
+						'title'	 => __( 'The form ID', 'usp-publication' ),
+						'notice' => __( 'Enter the form ID according to the personal Cabinet. The default is 1', 'usp-publication' )
 					)
 				)
 			)
@@ -127,26 +127,26 @@ function rcl_get_publics_options_page( $options ) {
 	) );
 
 	$options->box( 'publicpost' )->add_group( 'records', array(
-		'title' => __( 'Publication of records', 'wp-recall' )
+		'title' => __( 'Publication of records', 'usp-publication' )
 	) )->add_options( array(
 		array(
 			'type'		 => 'select',
 			'slug'		 => 'user_public_access_recall',
-			'title'		 => __( 'Publication is allowed', 'wp-recall' ),
+			'title'		 => __( 'Publication is allowed', 'usp-publication' ),
 			'values'	 => array(
-				10	 => __( 'only Administrators', 'wp-recall' ),
-				7	 => __( 'Editors and higher', 'wp-recall' ),
-				2	 => __( 'Authors and higher', 'wp-recall' ),
-				0	 => __( 'Guests and users', 'wp-recall' )
+				10	 => __( 'only Administrators', 'usp-publication' ),
+				7	 => __( 'Editors and higher', 'usp-publication' ),
+				2	 => __( 'Authors and higher', 'usp-publication' ),
+				0	 => __( 'Guests and users', 'usp-publication' )
 			),
 			'childrens'	 => array(
 				array(
 					array(
 						'type'	 => 'select',
 						'slug'	 => 'guest_post_redirect',
-						'title'	 => __( 'Redirect to', 'wp-recall' ),
+						'title'	 => __( 'Redirect to', 'usp-publication' ),
 						'values' => $pages,
-						'notice' => __( 'Select the page to which the visitors will be redirected after a successful publication, if email authorization is included in the registration precess', 'wp-recall' )
+						'notice' => __( 'Select the page to which the visitors will be redirected after a successful publication, if email authorization is included in the registration precess', 'usp-publication' )
 					)
 				)
 			)
@@ -154,17 +154,17 @@ function rcl_get_publics_options_page( $options ) {
 		array(
 			'type'		 => 'select',
 			'slug'		 => 'moderation_public_post',
-			'title'		 => __( 'Moderation of publications', 'wp-recall' ),
-			'values'	 => array( __( 'Publish now', 'wp-recall' ), __( 'Send for moderation', 'wp-recall' ) ),
-			'notice'	 => __( 'If subject to moderation: To allow the user to see their publication before moderation has been completed, the user should be classifies as Author or higher', 'wp-recall' ),
+			'title'		 => __( 'Moderation of publications', 'usp-publication' ),
+			'values'	 => array( __( 'Publish now', 'usp-publication' ), __( 'Send for moderation', 'usp-publication' ) ),
+			'notice'	 => __( 'If subject to moderation: To allow the user to see their publication before moderation has been completed, the user should be classifies as Author or higher', 'usp-publication' ),
 			'childrens'	 => array(
 				1 => array(
 					array(
 						'type'	 => 'checkbox',
 						'slug'	 => 'post_types_moderation',
-						'title'	 => __( 'Type post', 'wp-recall' ),
+						'title'	 => __( 'Type post', 'usp-publication' ),
 						'values' => $types,
-						'notice' => __( 'Select the types of posts that will be sent for moderation. If nothing is specified, then the moderation is valid for all types', 'wp-recall' )
+						'notice' => __( 'Select the types of posts that will be sent for moderation. If nothing is specified, then the moderation is valid for all types', 'usp-publication' )
 					)
 				)
 			)
@@ -172,49 +172,49 @@ function rcl_get_publics_options_page( $options ) {
 	) );
 
 	$options->box( 'publicpost' )->add_group( 'edit', array(
-		'title' => __( 'Editing', 'wp-recall' )
+		'title' => __( 'Editing', 'usp-publication' )
 	) )->add_options( array(
 		array(
 			'type'	 => 'checkbox',
 			'slug'	 => 'front_editing',
-			'title'	 => __( 'Frontend editing', 'wp-recall' ),
+			'title'	 => __( 'Frontend editing', 'usp-publication' ),
 			'values' => array(
-				10	 => __( 'Administrators', 'wp-recall' ),
-				7	 => __( 'Editors', 'wp-recall' ),
-				2	 => __( 'Authors', 'wp-recall' )
+				10	 => __( 'Administrators', 'usp-publication' ),
+				7	 => __( 'Editors', 'usp-publication' ),
+				2	 => __( 'Authors', 'usp-publication' )
 			)
 		),
 		array(
 			'type'	 => 'number',
 			'slug'	 => 'time_editing',
-			'title'	 => __( 'The time limit edit', 'wp-recall' ),
-			'notice' => __( 'Limit editing time of publication in hours, by default: unlimited', 'wp-recall' )
+			'title'	 => __( 'The time limit edit', 'usp-publication' ),
+			'notice' => __( 'Limit editing time of publication in hours, by default: unlimited', 'usp-publication' )
 		)
 	) );
 
 	$options->box( 'publicpost' )->add_group( 'fields', array(
-		'title' => __( 'Custom fields', 'wp-recall' )
+		'title' => __( 'Custom fields', 'usp-publication' )
 	) )->add_options( array(
 		array(
 			'type'		 => 'select',
 			'slug'		 => 'pm_rcl',
-			'title'		 => __( 'Automatic output', 'wp-recall' ),
-			'values'	 => array( __( 'No', 'wp-recall' ), __( 'Yes', 'wp-recall' ) ),
-			'notice'	 => __( 'Settings only for fields created using the form of the publication wp-recall', 'wp-recall' ),
+			'title'		 => __( 'Automatic output', 'usp-publication' ),
+			'values'	 => array( __( 'No', 'usp-publication' ), __( 'Yes', 'usp-publication' ) ),
+			'notice'	 => __( 'Settings only for fields created using the form of the publication usp-publication', 'usp-publication' ),
 			'childrens'	 => array(
 				1 => array(
 					array(
 						'type'	 => 'select',
 						'slug'	 => 'pm_place',
-						'title'	 => __( 'Output fields location', 'wp-recall' ),
-						'values' => array( __( 'Above publication content', 'wp-recall' ), __( 'On content recording', 'wp-recall' ) )
+						'title'	 => __( 'Output fields location', 'usp-publication' ),
+						'values' => array( __( 'Above publication content', 'usp-publication' ), __( 'On content recording', 'usp-publication' ) )
 					),
 					array(
 						'type'	 => 'checkbox',
 						'slug'	 => 'pm_post_types',
-						'title'	 => __( 'Types of posts for the output of custom fields', 'wp-recall' ),
+						'title'	 => __( 'Types of posts for the output of custom fields', 'usp-publication' ),
 						'values' => $types,
-						'notice' => __( 'Select types of posts where the values of arbitrary fields will be displayed. If nothing is specified, it is displayed everywhere', 'wp-recall' )
+						'notice' => __( 'Select types of posts where the values of arbitrary fields will be displayed. If nothing is specified, it is displayed everywhere', 'usp-publication' )
 					)
 				)
 			)

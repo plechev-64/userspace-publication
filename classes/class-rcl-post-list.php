@@ -85,7 +85,7 @@ class Rcl_Postlist {
 		}else {
 			$posts_block = rcl_get_notice( array(
 				'type'	 => 'info',
-				'text'	 => __( 'Here has nothing been published yet', 'wp-recall' )
+				'text'	 => __( 'Here has nothing been published yet', 'usp-publication' )
 				) );
 		}
 

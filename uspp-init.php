@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 require_once 'classes/class-rcl-form-fields.php';
 require_once 'classes/class-rcl-edit-terms-list.php';
 require_once 'classes/class-rcl-list-terms.php';
@@ -32,7 +36,7 @@ function uspp_autocomplete_scripts() {
 
 add_filter( 'rcl_init_js_variables', 'rcl_public_add_js_locale', 10 );
 function rcl_public_add_js_locale( $data ) {
-    $data['errors']['cats_important'] = __( 'Choose a category', 'wp-recall' );
+    $data['errors']['cats_important'] = __( 'Choose a category', 'usp-publication' );
     return $data;
 }
 
@@ -220,9 +224,9 @@ function rcl_delete_notice_author_post( $post_id ) {
 
     $post = get_post( $post_id );
 
-    $subject  = __( 'Your post has been deleted', 'wp-recall' );
-    $textmail = '<h3>' . __( 'Post', 'wp-recall' ) . ' "' . $post->post_title . '" ' . __( 'has been deleted', 'wp-recall' ) . '</h3>
-    <p>' . __( 'Notice of a moderator', 'wp-recall' ) . ': ' . $_POST['reason_content'] . '</p>';
+    $subject  = __( 'Your post has been deleted', 'usp-publication' );
+    $textmail = '<h3>' . __( 'Post', 'usp-publication' ) . ' "' . $post->post_title . '" ' . __( 'has been deleted', 'usp-publication' ) . '</h3>
+    <p>' . __( 'Notice of a moderator', 'usp-publication' ) . ': ' . $_POST['reason_content'] . '</p>';
     rcl_mail( get_the_author_meta( 'user_email', $post->post_author ), $subject, $textmail );
 }
 
@@ -273,7 +277,7 @@ function rcl_setup_edit_post_button() {
         rcl_post_bar_add_item( 'rcl-edit-post', array(
             'url'   => get_edit_post_link( $post->ID ),
             'icon'  => 'fa-pencil-square-o',
-            'title' => __( 'Edit', 'wp-recall' )
+            'title' => __( 'Edit', 'usp-publication' )
             )
         );
 
@@ -419,7 +423,7 @@ function rcl_register_author_post( $postdata ) {
     return $postdata;
 }
 
-//Сохранение данных публикации в редакторе wp-recall
+//Сохранение данных публикации в редакторе userspace
 /* add_action( 'update_post_rcl', 'rcl_add_box_content', 10, 3 );
   function rcl_add_box_content( $post_id, $postdata, $update ) {
 
@@ -497,13 +501,13 @@ function rcl_send_mail_about_new_post( $post_id, $postData, $update ) {
     if ( $update || rcl_check_access_console() )
         return false;
 
-    $title = __( 'New write', 'wp-recall' );
+    $title = __( 'New write', 'usp-publication' );
     $email = get_site_option( 'admin_email' );
 
-    $textm = '<p>' . sprintf( __( 'An user added new write on the website "%s"', 'wp-recall' ), get_bloginfo( 'name' ) ) . '.</p>';
-    $textm .= '<p>' . __( 'The name of the write', 'wp-recall' ) . ': <a href="' . get_permalink( $post_id ) . '">' . get_the_title( $post_id ) . '</a>' . '</p>';
-    $textm .= '<p>' . __( 'The author of the write', 'wp-recall' ) . ': <a href="' . rcl_get_user_url( $postData['post_author'] ) . '">' . get_the_author_meta( 'display_name', $postData['post_author'] ) . '</a>' . '</p>';
-    $textm .= '<p>' . __( 'Don\'t forget to check this write, probably it is waiting for your moderation', 'wp-recall' ) . '.</p>';
+    $textm = '<p>' . sprintf( __( 'An user added new write on the website "%s"', 'usp-publication' ), get_bloginfo( 'name' ) ) . '.</p>';
+    $textm .= '<p>' . __( 'The name of the write', 'usp-publication' ) . ': <a href="' . get_permalink( $post_id ) . '">' . get_the_title( $post_id ) . '</a>' . '</p>';
+    $textm .= '<p>' . __( 'The author of the write', 'usp-publication' ) . ': <a href="' . rcl_get_user_url( $postData['post_author'] ) . '">' . get_the_author_meta( 'display_name', $postData['post_author'] ) . '</a>' . '</p>';
+    $textm .= '<p>' . __( 'Don\'t forget to check this write, probably it is waiting for your moderation', 'usp-publication' ) . '.</p>';
 
     rcl_mail( $email, $title, $textm );
 }
@@ -526,7 +530,7 @@ function rcl_add_post_uploader_image_buttons( $items, $attachment_id, $uploader 
 
         $items[] = array(
             'icon'    => 'fa-image',
-            'title'   => __( 'Appoint a thumbnail', 'wp-recall' ),
+            'title'   => __( 'Appoint a thumbnail', 'usp-publication' ),
             'onclick' => 'rcl_set_post_thumbnail(' . $attachment_id . ',' . $uploader->post_parent . ',this);return false;'
         );
     }
@@ -549,7 +553,7 @@ function rcl_add_post_uploader_image_buttons( $items, $attachment_id, $uploader 
         $items[] = array(
             'icon'    => ($postGallery && in_array( $attachment_id, $postGallery )) ? 'fa-toggle-on' : 'fa-toggle-off',
             'class'   => 'rcl-switch-gallery-button-' . $attachment_id,
-            'title'   => __( 'Output in a gallery', 'wp-recall' ),
+            'title'   => __( 'Output in a gallery', 'usp-publication' ),
             'content' => '<input type="hidden" id="rcl-post-gallery-attachment-' . $attachment_id . '" name="rcl-post-gallery[]" value="' . $valueGallery . '">',
             'onclick' => 'rcl_switch_attachment_in_gallery(' . $attachment_id . ',this);return false;'
         );

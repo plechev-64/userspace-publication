@@ -58,15 +58,15 @@ class Rcl_Public_Form_Fields extends Rcl_Fields_Manager {
 				array(
 					'slug'	 => 'notice',
 					'type'	 => 'textarea',
-					'title'	 => __( 'field description', 'wp-recall' )
+					'title'	 => __( 'field description', 'usp-publication' )
 				),
 				array(
 					'slug'	 => 'required',
 					'type'	 => 'radio',
-					'title'	 => __( 'required field', 'wp-recall' ),
+					'title'	 => __( 'required field', 'usp-publication' ),
 					'values' => array(
-						__( 'No', 'wp-recall' ),
-						__( 'Yes', 'wp-recall' )
+						__( 'No', 'usp-publication' ),
+						__( 'Yes', 'usp-publication' )
 					)
 				)
 			)
@@ -82,7 +82,7 @@ class Rcl_Public_Form_Fields extends Rcl_Fields_Manager {
 			array(
 				'slug'		 => 'post_title',
 				'maxlength'	 => 100,
-				'title'		 => __( 'Title', 'wp-recall' ),
+				'title'		 => __( 'Title', 'usp-publication' ),
 				'type'		 => 'text'
 			)
 		);
@@ -96,7 +96,7 @@ class Rcl_Public_Form_Fields extends Rcl_Fields_Manager {
 					$label = $object->labels->name;
 
 					if ( $taxonomy == 'groups' )
-						$label = __( 'Group category', 'wp-recall' );
+						$label = __( 'Group category', 'usp-publication' );
 
 					$options = array();
 
@@ -106,27 +106,27 @@ class Rcl_Public_Form_Fields extends Rcl_Fields_Manager {
 							array(
 								'slug'	 => 'number-select',
 								'type'	 => 'number',
-								'title'	 => __( 'Amount to choose', 'wp-recall' ),
-								'notice' => __( 'only when output through select', 'wp-recall' )
+								'title'	 => __( 'Amount to choose', 'usp-publication' ),
+								'notice' => __( 'only when output through select', 'usp-publication' )
 							),
 							array(
 								'slug'	 => 'type-select',
 								'type'	 => 'select',
-								'title'	 => __( 'Output option', 'wp-recall' ),
+								'title'	 => __( 'Output option', 'usp-publication' ),
 								'values' => array(
-									'select'		 => __( 'Select', 'wp-recall' ),
-									'checkbox'		 => __( 'Checkbox', 'wp-recall' ),
-									'multiselect'	 => __( 'Multiselect', 'wp-recall' )
+									'select'		 => __( 'Select', 'usp-publication' ),
+									'checkbox'		 => __( 'Checkbox', 'usp-publication' ),
+									'multiselect'	 => __( 'Multiselect', 'usp-publication' )
 								)
 							),
 							array(
 								'slug'	 => 'only-child',
 								'type'	 => 'select',
-								'title'	 => __( 'Only child terms', 'wp-recall' ),
-								'notice' => __( 'Attach only the selected child terms to the post, ignoring parents', 'wp-recall' ),
+								'title'	 => __( 'Only child terms', 'usp-publication' ),
+								'notice' => __( 'Attach only the selected child terms to the post, ignoring parents', 'usp-publication' ),
 								'values' => array(
-									__( 'Disable', 'wp-recall' ),
-									__( 'Enable', 'wp-recall' )
+									__( 'Disable', 'usp-publication' ),
+									__( 'Enable', 'usp-publication' )
 								)
 							)
 						);
@@ -145,13 +145,13 @@ class Rcl_Public_Form_Fields extends Rcl_Fields_Manager {
 		$fields[] = array(
 			'slug'		 => 'post_excerpt',
 			'maxlength'	 => 200,
-			'title'		 => __( 'Short entry', 'wp-recall' ),
+			'title'		 => __( 'Short entry', 'usp-publication' ),
 			'type'		 => 'textarea'
 		);
 
 		$fields[] = array(
 			'slug'			 => 'post_content',
-			'title'			 => __( 'Content of the publication', 'wp-recall' ),
+			'title'			 => __( 'Content of the publication', 'usp-publication' ),
 			'type'			 => 'textarea',
 			'post-editor'	 => array( 'html', 'editor' ),
 			'required'		 => 1,
@@ -159,12 +159,12 @@ class Rcl_Public_Form_Fields extends Rcl_Fields_Manager {
 				array(
 					'slug'		 => 'post-editor',
 					'type'		 => 'checkbox',
-					'title'		 => __( 'Editor settings', 'wp-recall' ),
+					'title'		 => __( 'Editor settings', 'usp-publication' ),
 					'default'	 => array( 'html', 'editor' ),
 					'values'	 => array(
-						'media'	 => __( 'Media loader', 'wp-recall' ),
-						'html'	 => __( 'HTML editor', 'wp-recall' ),
-						'editor' => __( 'Visual editor', 'wp-recall' )
+						'media'	 => __( 'Media loader', 'usp-publication' ),
+						'html'	 => __( 'HTML editor', 'usp-publication' ),
+						'editor' => __( 'Visual editor', 'usp-publication' )
 					)
 				)
 			)
@@ -172,7 +172,7 @@ class Rcl_Public_Form_Fields extends Rcl_Fields_Manager {
 
 		$fields[] = array(
 			'slug'		 => 'post_uploader',
-			'title'		 => __( 'WP-Recall media loader', 'wp-recall' ),
+			'title'		 => __( 'usp-publication media loader', 'usp-publication' ),
 			'type'		 => 'uploader',
 			'multiple'	 => 1,
 			'temp_media' => 1,
@@ -182,10 +182,10 @@ class Rcl_Public_Form_Fields extends Rcl_Fields_Manager {
 				array(
 					'slug'		 => 'fix_editor',
 					'type'		 => 'radio',
-					'title'		 => __( 'Adding of an image to the text editor', 'wp-recall' ),
+					'title'		 => __( 'Adding of an image to the text editor', 'usp-publication' ),
 					'values'	 => array(
-						__( 'Disabled', 'wp-recall' ),
-						'post_content' => __( 'Enabled', 'wp-recall' )
+						__( 'Disabled', 'usp-publication' ),
+						'post_content' => __( 'Enabled', 'usp-publication' )
 					),
 					'default'	 => 'post_content'
 				),
@@ -202,10 +202,10 @@ class Rcl_Public_Form_Fields extends Rcl_Fields_Manager {
 				array(
 					'slug'		 => 'gallery',
 					'type'		 => 'radio',
-					'title'		 => __( 'Offer an output of images in a gallery', 'wp-recall' ),
+					'title'		 => __( 'Offer an output of images in a gallery', 'usp-publication' ),
 					'values'	 => array(
-						__( 'Disabled', 'wp-recall' ),
-						__( 'Enabled', 'wp-recall' )
+						__( 'Disabled', 'usp-publication' ),
+						__( 'Enabled', 'usp-publication' )
 					),
 					'default'	 => 1
 				)
@@ -216,7 +216,7 @@ class Rcl_Public_Form_Fields extends Rcl_Fields_Manager {
 
 			$fields[] = array(
 				'slug'		 => 'post_thumbnail',
-				'title'		 => __( 'Thumbnail of the publication', 'wp-recall' ),
+				'title'		 => __( 'Thumbnail of the publication', 'usp-publication' ),
 				'type'		 => 'uploader',
 				'temp_media' => 1,
 				'file_types' => 'png, gif, jpg',
@@ -245,10 +245,10 @@ class Rcl_Public_Form_Fields extends Rcl_Fields_Manager {
 					array(
 						'slug'		 => 'fix_editor',
 						'type'		 => 'radio',
-						'title'		 => __( 'Adding of an image to the text editor', 'wp-recall' ),
+						'title'		 => __( 'Adding of an image to the text editor', 'usp-publication' ),
 						'values'	 => array(
-							__( 'Disabled', 'wp-recall' ),
-							'post_content' => __( 'Enabled', 'wp-recall' )
+							__( 'Disabled', 'usp-publication' ),
+							'post_content' => __( 'Enabled', 'usp-publication' )
 						),
 						'default'	 => 'post_content'
 					)
@@ -274,15 +274,15 @@ class Rcl_Public_Form_Fields extends Rcl_Fields_Manager {
 							array(
 								'slug'	 => 'number-tags',
 								'type'	 => 'number',
-								'title'	 => __( 'Maximum output', 'wp-recall' )
+								'title'	 => __( 'Maximum output', 'usp-publication' )
 							),
 							array(
 								'slug'	 => 'input-tags',
 								'type'	 => 'select',
-								'title'	 => __( 'New values entry field', 'wp-recall' ),
+								'title'	 => __( 'New values entry field', 'usp-publication' ),
 								'values' => array(
-									__( 'Disable', 'wp-recall' ),
-									__( 'Enable', 'wp-recall' )
+									__( 'Disable', 'usp-publication' ),
+									__( 'Enable', 'usp-publication' )
 								)
 							)
 						)
@@ -321,7 +321,7 @@ class Rcl_Public_Form_Fields extends Rcl_Fields_Manager {
 				unset( $options['required'] );
 				unset( $options['values'] );
 			} else if ( isset( $options['values'] ) ) {
-				$options['values']['title'] = __( 'Specify term_ID to be selected', 'wp-recall' );
+				$options['values']['title'] = __( 'Specify term_ID to be selected', 'usp-publication' );
 			}
 		}
 

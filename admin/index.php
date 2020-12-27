@@ -9,7 +9,7 @@ function uspp_public_admin_scripts() {
 
 add_action( 'admin_menu', 'rcl_admin_page_publicform', 30 );
 function rcl_admin_page_publicform() {
-    add_submenu_page( 'manage-wprecall', __( 'Form of publication', 'wp-recall' ), __( 'Form of publication', 'wp-recall' ), 'manage_options', 'manage-public-form', 'rcl_public_form_manager' );
+    add_submenu_page( 'manage-wprecall', __( 'Form of publication', 'usp-publication' ), __( 'Form of publication', 'usp-publication' ), 'manage_options', 'manage-public-form', 'rcl_public_form_manager' );
 }
 
 function rcl_public_form_manager() {
@@ -27,15 +27,15 @@ function rcl_public_form_manager() {
         'form_id' => $form_id
         ) );
 
-    $content = '<h2>' . __( 'Manage publication forms', 'wp-recall' ) . '</h2>';
+    $content = '<h2>' . __( 'Manage publication forms', 'usp-publication' ) . '</h2>';
 
-    $content .= '<p>' . __( 'On this page you can manage the creation of publications for registered record types. Create custom fields for the form of publication of various types and manage', 'wp-recall' ) . '</p>';
+    $content .= '<p>' . __( 'On this page you can manage the creation of publications for registered record types. Create custom fields for the form of publication of various types and manage', 'usp-publication' ) . '</p>';
 
     $content .= '<div id="rcl-public-form-manager">';
 
     $content .= $formManager->form_navi();
 
-    $content .= rcl_get_notice( [ 'text' => __( 'Use shortcode for publication form', 'wp-recall' ) . ' [' . $shortCode . ']' ] );
+    $content .= rcl_get_notice( [ 'text' => __( 'Use shortcode for publication form', 'usp-publication' ) . ' [' . $shortCode . ']' ] );
 
     $content .= $formManager->get_manager();
 
@@ -46,7 +46,7 @@ function rcl_public_form_manager() {
 
 add_action( 'add_meta_boxes', 'custom_fields_editor_post_rcl', 1, 2 );
 function custom_fields_editor_post_rcl( $post_type, $post ) {
-    add_meta_box( 'custom_fields_editor_post', __( 'Arbitrary fields of  publication', 'wp-recall' ), 'custom_fields_list_posteditor_rcl', $post->post_type, 'normal', 'high' );
+    add_meta_box( 'custom_fields_editor_post', __( 'Arbitrary fields of  publication', 'usp-publication' ), 'custom_fields_list_posteditor_rcl', $post->post_type, 'normal', 'high' );
 }
 
 function custom_fields_list_posteditor_rcl( $post ) {
@@ -118,7 +118,7 @@ function rcl_public_form_admin_actions() {
 
 add_action( 'rcl_add_dashboard_metabox', 'rcl_add_publicpost_metabox' );
 function rcl_add_publicpost_metabox( $screen ) {
-    add_meta_box( 'rcl-publicpost-metabox', __( 'Posts awaiting approval', 'wp-recall' ), 'rcl_publicpost_metabox', $screen->id, 'column3' );
+    add_meta_box( 'rcl-publicpost-metabox', __( 'Posts awaiting approval', 'usp-publication' ), 'rcl_publicpost_metabox', $screen->id, 'column3' );
 }
 
 function rcl_publicpost_metabox() {
@@ -126,15 +126,15 @@ function rcl_publicpost_metabox() {
     $posts = get_posts( array( 'numberposts' => -1, 'post_type' => 'any', 'post_status' => 'pending' ) );
 
     if ( ! $posts ) {
-        echo '<p>' . __( 'No posts under moderation', 'wp-recall' ) . '</p>';
+        echo '<p>' . __( 'No posts under moderation', 'usp-publication' ) . '</p>';
         return;
     }
 
     echo '<table class="wp-list-table widefat fixed striped">';
     echo '<tr>'
-    . '<th>' . __( 'Header', 'wp-recall' ) . '</th>'
-    . '<th>' . __( 'Author', 'wp-recall' ) . '</th>'
-    . '<th>' . __( 'Type', 'wp-recall' ) . '</th>'
+    . '<th>' . __( 'Header', 'usp-publication' ) . '</th>'
+    . '<th>' . __( 'Author', 'usp-publication' ) . '</th>'
+    . '<th>' . __( 'Type', 'usp-publication' ) . '</th>'
     . '</tr>';
     foreach ( $posts as $post ) {
         echo '<tr>'
