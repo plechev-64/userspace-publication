@@ -5,7 +5,7 @@
   Description: Функционал публикаций на вашем сайте.
   Version: 1.0.0
   Author: Plechev Andrey
-  Author URI: https://codeseller.ru/
+  Author URI: http://user-space.com/
   Text Domain: usp-publication
   License: GPLv2 or later (license.txt)
  */
