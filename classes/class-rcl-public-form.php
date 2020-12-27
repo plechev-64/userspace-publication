@@ -336,7 +336,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
                     'target' => '_blank'
                 ),
                 'id'    => 'rcl-view-post',
-                'icon'  => 'fa-share'
+                'icon'  => 'fa-share-square'
             );
         }
 

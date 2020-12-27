@@ -276,7 +276,7 @@ function rcl_setup_edit_post_button() {
 
         rcl_post_bar_add_item( 'rcl-edit-post', array(
             'url'   => get_edit_post_link( $post->ID ),
-            'icon'  => 'fa-pencil-square-o',
+            'icon'  => 'fa-edit',
             'title' => __( 'Edit', 'usp-publication' )
             )
         );

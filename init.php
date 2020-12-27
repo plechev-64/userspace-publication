@@ -108,7 +108,7 @@ function rcl_init_publics_block() {
                 'name'    => __( 'Publication', 'usp-publication' ),
                 'title'   => __( 'Form of publication', 'usp-publication' ),
                 'public'  => 0,
-                'icon'    => 'fa-pencil',
+                'icon'    => 'fa-edit',
                 'content' => array(
                     array(
                         'callback' => array(

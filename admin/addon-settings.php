@@ -29,7 +29,7 @@ function rcl_get_publics_options_page( $options ) {
 
     $options->add_box( 'publicpost', array(
         'title' => __( 'Publication settings', 'usp-publication' ),
-        'icon'  => 'fa-pencil-square-o'
+        'icon'  => 'fa-edit'
     ) )->add_group( 'general', array(
         'title' => __( 'General settings', 'usp-publication' )
     ) )->add_options( array(
