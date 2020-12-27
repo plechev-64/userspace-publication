@@ -1,6 +1,6 @@
 <?php
 
-require_once 'addon-settings.php';
+require_once 'settings-page.php';
 
 add_action( 'admin_init', 'uspp_public_admin_scripts' );
 function uspp_public_admin_scripts() {
