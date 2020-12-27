@@ -55,7 +55,7 @@ $Table = new Rcl_Table( array(
         ?>
 
         <?php $content          = ''; ?>
-        <?php if ( empty( $post->post_title ) ) $post->post_title = "<i class='rcli fa-ellipsis-h' aria-hidden='true'></i>"; ?>
+        <?php if ( empty( $post->post_title ) ) $post->post_title = "<i class='uspi fa-horizontal-ellipsis' aria-hidden='true'></i>"; ?>
         <?php $content          .= ($post->post_status == 'trash') ? $post->post_title : '<a target="_blank" href="' . $post->guid . '">' . $post->post_title . '</a>'; ?>
 
         <?php
