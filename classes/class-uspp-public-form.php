@@ -33,7 +33,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
     function __construct( $args = false ) {
         global $user_ID;
 
-        RCL()->use_module( 'forms' );
+        USP()->use_module( 'forms' );
 
         $this->init_properties( $args );
 

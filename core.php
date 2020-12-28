@@ -3,7 +3,7 @@
 //deprecated
 function rcl_get_custom_post_meta( $post_id ) {
 
-    RCL()->use_module( 'fields' );
+    USP()->use_module( 'fields' );
 
     $get_fields = rcl_get_custom_fields( $post_id );
 

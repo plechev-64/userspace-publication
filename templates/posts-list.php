@@ -10,7 +10,7 @@
 
 <?php
 
-RCL()->use_module( 'table' );
+USP()->use_module( 'table' );
 
 $Table = new Rcl_Table( array(
     'cols'   => array(

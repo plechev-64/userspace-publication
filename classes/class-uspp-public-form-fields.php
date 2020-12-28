@@ -1,6 +1,6 @@
 <?php
 
-RCL()->use_module( 'fields-manager' );
+USP()->use_module( 'fields-manager' );
 
 class USPP_Public_Form_Fields extends USP_Fields_Manager {
 

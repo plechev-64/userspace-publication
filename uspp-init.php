@@ -453,15 +453,15 @@ function rcl_register_author_post( $postdata ) {
   $path_media	 = rcl_path_by_url( $content );
   $filename	 = basename( $content );
 
-  $dir_path	 = RCL_UPLOAD_PATH . 'post-media/';
-  $dir_url	 = RCL_UPLOAD_URL . 'post-media/';
+  $dir_path	 = USP_UPLOAD_PATH . 'post-media/';
+  $dir_url	 = USP_UPLOAD_URL . 'post-media/';
   if ( ! is_dir( $dir_path ) ) {
   mkdir( $dir_path );
   chmod( $dir_path, 0755 );
   }
 
-  $dir_path	 = RCL_UPLOAD_PATH . 'post-media/' . $post_id . '/';
-  $dir_url	 = RCL_UPLOAD_URL . 'post-media/' . $post_id . '/';
+  $dir_path	 = USP_UPLOAD_PATH . 'post-media/' . $post_id . '/';
+  $dir_url	 = USP_UPLOAD_URL . 'post-media/' . $post_id . '/';
   if ( ! is_dir( $dir_path ) ) {
   mkdir( $dir_path );
   chmod( $dir_path, 0755 );
@@ -490,7 +490,7 @@ function rcl_register_author_post( $postdata ) {
 //удаляем папку с изображениями при удалении поста
 add_action( 'delete_post', 'rcl_delete_tempdir_attachments' );
 function rcl_delete_tempdir_attachments( $postid ) {
-    $dir_path = RCL_UPLOAD_PATH . 'post-media/' . $postid;
+    $dir_path = USP_UPLOAD_PATH . 'post-media/' . $postid;
     rcl_remove_dir( $dir_path );
 }
 
