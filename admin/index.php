@@ -23,7 +23,7 @@ function uspp_public_form_manager() {
         $shortCode .= ' form_id="' . $form_id . '"';
     }
 
-    $formManager = new Rcl_Public_Form_Manager( $post_type, array(
+    $formManager = new USPP_Public_Form_Manager( $post_type, array(
         'form_id' => $form_id
         ) );
 

@@ -1,6 +1,6 @@
 <?php
 
-class Rcl_Public_Form extends Rcl_Public_Form_Fields {
+class USPP_Public_Form extends USPP_Public_Form_Fields {
 
     public $post_id       = 0;
     public $post_type     = 'post';
@@ -549,7 +549,7 @@ class Rcl_Public_Form extends Rcl_Public_Form_Fields {
                 $number = ($val    = $field->get_prop( 'number-select' )) ? $val : 1;
                 $req    = ($val    = $field->get_prop( 'number-select' )) ? $val : false;
 
-                $termList   = new Rcl_List_Terms( $taxonomy, $type, $req );
+                $termList   = new USPP_List_Terms( $taxonomy, $type, $req );
                 $post_terms = $this->get_post_terms( $taxonomy );
 
                 $content .= $termList->get_select_list( $this->get_allterms( $taxonomy ), $post_terms, $number, $terms );

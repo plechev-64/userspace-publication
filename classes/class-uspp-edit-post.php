@@ -1,6 +1,6 @@
 <?php
 
-class Rcl_EditPost {
+class USPP_Edit_Post {
 
     public $post_id; //идентификатор поста
     public $post     = array();

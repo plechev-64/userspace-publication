@@ -2,7 +2,7 @@
 
 RCL()->use_module( 'fields-manager' );
 
-class Rcl_Public_Form_Fields extends Rcl_Fields_Manager {
+class USPP_Public_Form_Fields extends USP_Fields_Manager {
 
     public $taxonomies;
     public $post_type = 'post';

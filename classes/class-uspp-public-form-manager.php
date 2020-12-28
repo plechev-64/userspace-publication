@@ -1,6 +1,6 @@
 <?php
 
-class Rcl_Public_Form_Manager extends Rcl_Public_Form_Fields {
+class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
     function __construct( $post_type, $args = false ) {
 
         parent::__construct( $post_type, $args );

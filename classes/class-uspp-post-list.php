@@ -1,6 +1,6 @@
 <?php
 
-class Uspp_Postlist {
+class USPP_Post_List {
 
     public $post_type;
     public $type_name;

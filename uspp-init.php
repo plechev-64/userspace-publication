@@ -8,20 +8,20 @@ if ( ! defined( USPP_PATH ) ) {
     define( USPP_PATH, trailingslashit( plugin_dir_path( __FILE__ ) ) );
 }
 
-require_once 'classes/class-rcl-form-fields.php';
-require_once 'classes/class-rcl-edit-terms-list.php';
-require_once 'classes/class-rcl-list-terms.php';
-require_once 'classes/class-rcl-public-form-fields.php';
-require_once 'classes/class-rcl-public-form.php';
-require_once 'classes/class-rcl-post-list.php';
-require_once 'classes/class-rcl-edit-post.php';
+require_once 'classes/class-uspp-form-fields.php';
+require_once 'classes/class-uspp-edit-terms-list.php';
+require_once 'classes/class-uspp-list-terms.php';
+require_once 'classes/class-uspp-public-form-fields.php';
+require_once 'classes/class-uspp-public-form.php';
+require_once 'classes/class-uspp-post-list.php';
+require_once 'classes/class-uspp-edit-post.php';
 require_once 'core.php';
 require_once 'shortcodes.php';
 require_once 'functions-ajax.php';
 require_once 'init.php';
 
 if ( is_admin() ) {
-    require_once 'classes/class-rcl-public-form-manager.php';
+    require_once 'classes/class-uspp-public-form-manager.php';
     require_once 'admin/index.php';
 }
 
@@ -164,7 +164,7 @@ function rcl_concat_post_meta( $content ) {
 
 function rcl_get_post_custom_fields_box( $post_id ) {
 
-    $formFields = new Rcl_Public_Form_Fields( get_post_type( $post_id ), array(
+    $formFields = new USPP_Public_Form_Fields( get_post_type( $post_id ), array(
         'form_id' => get_post_meta( $post_id, 'publicform-id', 1 )
         ) );
 
@@ -311,7 +311,7 @@ function rcl_add_taxonomy_in_postdata( $postdata, $data ) {
 
     if ( isset( $_POST['cats'] ) && $_POST['cats'] ) {
 
-        $FormFields = new Rcl_Public_Form_Fields( $data->post_type, array(
+        $FormFields = new USPP_Public_Form_Fields( $data->post_type, array(
             'form_id' => $_POST['form_id']
             ) );
 
@@ -324,7 +324,7 @@ function rcl_add_taxonomy_in_postdata( $postdata, $data ) {
 
                 $allCats = get_terms( $taxonomy );
 
-                $RclTerms = new Rcl_Edit_Terms_List();
+                $RclTerms = new USPP_Edit_Terms_List();
                 $terms    = $RclTerms->get_terms_list( $allCats, $terms );
             }
 
@@ -496,7 +496,8 @@ function rcl_delete_tempdir_attachments( $postid ) {
 
 /* deprecated */
 function rcl_form_field( $args ) {
-    $field = new Rcl_Form_Fields();
+    $field = new USPP_Form_Fields();
+
     return $field->get_field( $args );
 }
 
@@ -527,7 +528,7 @@ function rcl_add_post_uploader_image_buttons( $items, $attachment_id, $uploader 
 
     $isImage = wp_attachment_is_image( $attachment_id );
 
-    $formFields = new Rcl_Public_Form_Fields( $uploader->post_type, array(
+    $formFields = new USPP_Public_Form_Fields( $uploader->post_type, array(
         'form_id' => $uploader->form_id
         ) );
 

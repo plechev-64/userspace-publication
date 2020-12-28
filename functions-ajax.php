@@ -101,7 +101,7 @@ function rcl_edit_postdata() {
 }
 
 function rcl_edit_post() {
-    $edit = new Rcl_EditPost();
+    $edit = new USPP_Edit_Post();
     $edit->update_post();
 }
 
@@ -171,7 +171,7 @@ function rcl_preview_post() {
         }
     }
 
-    $formFields = new Rcl_Public_Form_Fields( $postdata['post_type'], array(
+    $formFields = new USPP_Public_Form_Fields( $postdata['post_type'], array(
         'form_id' => isset( $postdata['form_id'] ) ? $postdata['form_id'] : 1
         ) );
 
@@ -285,7 +285,7 @@ function rcl_set_post_thumbnail() {
     $form_id      = intval( $_POST['form_id'] );
     $post_type    = $_POST['post_type'];
 
-    $formFields = new Rcl_Public_Form_Fields( $post_type, array(
+    $formFields = new USPP_Public_Form_Fields( $post_type, array(
         'form_id' => $form_id ? $form_id : 1
         ) );
 

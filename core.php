@@ -25,10 +25,10 @@ function rcl_get_custom_post_meta( $post_id ) {
 function rcl_get_postslist( $post_type, $type_name ) {
     global $user_LK;
 
-    if ( ! class_exists( 'Uspp_Postlist' ) )
-        include_once USPP_PATH . 'classes/class-rcl-post-list';
+    if ( ! class_exists( 'USPP_Post_List' ) )
+        include_once USPP_PATH . 'classes/class-uspp-post-list';
 
-    $list = new Uspp_Postlist( $user_LK, $post_type, $type_name );
+    $list = new USPP_Post_List( $user_LK, $post_type, $type_name );
 
     return $list->get_postlist_block();
 }
@@ -113,7 +113,7 @@ function rcl_get_custom_fields_edit_box( $post_id, $post_type = false, $form_id 
 
     $post = get_post( $post_id );
 
-    $RclForm = new Rcl_Public_Form( array(
+    $RclForm = new USPP_Public_Form( array(
         'post_type' => $post->post_type,
         'post_id'   => $post_id,
         'form_id'   => $form_id
@@ -157,7 +157,7 @@ function rcl_update_post_custom_fields( $post_id, $id_form = false ) {
 
     $post = get_post( $post_id );
 
-    $formFields = new Rcl_Public_Form_Fields( $post->post_type, array(
+    $formFields = new USPP_Public_Form_Fields( $post->post_type, array(
         'form_id' => $id_form
         ) );
 
@@ -227,7 +227,7 @@ function rcl_update_post_custom_fields( $post_id, $id_form = false ) {
     if ( isset( $_POST['post_uploader'] ) && $_POST['post_uploader'] ) {
         global $user_ID;
 
-        $editPost = new Rcl_EditPost();
+        $editPost = new USPP_Edit_Post();
 
         $editPost->add_attachments_from_temps( $user_ID );
 
