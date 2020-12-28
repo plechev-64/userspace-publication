@@ -25,10 +25,10 @@ function rcl_get_custom_post_meta( $post_id ) {
 function rcl_get_postslist( $post_type, $type_name ) {
     global $user_LK;
 
-    if ( ! class_exists( 'Rcl_Postlist' ) )
-        include_once RCL_PATH . 'add-on/publicpost/rcl_postlist.php';
+    if ( ! class_exists( 'Uspp_Postlist' ) )
+        include_once USPP_PATH . 'classes/class-rcl-post-list';
 
-    $list = new Rcl_Postlist( $user_LK, $post_type, $type_name );
+    $list = new Uspp_Postlist( $user_LK, $post_type, $type_name );
 
     return $list->get_postlist_block();
 }

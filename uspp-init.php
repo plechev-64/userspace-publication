@@ -4,6 +4,10 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+if ( ! defined( USPP_PATH ) ) {
+    define( USPP_PATH, trailingslashit( plugin_dir_path( __FILE__ ) ) );
+}
+
 require_once 'classes/class-rcl-form-fields.php';
 require_once 'classes/class-rcl-edit-terms-list.php';
 require_once 'classes/class-rcl-list-terms.php';
