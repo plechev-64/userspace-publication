@@ -44,12 +44,12 @@ function uspp_public_form_manager() {
     echo $content;
 }
 
-add_action( 'add_meta_boxes', 'custom_fields_editor_post_rcl', 1, 2 );
-function custom_fields_editor_post_rcl( $post_type, $post ) {
-    add_meta_box( 'custom_fields_editor_post', __( 'Arbitrary fields of  publication', 'usp-publication' ), 'custom_fields_list_posteditor_rcl', $post->post_type, 'normal', 'high' );
+add_action( 'add_meta_boxes', 'uspp_custom_fields_editor_post', 1, 2 );
+function uspp_custom_fields_editor_post( $post_type, $post ) {
+    add_meta_box( 'custom_fields_editor_post', __( 'Arbitrary fields of  publication', 'usp-publication' ), 'uspp_custom_fields_list_posteditor', $post->post_type, 'normal', 'high' );
 }
 
-function custom_fields_list_posteditor_rcl( $post ) {
+function uspp_custom_fields_list_posteditor( $post ) {
     $form_id = 1;
 
     if ( $post->ID && $post->post_type == 'post' )
@@ -62,14 +62,14 @@ function custom_fields_list_posteditor_rcl( $post ) {
 
     echo $content;
 
-    echo '<input type="hidden" name="custom_fields_nonce_rcl" value="' . wp_create_nonce( __FILE__ ) . '" />';
+    echo '<input type="hidden" name="uspp_custom_fields_nonce" value="' . wp_create_nonce( __FILE__ ) . '" />';
 }
 
 add_action( 'save_post', 'rcl_custom_fields_update', 0 );
 function rcl_custom_fields_update( $post_id ) {
-    if ( ! isset( $_POST['custom_fields_nonce_rcl'] ) )
+    if ( ! isset( $_POST['uspp_custom_fields_nonce'] ) )
         return false;
-    if ( ! wp_verify_nonce( $_POST['custom_fields_nonce_rcl'], __FILE__ ) )
+    if ( ! wp_verify_nonce( $_POST['uspp_custom_fields_nonce'], __FILE__ ) )
         return false;
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
         return false;

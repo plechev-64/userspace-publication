@@ -244,7 +244,7 @@ function rcl_edit_post_link( $admin_url, $post_id ) {
 
     $user_info = get_userdata( $user_ID );
 
-    if ( array_search( $user_info->user_level, $frontEdit ) !== false || $user_info->user_level < rcl_get_option( 'consol_access_rcl', 7 ) ) {
+    if ( array_search( $user_info->user_level, $frontEdit ) !== false || $user_info->user_level < rcl_get_option( 'consol_access_usp', 7 ) ) {
         return add_query_arg( [ 'rcl-post-edit' => $post_id ], get_permalink( rcl_get_option( 'uspp_public_form_page' ) ) );
     } else {
         return $admin_url;
@@ -274,7 +274,7 @@ function rcl_setup_edit_post_button() {
 
     $frontEdit = rcl_get_option( 'uspp_front_post_edit', array( 0 ) );
 
-    if ( false !== array_search( $user_info->user_level, $frontEdit ) || $user_info->user_level >= rcl_get_option( 'consol_access_rcl', 7 ) ) {
+    if ( false !== array_search( $user_info->user_level, $frontEdit ) || $user_info->user_level >= rcl_get_option( 'consol_access_usp', 7 ) ) {
 
         if ( $user_info->user_level < 10 && rcl_is_limit_editing( $post->post_date ) )
             return false;
