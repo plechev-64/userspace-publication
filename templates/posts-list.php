@@ -12,7 +12,7 @@
 
 USP()->use_module( 'table' );
 
-$Table = new Rcl_Table( array(
+$Table = new USP_Table( array(
     'cols'   => array(
         array(
             'align' => 'center',
@@ -30,7 +30,7 @@ $Table = new Rcl_Table( array(
         )
     ),
     'zebra'  => true,
-    'class'  => 'rcl_author_postlist',
+    'class'  => 'uspp_author_postlist',
     'border' => array( 'table', 'cols', 'rows' )
     ) );
 ?>

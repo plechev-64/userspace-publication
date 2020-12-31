@@ -1,7 +1,7 @@
 <?php
 
 //удаление фото приложенных к публикации через загрузчик плагина
-rcl_ajax_action( 'rcl_ajax_delete_post', true );
+usp_ajax_action( 'rcl_ajax_delete_post', true );
 function rcl_ajax_delete_post() {
     global $user_ID;
 
@@ -49,7 +49,7 @@ function rcl_ajax_delete_post() {
 }
 
 //вызов быстрой формы редактирования публикации
-rcl_ajax_action( 'rcl_get_edit_postdata', false );
+usp_ajax_action( 'rcl_get_edit_postdata', false );
 function rcl_get_edit_postdata() {
     global $user_ID;
 
@@ -74,7 +74,7 @@ function rcl_get_edit_postdata() {
 }
 
 //сохранение изменений в быстрой форме редактирования
-rcl_ajax_action( 'rcl_edit_postdata', false );
+usp_ajax_action( 'rcl_edit_postdata', false );
 function rcl_edit_postdata() {
     global $wpdb;
 
@@ -129,7 +129,7 @@ function uspp_get_like_tags() {
 }
 
 add_filter( 'uspp_preview_post_content', 'rcl_add_registered_scripts' );
-rcl_ajax_action( 'rcl_preview_post', true );
+usp_ajax_action( 'rcl_preview_post', true );
 function rcl_preview_post() {
     global $user_ID;
 
@@ -138,7 +138,7 @@ function rcl_preview_post() {
     $log      = array();
     $postdata = $_POST;
 
-    if ( ! rcl_get_option( 'public_access' ) && ! $user_ID ) {
+    if ( ! usp_get_option( 'public_access' ) && ! $user_ID ) {
 
         $email_new_user = sanitize_email( $postdata['email-user'] );
         $name_new_user  = $postdata['name-user'];
@@ -223,9 +223,9 @@ function rcl_preview_post() {
         ];
     }
 
-    if ( rcl_get_option( 'uspp_custom_fields', 1 ) && $customFields = $formFields->get_custom_fields() ) {
+    if ( usp_get_option( 'uspp_custom_fields', 1 ) && $customFields = $formFields->get_custom_fields() ) {
 
-        $types = rcl_get_option( 'uspp_cf_post_types' );
+        $types = usp_get_option( 'uspp_cf_post_types' );
 
         if ( ! $types || in_array( $postdata['post_type'], $types ) ) {
 
@@ -238,7 +238,7 @@ function rcl_preview_post() {
 
             $fieldsBox .= '</div>';
 
-            if ( rcl_get_option( 'uspp_cf_place' ) == 1 )
+            if ( usp_get_option( 'uspp_cf_place' ) == 1 )
                 $post_content .= $fieldsBox;
             else
                 $post_content = $fieldsBox . $post_content;
@@ -265,7 +265,7 @@ function rcl_preview_post() {
 
     $preview = apply_filters( 'uspp_preview_post_content', $post_content );
 
-    $preview .= rcl_get_notice( [
+    $preview .= usp_get_notice( [
         'text' => __( 'If everything is correct – publish it! If not, you can go back to editing.', 'usp-publication' )
         ] );
 
@@ -277,7 +277,7 @@ function rcl_preview_post() {
     );
 }
 
-rcl_ajax_action( 'rcl_set_post_thumbnail', true );
+usp_ajax_action( 'rcl_set_post_thumbnail', true );
 function rcl_set_post_thumbnail() {
 
     $thumbnail_id = intval( $_POST['thumbnail_id'] );

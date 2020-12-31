@@ -76,14 +76,14 @@ class USPP_Post_List {
                 }
             }
 
-            if ( rcl_get_template_path( 'posts-list-' . $this->post_type . '.php', __FILE__ ) )
-                $posts_block = rcl_get_include_template( 'posts-list-' . $this->post_type . '.php', __FILE__ );
+            if ( usp_get_template_path( 'posts-list-' . $this->post_type . '.php', __FILE__ ) )
+                $posts_block = usp_get_include_template( 'posts-list-' . $this->post_type . '.php', __FILE__ );
             else
-                $posts_block = rcl_get_include_template( 'posts-list.php', __FILE__ );
+                $posts_block = usp_get_include_template( 'posts-list.php', __FILE__ );
 
             wp_reset_postdata();
         } else {
-            $posts_block = rcl_get_notice( array(
+            $posts_block = usp_get_notice( array(
                 'type' => 'info',
                 'text' => __( 'Here has nothing been published yet', 'usp-publication' )
                 ) );
@@ -127,7 +127,8 @@ class USPP_Post_List {
         if ( ! $count )
             return false;
 
-        $rclnavi = new Rcl_PageNavi( $this->post_type . '-navi', $count, array( 'in_page' => $this->in_page ) );
+        /* deprecated, use class-usp-pager */
+        $rclnavi = new USP_PageNavi( $this->post_type . '-navi', $count, array( 'in_page' => $this->in_page ) );
 
         $this->offset = $rclnavi->offset;
 

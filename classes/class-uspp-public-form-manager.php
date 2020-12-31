@@ -96,7 +96,7 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
 
         if ( $actionButtons ) {
 
-            $content .= '<div class="rcl-custom-fields-menu">';
+            $content .= '<div class="uspp-custom-fields-menu">';
 
             $content .= '<ul class="rcl-types-list">';
 
@@ -104,7 +104,7 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
 
                 $actionButton['class'] = 'action-button';
 
-                $content .= '<li>' . rcl_get_button( $actionButton ) . '</li>';
+                $content .= '<li>' . usp_get_button( $actionButton ) . '</li>';
             }
 
             $content .= '</ul>';

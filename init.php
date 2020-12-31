@@ -4,7 +4,7 @@ add_action( 'wp', 'rcl_deleted_post_notice' );
 function rcl_deleted_post_notice() {
     if ( isset( $_GET['public'] ) && $_GET['public'] == 'deleted' )
         add_action( 'usp_area_notice', function() {
-            echo rcl_get_notice( [ 'text' => __( 'The publication has been successfully removed!', 'usp-publication' ) ] );
+            echo usp_get_notice( [ 'text' => __( 'The publication has been successfully removed!', 'usp-publication' ) ] );
         } );
 }
 
@@ -48,7 +48,7 @@ function rcl_setup_author_role() {
 add_action( 'usp_init_tabs', 'rcl_init_publics_block', 20 );
 function rcl_init_publics_block() {
 
-    if ( rcl_get_option( 'uspp_show_list_of_publications', 1 ) == 1 ) {
+    if ( usp_get_option( 'uspp_show_list_of_publications', 1 ) == 1 ) {
 
         $post_types = get_post_types( array(
             'public'   => true,
@@ -61,9 +61,9 @@ function rcl_init_publics_block() {
             $types[$post_type->name] = $post_type->label;
         }
 
-        if ( rcl_get_option( 'uspp_post_types_list' ) ) {
+        if ( usp_get_option( 'uspp_post_types_list' ) ) {
             foreach ( $types as $post_typen => $name ) {
-                $find = array_search( $post_typen, rcl_get_option( 'uspp_post_types_list' ) );
+                $find = array_search( $post_typen, usp_get_option( 'uspp_post_types_list' ) );
                 if ( $find === false ) {
                     unset( $types[$post_typen] );
                 }
@@ -77,7 +77,7 @@ function rcl_init_publics_block() {
                 'name'     => __( 'Posts', 'usp-publication' ),
                 'title'    => __( 'Published', 'usp-publication' ) . ' "' . __( 'Posts', 'usp-publication' ) . '"',
                 'supports' => array( 'ajax', 'cache' ),
-                'public'   => rcl_get_option( 'uspp_tab_list_of_publications', 1 ),
+                'public'   => usp_get_option( 'uspp_tab_list_of_publications', 1 ),
                 'icon'     => 'fa-list',
                 'output'   => 'menu',
                 'content'  => array()
@@ -100,7 +100,7 @@ function rcl_init_publics_block() {
         }
     }
 
-    if ( rcl_get_option( 'uspp_tab_public_form', 1 ) == 1 ) {
+    if ( usp_get_option( 'uspp_tab_public_form', 1 ) == 1 ) {
 
         rcl_tab(
             array(

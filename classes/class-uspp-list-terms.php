@@ -69,7 +69,7 @@ class USPP_List_Terms {
 
     function get_multiselect() {
 
-        rcl_multiselect_scripts();
+        usp_multiselect_scripts();
 
         $content = '<div class="rcl-terms-select">';
 

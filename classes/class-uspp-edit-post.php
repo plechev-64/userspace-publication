@@ -69,14 +69,14 @@ class USPP_Edit_Post {
                 if ( current_user_can( 'edit_post', $this->post_id ) )
                     $this->user_can['edit'] = true;
 
-                if ( rcl_is_user_role( $user_ID, array( 'administrator', 'editor' ) ) || ! rcl_is_limit_editing( $this->post->post_date ) )
+                if ( usp_is_user_role( $user_ID, array( 'administrator', 'editor' ) ) || ! rcl_is_limit_editing( $this->post->post_date ) )
                     $this->user_can['edit'] = true;
             }
         } else {
 
             $this->user_can['publish'] = true;
 
-            $user_can = rcl_get_option( 'uspp_access_publicform', 2 );
+            $user_can = usp_get_option( 'uspp_access_publicform', 2 );
 
             if ( $user_can ) {
 
@@ -117,7 +117,7 @@ class USPP_Edit_Post {
 
     function add_attachments_from_temps( $user_id ) {
 
-        $temps = rcl_get_temp_media( array(
+        $temps = usp_get_temp_media( array(
             'user_id'         => $user_id,
             'uploader_id__in' => array( 'post_uploader', 'post_thumbnail' )
             ) );
@@ -169,12 +169,12 @@ class USPP_Edit_Post {
         if ( isset( $_POST['save-as-draft'] ) )
             return 'draft';
 
-        if ( rcl_is_user_role( $user_ID, array( 'administrator', 'editor' ) ) )
+        if ( usp_is_user_role( $user_ID, array( 'administrator', 'editor' ) ) )
             return 'publish';
 
         if ( $moderation == 1 ) {
 
-            $types = rcl_get_option( 'uspp_post_types_moderation' );
+            $types = usp_get_option( 'uspp_post_types_moderation' );
 
             if ( $types ) {
                 $post_status = in_array( $this->post_type, $types ) ? 'pending' : 'publish';
@@ -185,7 +185,7 @@ class USPP_Edit_Post {
             $post_status = 'publish';
         }
 
-        $rating = rcl_get_option( 'rating_no_moderation' );
+        $rating = usp_get_option( 'rating_no_moderation' );
 
         if ( $rating ) {
             $all_r       = rcl_get_user_rating( $user_ID );
@@ -217,7 +217,7 @@ class USPP_Edit_Post {
             $postdata['post_author'] = $user_ID;
         }
 
-        $postdata['post_status'] = $this->get_status_post( rcl_get_option( 'uspp_send_to_moderation', 1 ) );
+        $postdata['post_status'] = $this->get_status_post( usp_get_option( 'uspp_send_to_moderation', 1 ) );
 
         $postdata = apply_filters( 'uspp_pre_update_postdata', $postdata, $this );
 
@@ -272,7 +272,7 @@ class USPP_Edit_Post {
         do_action( 'uspp_update_post', $this->post_id, $postdata, $this->update, $this );
 
         if ( isset( $_POST['save-as-draft'] ) ) {
-            wp_redirect( get_permalink( rcl_get_option( 'uspp_public_form_page' ) ) . '?draft=saved&rcl-post-edit=' . $this->post_id );
+            wp_redirect( get_permalink( usp_get_option( 'uspp_public_form_page' ) ) . '?draft=saved&rcl-post-edit=' . $this->post_id );
             exit;
         }
 
@@ -280,7 +280,7 @@ class USPP_Edit_Post {
             if ( $user_ID )
                 $redirect_url = get_bloginfo( 'wpurl' ) . '/?p=' . $this->post_id . '&preview=true';
             else
-                $redirect_url = get_permalink( rcl_get_option( 'uspp_guest_redirect' ) );
+                $redirect_url = get_permalink( usp_get_option( 'uspp_guest_redirect' ) );
         } else {
             $redirect_url = get_permalink( $this->post_id );
         }

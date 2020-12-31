@@ -67,7 +67,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         do_action( 'uspp_public_form_init', $this->get_object_form() );
 
         if ( $this->options['preview'] )
-            rcl_dialog_scripts();
+            usp_dialog_scripts();
 
         if ( $this->user_can['upload'] ) {
             add_action( 'wp_footer', array( $this, 'init_form_scripts' ), 100 );
@@ -131,8 +131,8 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
     function init_options() {
 
-        $this->options['preview'] = rcl_get_option( 'uspp_public_preview' );
-        $this->options['draft']   = rcl_get_option( 'uspp_public_draft' );
+        $this->options['preview'] = usp_get_option( 'uspp_public_preview' );
+        $this->options['draft']   = usp_get_option( 'uspp_public_draft' );
 
         $this->options = apply_filters( 'uspp_public_form_options', $this->options, $this->get_object_form() );
     }
@@ -142,7 +142,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
         $this->user_can['publish'] = true;
 
-        $user_can = rcl_get_option( 'uspp_access_publicform', 2 );
+        $user_can = usp_get_option( 'uspp_access_publicform', 2 );
 
         if ( $user_can ) {
 
@@ -207,7 +207,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         $errorContent = '';
 
         foreach ( $this->get_errors() as $error ) {
-            $errorContent .= rcl_get_notice( array(
+            $errorContent .= usp_get_notice( array(
                 'type' => 'error',
                 'text' => $error
                 ) );
@@ -227,7 +227,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         }
 
         if ( isset( $_GET['draft'] ) && $_GET['draft'] == 'saved' ) {
-            $content .= rcl_get_notice( array(
+            $content .= usp_get_notice( array(
                 'type' => 'success',
                 'text' => __( 'The draft has been saved successfully!', 'usp-publication' )
                 ) );
@@ -261,11 +261,11 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
             $attrsForm[] = $k . '="' . $v . '"';
         }
 
-        $content .= '<div class="rcl-public-box rcl-form">';
+        $content .= '<div class="uspp-public-box rcl-form">';
 
         $buttons = [];
 
-        if ( rcl_check_access_console() ) {
+        if ( usp_check_access_console() ) {
 
             $buttons[] = [
                 'href'  => admin_url( 'admin.php?page=manage-public-form&post-type=' . $this->post_type . '&form-id=' . $this->form_id ),
@@ -279,10 +279,10 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
         if ( $buttons ) {
 
-            $content .= '<div id="rcl-public-form-top-manager" class="rcl-wrap rcl-wrap__right">';
+            $content .= '<div id="rcl-public-form-top-manager" class="usp-wrap usp-wrap__right">';
 
             foreach ( $buttons as $button ) {
-                $content .= rcl_get_button( $button );
+                $content .= usp_get_button( $button );
             }
 
             $content .= '</div>';
@@ -310,7 +310,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
         if ( $this->user_can['delete'] && $this->options['delete'] ) {
 
-            $content .= '<div id="form-field-delete" class="rcl-form-field">';
+            $content .= '<div id="form-field-delete" class="uspp-form-field">';
 
             $content .= $this->get_delete_box();
 
@@ -353,7 +353,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
             $buttons['preview'] = array(
                 'onclick' => 'rcl_preview(this); return false;',
                 'label'   => __( 'Preview', 'usp-publication' ),
-                'id'      => 'rcl-preview-post',
+                'id'      => 'uspp-preview-post',
                 'icon'    => 'fa-eye'
             );
         }
@@ -370,10 +370,10 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         if ( ! $buttons )
             return false;
 
-        $content = '<div class="rcl-form-field submit-public-form">';
+        $content = '<div class="uspp-form-field submit-public-form">';
 
         foreach ( $buttons as $button ) {
-            $content .= rcl_get_button( $button );
+            $content .= usp_get_button( $button );
         }
 
         $content .= '</div>';
@@ -439,7 +439,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
                             $thumbnail_id = get_post_meta( $this->post_id, '_thumbnail_id', 1 );
                         } else {
 
-                            $thumbnail_id = RQ::tbl( new Rcl_Temp_Media() )
+                            $thumbnail_id = RQ::tbl( new USP_Temp_Media() )
                                 ->select( [ 'media_id' ] )
                                 ->where( [
                                     'user_id'         => $uploader->user_id ? $uploader->user_id : 0,
@@ -468,13 +468,13 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
                         $uploader = $field->get_uploader();
 
                         if ( $this->post_id ) {
-                            $imagIds = RQ::tbl( new Rcl_Posts_Query() )->select( [ 'ID' ] )->where( [
+                            $imagIds = RQ::tbl( new USP_Posts_Query() )->select( [ 'ID' ] )->where( [
                                     'post_parent' => $this->post_id,
                                     'post_type'   => 'attachment',
                                 ] )->limit( -1 )->order( 'ASC' )->get_col();
                         } else {
 
-                            $imagIds = RQ::tbl( new Rcl_Temp_Media() )
+                            $imagIds = RQ::tbl( new USP_Temp_Media() )
                                     ->select( [ 'media_id' ] )
                                     ->where( [
                                         'user_id'         => $uploader->user_id ? $uploader->user_id : 0,
@@ -504,7 +504,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         if ( ! $contentField )
             return false;
 
-        $content = '<div id="form-field-' . $field_id . '" class="rcl-form-field field-' . $field_id . '">';
+        $content = '<div id="form-field-' . $field_id . '" class="uspp-form-field field-' . $field_id . '">';
 
         $content .= '<label>' . $field->get_title() . '</label>';
 
@@ -701,7 +701,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         if ( ! $content )
             return false;
 
-        $content = '<div class="rcl-tags-list">' . $content . '</div>';
+        $content = '<div class="uspp-tags-list">' . $content . '</div>';
 
         return $content;
     }
@@ -723,8 +723,8 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         $fields .= "<script>
 		jQuery(window).on('load', function(){
 			jQuery('#rcl-tags-" . $taxonomy . "').magicSuggest({
-				data: Rcl.ajaxurl,
-				dataUrlParams: { action: 'uspp_get_like_tags', taxonomy: '" . $taxonomy . "', ajax_nonce:Rcl.nonce },
+				data: USP.ajaxurl,
+				dataUrlParams: { action: 'uspp_get_like_tags', taxonomy: '" . $taxonomy . "', ajax_nonce:USP.nonce },
 				noSuggestionText: '" . __( "Not found", "rcl-public" ) . "',
 				ajaxConfig: {
 					  xhrFields: {
@@ -796,26 +796,26 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
     function get_delete_box() {
         global $user_ID;
 
-        if ( rcl_is_user_role( $user_ID, array( 'administrator', 'editor' ) ) ) {
+        if ( usp_is_user_role( $user_ID, array( 'administrator', 'editor' ) ) ) {
 
-            $content = '<div id="rcl-delete-post">
-						' . rcl_get_button( array(
+            $content = '<div id="uspp-delete-post">
+						' . usp_get_button( array(
                     'label' => __( 'Delete post', 'usp-publication' ),
                     'class' => array( 'public-form-button delete-toggle' ),
                     'icon'  => 'fa-trash'
                 ) ) . '
 						<div class="delete-form-contayner">
 							<form action="" method="post"  onsubmit="return confirm(\'' . __( 'Are you sure?', 'usp-publication' ) . '\');">
-							' . wp_nonce_field( 'rcl-delete-post', '_wpnonce', true, false ) . '
+							' . wp_nonce_field( 'uspp-delete-post', '_wpnonce', true, false ) . '
 							' . $this->get_reasons_list() . '
 							<label>' . __( 'or enter your own', 'usp-publication' ) . '</label>
 							<textarea required id="reason_content" name="reason_content"></textarea>
 							<p><input type="checkbox" name="no-reason" onclick="(!document.getElementById(\'reason_content\').getAttribute(\'disabled\')) ? document.getElementById(\'reason_content\').setAttribute(\'disabled\', \'disabled\') : document.getElementById(\'reason_content\').removeAttribute(\'disabled\')" value="1"> ' . __( 'Without notice', 'usp-publication' ) . '</p>
-							' . rcl_get_button( array(
+							' . usp_get_button( array(
                     'submit' => true,
                     'label'  => __( 'Delete post', 'usp-publication' ),
                     'icon'   => 'fa-trash'
-                ) ) . '<input type="hidden" name="rcl-delete-post" value="1">
+                ) ) . '<input type="hidden" name="uspp-delete-post" value="1">
 							<input type="hidden" name="post_id" value="' . $this->post_id . '">
 							</form>
 						</div>
@@ -823,14 +823,14 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         } else {
 
             $content = '<form method="post" action="" onsubmit="return confirm(\'' . __( 'Are you sure?', 'usp-publication' ) . '\');">
-						' . wp_nonce_field( 'rcl-delete-post', '_wpnonce', true, false ) . '
-						' . rcl_get_button( array(
+						' . wp_nonce_field( 'uspp-delete-post', '_wpnonce', true, false ) . '
+						' . usp_get_button( array(
                     'submit' => true,
                     'label'  => __( 'Delete post', 'usp-publication' ),
                     //'class'	 => array( 'delete-post-submit public-form-button' ),
                     'icon'   => 'fa-trash'
                 ) ) . '
-						<input type="hidden" name="rcl-delete-post" value="1">
+						<input type="hidden" name="uspp-delete-post" value="1">
 						<input type="hidden" name="post_id" value="' . $this->post_id . '">'
                 . '</form>';
         }
@@ -863,7 +863,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         $content = '<label>' . __( 'Use blank notice', 'usp-publication' ) . ':</label>';
 
         foreach ( $reasons as $reason ) {
-            $content .= rcl_get_button( array(
+            $content .= usp_get_button( array(
                 'onclick' => 'document.getElementById("reason_content").value="' . $reason['content'] . '"',
                 'label'   => $reason['value'],
                 'class'   => 'reason-delete'

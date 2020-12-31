@@ -55,7 +55,7 @@ function rcl_restrict_media_library( $wp_query_obj ) {
     if ( 'admin-ajax.php' != $pagenow || $_REQUEST['action'] != 'query-attachments' )
         return;
 
-    if ( rcl_check_access_console() )
+    if ( usp_check_access_console() )
         return;
 
     if ( ! current_user_can( 'manage_media_library' ) )
@@ -113,7 +113,7 @@ function rcl_post_gallery( $content ) {
 add_filter( 'the_content', 'rcl_author_info', 70 );
 function rcl_author_info( $content ) {
 
-    if ( ! rcl_get_option( 'uspp_author_box' ) )
+    if ( ! usp_get_option( 'uspp_author_box' ) )
         return $content;
 
     if ( ! is_single() )
@@ -124,13 +124,13 @@ function rcl_author_info( $content ) {
     if ( $post->post_type == 'page' )
         return $content;
 
-    if ( rcl_get_option( 'uspp_author_box_post_types' ) ) {
+    if ( usp_get_option( 'uspp_author_box_post_types' ) ) {
 
-        if ( ! in_array( $post->post_type, rcl_get_option( 'uspp_author_box_post_types' ) ) )
+        if ( ! in_array( $post->post_type, usp_get_option( 'uspp_author_box_post_types' ) ) )
             return $content;
     }
 
-    $content .= rcl_get_author_block();
+    $content .= usp_get_author_block();
 
     return $content;
 }
@@ -142,19 +142,19 @@ function rcl_concat_post_meta( $content ) {
     if ( doing_filter( 'get_the_excerpt' ) )
         return $content;
 
-    $option = rcl_get_option( 'uspp_custom_fields', 1 );
+    $option = usp_get_option( 'uspp_custom_fields', 1 );
 
     if ( ! $option )
         return $content;
 
-    if ( $types = rcl_get_option( 'uspp_cf_post_types' ) ) {
+    if ( $types = usp_get_option( 'uspp_cf_post_types' ) ) {
         if ( ! in_array( $post->post_type, $types ) )
             return $content;
     }
 
     $pm = rcl_get_post_custom_fields_box( $post->ID );
 
-    if ( rcl_get_option( 'uspp_cf_place' ) == 1 )
+    if ( usp_get_option( 'uspp_cf_place' ) == 1 )
         $content .= $pm;
     else
         $content = $pm . $content;
@@ -187,7 +187,7 @@ function rcl_get_post_custom_fields_box( $post_id ) {
 
 add_action( 'init', 'uspp_delete_post_activate' );
 function uspp_delete_post_activate() {
-    if ( isset( $_POST['rcl-delete-post'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'rcl-delete-post' ) ) {
+    if ( isset( $_POST['uspp-delete-post'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'uspp-delete-post' ) ) {
         add_action( 'wp', 'uspp_delete_post' );
     }
 }
@@ -240,12 +240,12 @@ if ( ! is_admin() )
 function rcl_edit_post_link( $admin_url, $post_id ) {
     global $user_ID;
 
-    $frontEdit = rcl_get_option( 'uspp_front_post_edit', array( 0 ) );
+    $frontEdit = usp_get_option( 'uspp_front_post_edit', array( 0 ) );
 
     $user_info = get_userdata( $user_ID );
 
-    if ( array_search( $user_info->user_level, $frontEdit ) !== false || $user_info->user_level < rcl_get_option( 'consol_access_usp', 7 ) ) {
-        return add_query_arg( [ 'rcl-post-edit' => $post_id ], get_permalink( rcl_get_option( 'uspp_public_form_page' ) ) );
+    if ( array_search( $user_info->user_level, $frontEdit ) !== false || $user_info->user_level < usp_get_option( 'consol_access_usp', 7 ) ) {
+        return add_query_arg( [ 'rcl-post-edit' => $post_id ], get_permalink( usp_get_option( 'uspp_public_form_page' ) ) );
     } else {
         return $admin_url;
     }
@@ -272,9 +272,9 @@ function rcl_setup_edit_post_button() {
             return false;
     }
 
-    $frontEdit = rcl_get_option( 'uspp_front_post_edit', array( 0 ) );
+    $frontEdit = usp_get_option( 'uspp_front_post_edit', array( 0 ) );
 
-    if ( false !== array_search( $user_info->user_level, $frontEdit ) || $user_info->user_level >= rcl_get_option( 'consol_access_usp', 7 ) ) {
+    if ( false !== array_search( $user_info->user_level, $frontEdit ) || $user_info->user_level >= usp_get_option( 'consol_access_usp', 7 ) ) {
 
         if ( $user_info->user_level < 10 && rcl_is_limit_editing( $post->post_date ) )
             return false;
@@ -379,7 +379,7 @@ add_filter( 'uspp_pre_update_postdata', 'rcl_register_author_post', 10 );
 function rcl_register_author_post( $postdata ) {
     global $user_ID;
 
-    if ( rcl_get_option( 'uspp_access_publicform', 2 ) || $user_ID )
+    if ( usp_get_option( 'uspp_access_publicform', 2 ) || $user_ID )
         return $postdata;
 
     if ( ! $postdata['post_author'] ) {
@@ -410,7 +410,7 @@ function rcl_register_author_post( $postdata ) {
                 ] );
 
                 //Сразу авторизуем пользователя
-                if ( ! rcl_get_option( 'usp_confirm_register' ) ) {
+                if ( ! usp_get_option( 'usp_confirm_register' ) ) {
                     $creds                  = array();
                     $creds['user_login']    = $email_new_user;
                     $creds['user_password'] = $random_password;
@@ -504,7 +504,7 @@ function rcl_form_field( $args ) {
 add_action( 'uspp_update_post', 'rcl_send_mail_about_new_post', 10, 3 );
 function rcl_send_mail_about_new_post( $post_id, $postData, $update ) {
 
-    if ( $update || rcl_check_access_console() )
+    if ( $update || usp_check_access_console() )
         return false;
 
     $title = __( 'New write', 'usp-publication' );

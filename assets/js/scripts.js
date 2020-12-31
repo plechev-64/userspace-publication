@@ -4,9 +4,9 @@ var rcl_public_form = {
 
 jQuery( document ).ready( function( $ ) {
 
-	if ( RclUploaders.isset( 'post_thumbnail' ) ) {
+	if ( USPUploaders.isset( 'post_thumbnail' ) ) {
 
-		RclUploaders.get( 'post_thumbnail' ).appendInGallery = function( file ) {
+		USPUploaders.get( 'post_thumbnail' ).appendInGallery = function( file ) {
 
 			jQuery( '#rcl-upload-gallery-' + this.uploader_id ).html( '' ).append( file.thumbnail.html ).animateCss( 'flipInX' );
 			jQuery( '#rcl-upload-gallery-post_uploader' ).append( file.postmedia );
@@ -14,16 +14,16 @@ jQuery( document ).ready( function( $ ) {
 
 		};
 
-		if ( RclUploaders.isset( 'post_uploader' ) ) {
+		if ( USPUploaders.isset( 'post_uploader' ) ) {
 
-			RclUploaders.get( 'post_thumbnail' ).filterErrors = function( errors, files, uploader ) {
+			USPUploaders.get( 'post_thumbnail' ).filterErrors = function( errors, files, uploader ) {
 
-				var postUploader = RclUploaders.get( 'post_uploader' );
+				var postUploader = USPUploaders.get( 'post_uploader' );
 
 				var inGalleryNow = jQuery( '#rcl-upload-gallery-post_uploader .gallery-attachment' ).length + 1;
 
 				if ( inGalleryNow > postUploader.options.max_files ) {
-					errors.push( Rcl.errors.file_max_num + '. Max: ' + postUploader.options.max_files );
+					errors.push( USP.errors.file_max_num + '. Max: ' + postUploader.options.max_files );
 				}
 
 				return errors;
@@ -53,7 +53,7 @@ jQuery( document ).ready( function( $ ) {
 
 	} );
 
-	jQuery( '#rcl-delete-post .delete-toggle' ).click( function() {
+	jQuery( '#uspp-delete-post .delete-toggle' ).click( function() {
 		jQuery( this ).next().toggle( 'fast' );
 		return false;
 	} );
@@ -80,7 +80,7 @@ jQuery( document ).ready( function( $ ) {
 
 } );
 
-rcl_add_action( 'uspp_init_public_form', 'rcl_setup_async_upload' );
+usp_add_action( 'uspp_init_public_form', 'rcl_setup_async_upload' );
 function rcl_setup_async_upload() {
 
 	if ( typeof wp == 'undefined' || !wp.Uploader )
@@ -90,7 +90,7 @@ function rcl_setup_async_upload() {
 		success: function( attachment ) {
 			if ( attachment.attributes.uploadedTo )
 				return false;
-			rcl_ajax( {
+			usp_ajax( {
 				data: {
 					action: 'rcl_save_temp_async_uploaded_thumbnail',
 					attachment_id: attachment.id,
@@ -102,7 +102,7 @@ function rcl_setup_async_upload() {
 
 }
 
-rcl_add_action( 'usp_init', 'uspp_init_click_post_thumbnail' );
+usp_add_action( 'usp_init', 'uspp_init_click_post_thumbnail' );
 function uspp_init_click_post_thumbnail() {
 	jQuery( ".rcl-public-form" ).on( 'click', '.thumb-foto', function() {
 		jQuery( ".rcl-public-form .thumb-foto" ).removeAttr( "checked" );
@@ -112,38 +112,38 @@ function uspp_init_click_post_thumbnail() {
 
 function rcl_get_post_thumbnail_html( thumbnail_id ) {
 
-	rcl_preloader_show( jQuery( '.rcl-public-form' ) );
+	usp_preloader_show( jQuery( '.rcl-public-form' ) );
 
-	rcl_ajax( {
+	usp_ajax( {
 		data: {
 			action: 'rcl_get_post_thumbnail_html',
 			thumbnail_id: thumbnail_id
 		},
 		success: function( result ) {
-			jQuery( '#rcl-thumbnail-post .thumbnail-image' ).html( result['thumbnail_image'] ).animateCss( 'flipInX' );
-			jQuery( '#rcl-thumbnail-post .thumbnail-id' ).val( thumbnail_id );
+			jQuery( '#uspp-thumbnail-post .thumbnail-image' ).html( result['thumbnail_image'] ).animateCss( 'flipInX' );
+			jQuery( '#uspp-thumbnail-post .thumbnail-id' ).val( thumbnail_id );
 		}
 	} );
 
 }
 
 function rcl_remove_post_thumbnail() {
-	jQuery( '#rcl-thumbnail-post .thumbnail-image' ).animateCss( 'flipOutX', function( e ) {
+	jQuery( '#uspp-thumbnail-post .thumbnail-image' ).animateCss( 'flipOutX', function( e ) {
 		jQuery( e ).empty();
 	} );
-	jQuery( '#rcl-thumbnail-post .thumbnail-id' ).val( '0' );
+	jQuery( '#uspp-thumbnail-post .thumbnail-id' ).val( '0' );
 }
 
 function uspp_delete_post( element ) {
 
-	rcl_preloader_show( jQuery( element ).parents( 'li' ) );
+	usp_preloader_show( jQuery( element ).parents( 'li' ) );
 
 	var objectData = {
 		action: 'rcl_ajax_delete_post',
 		post_id: jQuery( element ).data( 'post' )
 	};
 
-	rcl_ajax( {
+	usp_ajax( {
 		data: objectData,
 		success: function( data ) {
 
@@ -167,9 +167,9 @@ function uspp_delete_thumbnail_attachment( data ) {
 	if ( data['post_type'] != 'attachment' )
 		return false;
 
-	if ( jQuery( '#rcl-thumbnail-post' ).length ) {
+	if ( jQuery( '#uspp-thumbnail-post' ).length ) {
 
-		var currentThumbId = jQuery( '#rcl-thumbnail-post .thumbnail-id' ).val();
+		var currentThumbId = jQuery( '#uspp-thumbnail-post .thumbnail-id' ).val();
 
 		if ( currentThumbId == data['post_id'] )
 			rcl_remove_post_thumbnail();
@@ -179,9 +179,9 @@ function uspp_delete_thumbnail_attachment( data ) {
 
 function rcl_edit_post( element ) {
 
-	rcl_preloader_show( jQuery( '#lk-content' ) );
+	usp_preloader_show( jQuery( '#lk-content' ) );
 
-	rcl_ajax( {
+	usp_ajax( {
 		data: {
 			action: 'rcl_get_edit_postdata',
 			post_id: jQuery( element ).data( 'post' )
@@ -191,23 +191,23 @@ function rcl_edit_post( element ) {
 			if ( data['result'] == 100 ) {
 
 				ssi_modal.show( {
-					title: Rcl.local.edit_box_title,
+					title: USP.local.edit_box_title,
 					className: 'rcl-edit-post-form',
 					sizeClass: 'small',
 					buttons: [ {
-							label: Rcl.local.save,
+							label: USP.local.save,
 							closeAfter: false,
 							method: function() {
 
-								rcl_preloader_show( '#rcl-popup-content form' );
+								usp_preloader_show( '#rcl-popup-content form' );
 
-								rcl_ajax( {
+								usp_ajax( {
 									data: 'action=rcl_edit_postdata&' + jQuery( '#rcl-popup-content form' ).serialize()
 								} );
 
 							}
 						}, {
-							label: Rcl.local.close,
+							label: USP.local.close,
 							closeAfter: true
 						} ],
 					content: '<div id="rcl-popup-content">' + data['content'] + '</div>'
@@ -227,7 +227,7 @@ function rcl_preview( e ) {
 	if ( !rcl_check_required_fields( formblock ) )
 		return false;
 
-	rcl_preloader_show( formblock );
+	usp_preloader_show( formblock );
 
 	var iframe = jQuery( "#post_content_ifr" ).contents().find( "#tinymce" ).html();
 	if ( iframe ) {
@@ -239,10 +239,10 @@ function rcl_preview( e ) {
 	var button_delete = formblock.find( 'input[name="button-delete"]' ).val();
 	var button_preview = formblock.find( 'input[name="button-preview"]' ).val();
 
-	rcl_ajax( {
+	usp_ajax( {
 		data: 'action=rcl_preview_post&publish=0&' + formblock.serialize(),
 		error: function( data ) {
-			submit.attr( 'disabled', false ).val( Rcl.local.preview );
+			submit.attr( 'disabled', false ).val( USP.local.preview );
 		},
 		success: function( data ) {
 
@@ -252,17 +252,17 @@ function rcl_preview( e ) {
 
 				buttons[0] = {
 					className: 'btn btn-primary',
-					label: Rcl.local.edit,
+					label: USP.local.edit,
 					closeAfter: true,
 					method: function() {
-						submit.attr( 'disabled', false ).val( Rcl.local.preview );
+						submit.attr( 'disabled', false ).val( USP.local.preview );
 					}
 				};
 
 				if ( button_draft ) {
 					buttons[1] = {
 						className: 'btn btn-danger',
-						label: Rcl.local.save_draft,
+						label: USP.local.save_draft,
 						closeAfter: false,
 						method: function() {
 							rcl_save_draft();
@@ -273,7 +273,7 @@ function rcl_preview( e ) {
 				var i = buttons.length;
 				buttons[i] = {
 					className: 'btn btn-danger',
-					label: Rcl.local.publish,
+					label: USP.local.publish,
 					closeAfter: false,
 					method: function() {
 						uspp_publish();
@@ -282,8 +282,8 @@ function rcl_preview( e ) {
 
 				ssi_modal.show( {
 					sizeClass: 'small',
-					title: Rcl.local.preview,
-					className: 'rcl-preview-post',
+					title: USP.local.preview,
+					className: 'uspp-preview-post',
 					buttons: buttons,
 					content: '<div id="rcl-preview">' + data['content'] + '</div>'
 				} );
@@ -331,7 +331,7 @@ function uspp_publish( e ) {
 	if ( !rcl_check_required_fields( formblock ) )
 		return false;
 
-	rcl_preloader_show( formblock );
+	usp_preloader_show( formblock );
 
 	var iframe = jQuery( "#post_content_ifr" ).contents().find( "#tinymce" ).html();
 	if ( iframe ) {
@@ -339,12 +339,12 @@ function uspp_publish( e ) {
 		formblock.find( 'textarea[name="post_content"]' ).html( iframe );
 	}
 
-	rcl_ajax( {
+	usp_ajax( {
 		data: 'action=rcl_preview_post&publish=1&' + formblock.serialize(),
 		success: function( data ) {
 
 			if ( data.submit ) {
-				rcl_preloader_show( formblock );
+				usp_preloader_show( formblock );
 				jQuery( 'form.rcl-public-form' ).submit();
 			}
 
@@ -357,7 +357,7 @@ function uspp_publish( e ) {
 
 function rcl_check_required_fields( form ) {
 
-	var rclFormFactory = new RclForm( form );
+	var rclFormFactory = new USPForm( form );
 
 	rclFormFactory.addChekForm( 'checkCats', {
 		isValid: function() {
@@ -365,7 +365,7 @@ function rcl_check_required_fields( form ) {
 			if ( this.form.find( 'input[name="cats[]"]' ).length > 0 ) {
 				if ( form.find( 'input[name="cats[]"]:checked' ).length == 0 ) {
 					this.shake( form.find( 'input[name="cats[]"]' ) );
-					this.addError( 'checkCats', Rcl.errors.cats_important );
+					this.addError( 'checkCats', USP.errors.cats_important );
 					valid = false;
 				} else {
 					this.noShake( form.find( 'input[name="cats[]"]' ) );
@@ -410,13 +410,13 @@ function uspp_init_public_form( post ) {
 
 	var maxsize = size_files * 1024 * 1024;
 
-	rcl_add_dropzone( '#rcl-public-dropzone-' + post_type );
+	usp_add_dropzone( '#rcl-public-dropzone-' + post_type );
 
 	jQuery( '#upload-public-form-' + post_type ).fileupload( {
 		dataType: 'json',
 		type: 'POST',
 		dropZone: jQuery( '#rcl-public-dropzone-' + post_type ),
-		url: Rcl.ajaxurl,
+		url: USP.ajaxurl,
 		formData: {
 			action: 'rcl_imagepost_upload',
 			post_type: post_type,
@@ -425,38 +425,38 @@ function uspp_init_public_form( post ) {
 			ext_types: ext_types,
 			size_files: size_files,
 			max_files: max_files,
-			ajax_nonce: Rcl.nonce
+			ajax_nonce: USP.nonce
 		},
 		singleFileUploads: false,
 		autoUpload: true,
 		send: function( e, data ) {
 			var error = false;
-			rcl_preloader_show( 'form.rcl-public-form' );
+			usp_preloader_show( 'form.rcl-public-form' );
 			var cnt_now = jQuery( '#temp-files-' + post_type + ' li' ).length;
 			jQuery.each( data.files, function( index, file ) {
 				cnt_now++;
 				if ( cnt_now > max_files ) {
-					rcl_notice( Rcl.local.allowed_downloads + ' ' + max_files, 'error', 10000 );
+					usp_notice( USP.local.allowed_downloads + ' ' + max_files, 'error', 10000 );
 					error = true;
 				}
 				if ( file['size'] > maxsize ) {
-					rcl_notice( Rcl.local.upload_size_public + ' ' + size_files + ' MB', 'error', 10000 );
+					usp_notice( USP.local.upload_size_public + ' ' + size_files + ' MB', 'error', 10000 );
 					error = true;
 				}
 			} );
 			if ( error ) {
-				rcl_preloader_hide();
+				usp_preloader_hide();
 				return false;
 			}
 		},
 		done: function( e, data ) {
 
-			rcl_preloader_hide();
+			usp_preloader_hide();
 
 			jQuery.each( data.result, function( index, file ) {
 				if ( data.result['error'] ) {
-					rcl_notice( data.result['error'], 'error', 10000 );
-					rcl_preloader_hide();
+					usp_notice( data.result['error'], 'error', 10000 );
+					usp_preloader_hide();
 					return false;
 				}
 
@@ -484,13 +484,13 @@ function rcl_init_thumbnail_uploader( e, options ) {
 	jQuery( '#rcl-thumbnail-uploader' ).fileupload( {
 		dataType: 'json',
 		type: 'POST',
-		url: Rcl.ajaxurl,
+		url: USP.ajaxurl,
 		formData: {
 			action: 'rcl_imagepost_upload',
 			post_type: post_type,
 			post_id: post_id,
 			ext_types: ext_types,
-			ajax_nonce: Rcl.nonce
+			ajax_nonce: USP.nonce
 		},
 		singleFileUploads: true,
 		autoUpload: true,
@@ -498,19 +498,19 @@ function rcl_init_thumbnail_uploader( e, options ) {
 
 			var error = false;
 
-			rcl_preloader_show( 'form.rcl-public-form' );
+			usp_preloader_show( 'form.rcl-public-form' );
 
 			jQuery.each( data.files, function( index, file ) {
 
 				if ( file['size'] > maxsize ) {
-					rcl_notice( Rcl.local.upload_size_public + ' ' + maxsize_mb + ' MB', 'error', 10000 );
+					usp_notice( USP.local.upload_size_public + ' ' + maxsize_mb + ' MB', 'error', 10000 );
 					error = true;
 				}
 
 			} );
 
 			if ( error ) {
-				rcl_preloader_hide();
+				usp_preloader_hide();
 				return false;
 			}
 
@@ -518,18 +518,18 @@ function rcl_init_thumbnail_uploader( e, options ) {
 		done: function( e, data ) {
 			jQuery.each( data.result, function( index, file ) {
 
-				rcl_preloader_hide();
+				usp_preloader_hide();
 
 				if ( data.result['error'] ) {
-					rcl_notice( data.result['error'], 'error', 10000 );
+					usp_notice( data.result['error'], 'error', 10000 );
 					return false;
 				}
 
 				if ( file['string'] ) {
 					jQuery( '#temp-files-' + post_type ).append( file['string'] );
 					jQuery( '#temp-files-' + post_type + ' li' ).last().animateCss( 'flipInX' );
-					jQuery( '#rcl-thumbnail-post .thumbnail-image' ).html( file['thumbnail_image'] ).animateCss( 'flipInX' );
-					jQuery( '#rcl-thumbnail-post .thumbnail-id' ).val( file['attachment_id'] );
+					jQuery( '#uspp-thumbnail-post .thumbnail-image' ).html( file['thumbnail_image'] ).animateCss( 'flipInX' );
+					jQuery( '#uspp-thumbnail-post .thumbnail-id' ).val( file['attachment_id'] );
 				}
 			} );
 
@@ -541,9 +541,9 @@ function rcl_init_thumbnail_uploader( e, options ) {
 
 function rcl_set_post_thumbnail( attach_id, parent_id, e ) {
 
-	rcl_preloader_show( jQuery( '.gallery-attachment-' + attach_id ) );
+	usp_preloader_show( jQuery( '.gallery-attachment-' + attach_id ) );
 
-	rcl_ajax( {
+	usp_ajax( {
 		data: {
 			action: 'rcl_set_post_thumbnail',
 			thumbnail_id: attach_id,

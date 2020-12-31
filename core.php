@@ -1,26 +1,26 @@
 <?php
 
 //deprecated
-function rcl_get_custom_post_meta( $post_id ) {
-
-    USP()->use_module( 'fields' );
-
-    $get_fields = rcl_get_custom_fields( $post_id );
-
-    if ( $get_fields ) {
-        $show_custom_field = '';
-        $cf                = new Rcl_Custom_Fields();
-        foreach ( $get_fields as $custom_field ) {
-            $custom_field          = apply_filters( 'uspp_custom_post_meta', $custom_field );
-            if ( ! $custom_field || ! isset( $custom_field['slug'] ) || ! $custom_field['slug'] )
-                continue;
-            $custom_field['value'] = get_post_meta( $post_id, $custom_field['slug'], true );
-            $show_custom_field     .= Rcl_Field::setup( $custom_field )->get_field_value( 'title' );
-        }
-
-        return $show_custom_field;
-    }
-}
+//function rcl_get_custom_post_meta( $post_id ) {
+//
+//    USP()->use_module( 'fields' );
+//
+//    $get_fields = rcl_get_custom_fields( $post_id );
+//
+//    if ( $get_fields ) {
+//        $show_custom_field = '';
+//        $cf                = new Rcl_Custom_Fields();
+//        foreach ( $get_fields as $custom_field ) {
+//            $custom_field          = apply_filters( 'uspp_custom_post_meta', $custom_field );
+//            if ( ! $custom_field || ! isset( $custom_field['slug'] ) || ! $custom_field['slug'] )
+//                continue;
+//            $custom_field['value'] = get_post_meta( $post_id, $custom_field['slug'], true );
+//            $show_custom_field     .= Rcl_Field::setup( $custom_field )->get_field_value( 'title' );
+//        }
+//
+//        return $show_custom_field;
+//    }
+//}
 
 function rcl_get_postslist( $post_type, $type_name ) {
     global $user_LK;
@@ -34,7 +34,7 @@ function rcl_get_postslist( $post_type, $type_name ) {
 }
 
 function rcl_tab_postform( $master_id ) {
-    return do_shortcode( '[public-form form_id="' . rcl_get_option( 'uspp_id_public_form', 1 ) . '"]' );
+    return do_shortcode( '[public-form form_id="' . usp_get_option( 'uspp_id_public_form', 1 ) . '"]' );
 }
 
 //Прикрепление новой миниатюры к публикации из произвольного места на сервере
@@ -98,7 +98,7 @@ function rcl_get_editor_content( $post_content ) {
 
 function rcl_is_limit_editing( $post_date ) {
 
-    $timelimit = apply_filters( 'uspp_time_editing', rcl_get_option( 'uspp_time_editing' ) );
+    $timelimit = apply_filters( 'uspp_time_editing', usp_get_option( 'uspp_time_editing' ) );
 
     if ( $timelimit ) {
         $hours = (strtotime( current_time( 'mysql' ) ) - strtotime( $post_date )) / 3600;
@@ -134,7 +134,7 @@ function rcl_get_custom_fields_edit_box( $post_id, $post_type = false, $form_id 
 
     uspp_publics_scripts();
 
-    $content = '<div id="rcl-post-fields-admin-box">';
+    $content = '<div id="uspp-post-fields-admin-box">';
 
     foreach ( $fields as $field_id => $field ) {
 
@@ -240,7 +240,7 @@ function rcl_update_post_custom_fields( $post_id, $id_form = false ) {
     }
 }
 
-rcl_ajax_action( 'rcl_save_temp_async_uploaded_thumbnail', true );
+usp_ajax_action( 'rcl_save_temp_async_uploaded_thumbnail', true );
 function rcl_save_temp_async_uploaded_thumbnail() {
 
     $attachment_id  = intval( $_POST['attachment_id'] );
@@ -289,7 +289,7 @@ function rcl_get_attachment_box( $attachment_id, $mime = 'image', $addToClick = 
 
         if ( $addToClick ) {
 
-            if ( $default = rcl_get_option( 'uspp_default_thumb' ) )
+            if ( $default = usp_get_option( 'uspp_default_thumb' ) )
                 $sizes   = wp_get_attachment_image_src( $attachment_id, $default );
             else
                 $sizes   = $small_url;
@@ -335,5 +335,5 @@ function rcl_button_fast_edit_post( $post_id ) {
 }
 
 function rcl_button_fast_delete_post( $post_id ) {
-    return '<a class="rcl-delete-post rcl-service-button" data-post="' . $post_id . '" onclick="return confirm(\'' . __( 'Are you sure?', 'usp-publication' ) . '\')? uspp_delete_post(this): false;"><i class="uspi fa-trash"></i></a>';
+    return '<a class="uspp-delete-post rcl-service-button" data-post="' . $post_id . '" onclick="return confirm(\'' . __( 'Are you sure?', 'usp-publication' ) . '\')? uspp_delete_post(this): false;"><i class="uspi fa-trash"></i></a>';
 }

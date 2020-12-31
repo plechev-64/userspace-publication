@@ -4,7 +4,7 @@ require_once 'settings-page.php';
 
 add_action( 'admin_init', 'uspp_public_admin_scripts' );
 function uspp_public_admin_scripts() {
-    wp_enqueue_style( 'rcl_public_admin_style', plugin_dir_url( __FILE__ ) . 'admin/assets/style.css' );
+    wp_enqueue_style( 'uspp_public_admin_style', plugin_dir_url( __FILE__ ) . 'admin/assets/style.css' );
 }
 
 add_action( 'admin_menu', 'rcl_admin_page_publicform', 30 );
@@ -35,7 +35,7 @@ function uspp_public_form_manager() {
 
     $content .= $formManager->form_navi();
 
-    $content .= rcl_get_notice( [ 'text' => __( 'Use shortcode for publication form', 'usp-publication' ) . ' [' . $shortCode . ']' ] );
+    $content .= usp_get_notice( [ 'text' => __( 'Use shortcode for publication form', 'usp-publication' ) . ' [' . $shortCode . ']' ] );
 
     $content .= $formManager->get_manager();
 
