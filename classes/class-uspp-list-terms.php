@@ -42,13 +42,13 @@ class USPP_List_Terms {
 
     function get_select() {
 
-        $content = '<div class="rcl-terms-select">';
+        $content = '<div class="uspp-terms-select">';
 
         for ( $a = 0; $a < $this->select_amount; $a ++ ) {
 
             $this->selected_term = false;
 
-            $content .= '<div class="category-list rcl-field-input type-select-input">';
+            $content .= '<div class="category-list usp-field-input type-select-input">';
 
             $content .= '<select class="postform" name="cats[' . $this->taxonomy . '][]">';
 
@@ -71,13 +71,13 @@ class USPP_List_Terms {
 
         usp_multiselect_scripts();
 
-        $content = '<div class="rcl-terms-select">';
+        $content = '<div class="uspp-terms-select">';
 
         for ( $a = 0; $a < $this->select_amount; $a ++ ) {
 
             $this->selected_term = false;
 
-            $content .= '<div class="category-list rcl-field-input type-multiselect-input">';
+            $content .= '<div class="category-list usp-field-input type-multiselect-input">';
 
             $content .= '<select id="taxonomy-field-' . $this->taxonomy . '" class="postform" name="cats[' . $this->taxonomy . '][]" multiple>';
 
@@ -100,9 +100,9 @@ class USPP_List_Terms {
 
     function get_checkbox() {
 
-        $content = '<div class="rcl-terms-select">';
+        $content = '<div class="uspp-terms-select">';
 
-        $content .= '<div class="category-list rcl-field-input type-checkbox-input">';
+        $content .= '<div class="category-list usp-field-input type-checkbox-input">';
 
         $content .= $this->get_checkbox_list();
 

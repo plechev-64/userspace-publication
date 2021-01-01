@@ -69,7 +69,7 @@ class USPP_Edit_Post {
                 if ( current_user_can( 'edit_post', $this->post_id ) )
                     $this->user_can['edit'] = true;
 
-                if ( usp_is_user_role( $user_ID, array( 'administrator', 'editor' ) ) || ! rcl_is_limit_editing( $this->post->post_date ) )
+                if ( usp_is_user_role( $user_ID, array( 'administrator', 'editor' ) ) || ! uspp_is_limit_editing( $this->post->post_date ) )
                     $this->user_can['edit'] = true;
             }
         } else {
@@ -143,7 +143,7 @@ class USPP_Edit_Post {
 
     function update_post_gallery() {
 
-        $postGallery = isset( $_POST['rcl-post-gallery'] ) ? $_POST['rcl-post-gallery'] : false;
+        $postGallery = isset( $_POST['uspp-post-gallery'] ) ? $_POST['uspp-post-gallery'] : false;
 
         $gallery = array();
 
@@ -262,9 +262,9 @@ class USPP_Edit_Post {
 
         delete_post_meta( $this->post_id, 'uspp_slider' );
 
-        rcl_update_post_custom_fields( $this->post_id, $formID );
+        uspp_update_post_custom_fields( $this->post_id, $formID );
 
-        rcl_delete_temp_media_by_args( array(
+        usp_delete_temp_media_by_args( array(
             'user_id'         => $user_ID,
             'uploader_id__in' => array( 'post_uploader', 'post_thumbnail' )
         ) );

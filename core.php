@@ -96,7 +96,7 @@ function rcl_get_editor_content( $post_content ) {
     return $content;
 }
 
-function rcl_is_limit_editing( $post_date ) {
+function uspp_is_limit_editing( $post_date ) {
 
     $timelimit = apply_filters( 'uspp_time_editing', usp_get_option( 'uspp_time_editing' ) );
 
@@ -149,7 +149,7 @@ function rcl_get_custom_fields_edit_box( $post_id, $post_type = false, $form_id 
     return $content;
 }
 
-function rcl_update_post_custom_fields( $post_id, $id_form = false ) {
+function uspp_update_post_custom_fields( $post_id, $id_form = false ) {
 
     require_once(ABSPATH . "wp-admin" . '/includes/image.php');
     require_once(ABSPATH . "wp-admin" . '/includes/file.php');
@@ -233,7 +233,7 @@ function rcl_update_post_custom_fields( $post_id, $id_form = false ) {
 
         $editPost->update_post_gallery();
 
-        rcl_delete_temp_media_by_args( array(
+        usp_delete_temp_media_by_args( array(
             'user_id'         => $user_ID,
             'uploader_id__in' => array( 'post_uploader', 'post_thumbnail' )
         ) );
@@ -331,9 +331,9 @@ function rcl_get_html_attachment( $attach_id, $mime_type, $addToClick = true ) {
 }
 
 function rcl_button_fast_edit_post( $post_id ) {
-    return '<a class="rcl-edit-post rcl-service-button" data-post="' . $post_id . '" onclick="rcl_edit_post(this); return false;"><i class="uspi fa-edit"></i></a>';
+    return '<a class="rcl-edit-post uspp-service-button" data-post="' . $post_id . '" onclick="rcl_edit_post(this); return false;"><i class="uspi fa-edit"></i></a>';
 }
 
 function rcl_button_fast_delete_post( $post_id ) {
-    return '<a class="uspp-delete-post rcl-service-button" data-post="' . $post_id . '" onclick="return confirm(\'' . __( 'Are you sure?', 'usp-publication' ) . '\')? uspp_delete_post(this): false;"><i class="uspi fa-trash"></i></a>';
+    return '<a class="uspp-delete-post uspp-service-button" data-post="' . $post_id . '" onclick="return confirm(\'' . __( 'Are you sure?', 'usp-publication' ) . '\')? uspp_delete_post(this): false;"><i class="uspi fa-trash"></i></a>';
 }

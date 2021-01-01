@@ -8,9 +8,9 @@ jQuery( document ).ready( function( $ ) {
 
 		USPUploaders.get( 'post_thumbnail' ).appendInGallery = function( file ) {
 
-			jQuery( '#rcl-upload-gallery-' + this.uploader_id ).html( '' ).append( file.thumbnail.html ).animateCss( 'flipInX' );
-			jQuery( '#rcl-upload-gallery-post_uploader' ).append( file.postmedia );
-			jQuery( '#rcl-upload-gallery-post_uploader div' ).last().animateCss( 'flipInX' );
+			jQuery( '#usp-upload-gallery-' + this.uploader_id ).html( '' ).append( file.thumbnail.html ).animateCss( 'flipInX' );
+			jQuery( '#usp-upload-gallery-post_uploader' ).append( file.postmedia );
+			jQuery( '#usp-upload-gallery-post_uploader div' ).last().animateCss( 'flipInX' );
 
 		};
 
@@ -20,7 +20,7 @@ jQuery( document ).ready( function( $ ) {
 
 				var postUploader = USPUploaders.get( 'post_uploader' );
 
-				var inGalleryNow = jQuery( '#rcl-upload-gallery-post_uploader .gallery-attachment' ).length + 1;
+				var inGalleryNow = jQuery( '#usp-upload-gallery-post_uploader .gallery-attachment' ).length + 1;
 
 				if ( inGalleryNow > postUploader.options.max_files ) {
 					errors.push( USP.errors.file_max_num + '. Max: ' + postUploader.options.max_files );
@@ -33,7 +33,7 @@ jQuery( document ).ready( function( $ ) {
 
 	}
 
-	$( '.rcl-public-form #insert-media-button' ).click( function( e ) {
+	$( '.uspp-public-form #insert-media-button' ).click( function( e ) {
 
 		var editor = $( this ).data( 'editor' );
 
@@ -104,15 +104,15 @@ function rcl_setup_async_upload() {
 
 usp_add_action( 'usp_init', 'uspp_init_click_post_thumbnail' );
 function uspp_init_click_post_thumbnail() {
-	jQuery( ".rcl-public-form" ).on( 'click', '.thumb-foto', function() {
-		jQuery( ".rcl-public-form .thumb-foto" ).removeAttr( "checked" );
+	jQuery( ".uspp-public-form" ).on( 'click', '.thumb-foto', function() {
+		jQuery( ".uspp-public-form .thumb-foto" ).removeAttr( "checked" );
 		jQuery( this ).attr( "checked", 'checked' );
 	} );
 }
 
 function rcl_get_post_thumbnail_html( thumbnail_id ) {
 
-	usp_preloader_show( jQuery( '.rcl-public-form' ) );
+	usp_preloader_show( jQuery( '.uspp-public-form' ) );
 
 	usp_ajax( {
 		data: {
@@ -308,7 +308,7 @@ function rcl_save_draft( e ) {
 
 	jQuery( e ).after( '<input type="hidden" name="save-as-draft" value=1>' );
 
-	jQuery( 'form.rcl-public-form' ).submit();
+	jQuery( 'form.uspp-public-form' ).submit();
 }
 
 function rcl_check_publish( e ) {
@@ -324,7 +324,7 @@ function rcl_check_publish( e ) {
 
 function uspp_publish( e ) {
 
-	var formblock = ( e ) ? jQuery( e ).parents( 'form' ) : jQuery( 'form.rcl-public-form' );
+	var formblock = ( e ) ? jQuery( e ).parents( 'form' ) : jQuery( 'form.uspp-public-form' );
 
 	var post_type = formblock.data( 'post_type' );
 
@@ -345,7 +345,7 @@ function uspp_publish( e ) {
 
 			if ( data.submit ) {
 				usp_preloader_show( formblock );
-				jQuery( 'form.rcl-public-form' ).submit();
+				jQuery( 'form.uspp-public-form' ).submit();
 			}
 
 			usp_do_action( 'uspp_publish', data, e );
@@ -403,7 +403,7 @@ function uspp_init_public_form( post ) {
 	if ( post.post_status )
 		post_status = post.post_status;
 
-	jQuery( 'form.rcl-public-form' ).find( ':required' ).each( function() {
+	jQuery( 'form.uspp-public-form' ).find( ':required' ).each( function() {
 		var i = rcl_public_form.required.length;
 		rcl_public_form.required[i] = jQuery( this ).attr( 'name' );
 	} );
@@ -431,7 +431,7 @@ function uspp_init_public_form( post ) {
 		autoUpload: true,
 		send: function( e, data ) {
 			var error = false;
-			usp_preloader_show( 'form.rcl-public-form' );
+			usp_preloader_show( 'form.uspp-public-form' );
 			var cnt_now = jQuery( '#temp-files-' + post_type + ' li' ).length;
 			jQuery.each( data.files, function( index, file ) {
 				cnt_now++;
@@ -481,7 +481,7 @@ function rcl_init_thumbnail_uploader( e, options ) {
 
 	var maxsize = maxsize_mb * 1024 * 1024;
 
-	jQuery( '#rcl-thumbnail-uploader' ).fileupload( {
+	jQuery( '#uspp-thumbnail-uploader' ).fileupload( {
 		dataType: 'json',
 		type: 'POST',
 		url: USP.ajaxurl,
@@ -498,7 +498,7 @@ function rcl_init_thumbnail_uploader( e, options ) {
 
 			var error = false;
 
-			usp_preloader_show( 'form.rcl-public-form' );
+			usp_preloader_show( 'form.uspp-public-form' );
 
 			jQuery.each( data.files, function( index, file ) {
 
@@ -548,11 +548,11 @@ function rcl_set_post_thumbnail( attach_id, parent_id, e ) {
 			action: 'rcl_set_post_thumbnail',
 			thumbnail_id: attach_id,
 			parent_id: parent_id,
-			form_id: jQuery( 'form.rcl-public-form input[name="form_id"]' ).val(),
-			post_type: jQuery( 'form.rcl-public-form input[name="post_type"]' ).val()
+			form_id: jQuery( 'form.uspp-public-form input[name="form_id"]' ).val(),
+			post_type: jQuery( 'form.uspp-public-form input[name="post_type"]' ).val()
 		},
 		success: function( result ) {
-			jQuery( '#rcl-upload-gallery-post_thumbnail' ).html( result.html ).animateCss( 'flipInX' );
+			jQuery( '#usp-upload-gallery-post_thumbnail' ).html( result.html ).animateCss( 'flipInX' );
 		}
 	} );
 

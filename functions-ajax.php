@@ -245,7 +245,7 @@ function rcl_preview_post() {
         }
     }
 
-    if ( isset( $_POST['rcl-post-gallery'] ) && $postGallery = $_POST['rcl-post-gallery'] ) {
+    if ( isset( $_POST['uspp-post-gallery'] ) && $postGallery = $_POST['uspp-post-gallery'] ) {
 
         $gallery = array();
 

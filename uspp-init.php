@@ -276,7 +276,7 @@ function rcl_setup_edit_post_button() {
 
     if ( false !== array_search( $user_info->user_level, $frontEdit ) || $user_info->user_level >= usp_get_option( 'consol_access_usp', 7 ) ) {
 
-        if ( $user_info->user_level < 10 && rcl_is_limit_editing( $post->post_date ) )
+        if ( $user_info->user_level < 10 && uspp_is_limit_editing( $post->post_date ) )
             return false;
 
         rcl_post_bar_add_item( 'rcl-edit-post', array(
@@ -560,7 +560,7 @@ function rcl_add_post_uploader_image_buttons( $items, $attachment_id, $uploader 
             'icon'    => ($postGallery && in_array( $attachment_id, $postGallery )) ? 'fa-toggle-on' : 'fa-toggle-off',
             'class'   => 'rcl-switch-gallery-button-' . $attachment_id,
             'title'   => __( 'Output in a gallery', 'usp-publication' ),
-            'content' => '<input type="hidden" id="rcl-post-gallery-attachment-' . $attachment_id . '" name="rcl-post-gallery[]" value="' . $valueGallery . '">',
+            'content' => '<input type="hidden" id="uspp-post-gallery-attachment-' . $attachment_id . '" name="uspp-post-gallery[]" value="' . $valueGallery . '">',
             'onclick' => 'rcl_switch_attachment_in_gallery(' . $attachment_id . ',this);return false;'
         );
     }
@@ -571,7 +571,7 @@ function rcl_add_post_uploader_image_buttons( $items, $attachment_id, $uploader 
 function rcl_get_post_gallery( $gallery_id, $attachment_ids ) {
 
     return rcl_get_image_gallery( array(
-        'id'           => 'rcl-post-gallery-' . $gallery_id,
+        'id'           => 'uspp-post-gallery-' . $gallery_id,
         'center_align' => true,
         'attach_ids'   => $attachment_ids,
         //'width' => 500,

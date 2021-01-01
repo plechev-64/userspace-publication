@@ -247,7 +247,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
             'data-form_id'   => $this->form_id,
             'data-post_id'   => $this->post_id,
             'data-post_type' => $this->post_type,
-            'class'          => array( 'rcl-public-form' )
+            'class'          => array( 'uspp-public-form' )
         );
 
         $attrs = apply_filters( 'uspp_public_form_attributes', $attrs, $dataPost );
@@ -279,7 +279,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
         if ( $buttons ) {
 
-            $content .= '<div id="rcl-public-form-top-manager" class="usp-wrap usp-wrap__right">';
+            $content .= '<div id="uspp-public-form-top-manager" class="usp-wrap usp-wrap__right">';
 
             foreach ( $buttons as $button ) {
                 $content .= usp_get_button( $button );
@@ -519,7 +519,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
         $field = $this->get_field( $field_id );
 
-        $content = '<div class="rcl-terms-select taxonomy-' . $taxonomy . '">';
+        $content = '<div class="uspp-terms-select taxonomy-' . $taxonomy . '">';
 
         $terms = $field->isset_prop( 'values' ) ? $field->get_prop( 'values' ) : array();
 

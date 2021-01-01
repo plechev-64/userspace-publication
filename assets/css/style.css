@@ -66,7 +66,7 @@
 .edit-form-link .edit-form-link-title {
     margin: 0 8px 0 5px;
 }
-.uspp-public-box .rcl-service-button {
+.uspp-public-box .uspp-service-button {
     background-color: rgba(30, 56, 75, 0.7);
     border: none;
     box-shadow: none;
@@ -80,7 +80,7 @@
     top: 5px;
     z-index: 2;
 }
-.uspp-public-box .rcl-service-button i:hover {
+.uspp-public-box .uspp-service-button i:hover {
     opacity: 0.8;
 }
 .uspp-public-box .uspp-form-field {
@@ -107,19 +107,19 @@
     background-color: #fff;
     min-height: 300px;
 }
-.uspp-public-box .uspp-form-field .rcl-terms-select .rcl-field-input {
+.uspp-public-box .uspp-form-field .uspp-terms-select .usp-field-input {
     display: inline-block;
     width: auto;
     margin-bottom: 5px;
 }
-.uspp-public-box .uspp-form-field .rcl-terms-select .type-multiselect-input {
+.uspp-public-box .uspp-form-field .uspp-terms-select .type-multiselect-input {
     display: block;
 }
-.uspp-public-box .uspp-form-field .rcl-terms-select .uspp-tags-list {
+.uspp-public-box .uspp-form-field .uspp-terms-select .uspp-tags-list {
     margin: 0 0 4px;
     overflow: hidden;
 }
-.uspp-public-box .uspp-form-field .rcl-terms-select .uspp-tags-list .required{
+.uspp-public-box .uspp-form-field .uspp-terms-select .uspp-tags-list .required{
     display: none;
 }
 .uspp-public-box .uspp-tags-list > .block-label {
@@ -194,24 +194,24 @@
 .uspp-public-box .public-form-button:not(:last-child) {
     margin-right: 10px;
 }
-.rcl-public-form .category-list .child-list-category {
+.uspp-public-form .category-list .child-list-category {
     background: #fff;
     padding: 5px;
     margin-left: 10px;
     margin-bottom: 5px;
 }
-.rcl-public-form .category-list .child-list-category .parent-category {
+.uspp-public-form .category-list .child-list-category .parent-category {
     background: #f0f0f0;
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
     padding: 5px 8px;
 }
-.rcl-public-form .attachments-post .set-thumbnail-post {
+.uspp-public-form .attachments-post .set-thumbnail-post {
     display: block;
     width: 100%;
 }
-.rcl-public-form .attachments-post .set-thumbnail-post a {
+.uspp-public-form .attachments-post .set-thumbnail-post a {
     color: #fff;
     display: block;
     font-size: 14px;
@@ -220,7 +220,7 @@
     text-align: center;
     white-space: normal;
 }
-.rcl-public-form .attachments-post .set-thumbnail-post a:hover {
+.uspp-public-form .attachments-post .set-thumbnail-post a:hover {
     text-decoration: none;
 }
 #uspp-thumbnail-post {
@@ -237,7 +237,7 @@
 #uspp-thumbnail-post .thumbnail-image img {
     width: 100%;
 }
-#uspp-thumbnail-post #rcl-thumbnail-uploader {
+#uspp-thumbnail-post #uspp-thumbnail-uploader {
     cursor: pointer;
 }
 #uspp-thumbnail-post .delete-post-thumbnail {
@@ -282,12 +282,12 @@
 .uspp-public-box .attachments-post label span input {
     margin: 0 5px 0 0;
 }
-.ssi-modalOuter.uspp-preview-post .rcl-notice-preview {
+.ssi-modalOuter.uspp-preview-post .uspp-notice-preview {
     background: rgba(229, 57, 53, 0.15);
     display: block;
     text-align: center;
 }
-.ssi-modalOuter.uspp-preview-post .rcl-notice-preview p {
+.ssi-modalOuter.uspp-preview-post .uspp-notice-preview p {
     color: #000;
     font-size: 16px;
     font-weight: bold;
@@ -361,12 +361,12 @@ h3.pending-message {
     box-shadow: 0 0 1px 1px rgba(219, 219, 219, 0.6);
     padding: 5px;
 }
-.rcl-dropzone {
+.usp-dropzone {
     font-size: 12px;
     margin-bottom: 10px;
     overflow: hidden;
 }
-.rcl-dropzone.mass-upload-box small {
+.usp-dropzone.mass-upload-box small {
     margin: 0 0 0 5px;
 }
 .mass-upload-box .mass-upload-area {

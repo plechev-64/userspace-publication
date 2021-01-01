@@ -31,7 +31,7 @@ function uspp_public_form_manager() {
 
     $content .= '<p>' . __( 'On this page you can manage the creation of publications for registered record types. Create custom fields for the form of publication of various types and manage', 'usp-publication' ) . '</p>';
 
-    $content .= '<div id="rcl-public-form-manager">';
+    $content .= '<div id="uspp-public-form-manager">';
 
     $content .= $formManager->form_navi();
 
@@ -76,7 +76,7 @@ function rcl_custom_fields_update( $post_id ) {
     if ( ! current_user_can( 'edit_post', $post_id ) )
         return false;
 
-    rcl_update_post_custom_fields( $post_id );
+    uspp_update_post_custom_fields( $post_id );
 
     return $post_id;
 }
@@ -87,7 +87,7 @@ function rcl_public_form_admin_actions() {
     if ( ! isset( $_GET['page'] ) || $_GET['page'] != 'manage-public-form' )
         return false;
 
-    if ( ! isset( $_GET['form-action'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rcl-form-action' ) )
+    if ( ! isset( $_GET['form-action'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'uspp-form-action' ) )
         return false;
 
     switch ( $_GET['form-action'] ) {

@@ -67,7 +67,7 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
             $content .= '<li ' . $class . '><a href="' . admin_url( 'admin.php?page=manage-public-form&post-type=' . $this->post_type . '&form-id=' . $form_id ) . '">' . __( 'Form', 'usp-publication' ) . ' ID: ' . $form_id . '</a></li>';
         }
 
-        $content .= '<li><a class="action-form" href="' . wp_nonce_url( admin_url( 'admin.php?page=manage-public-form&form-action=new-form&post-type=' . $this->post_type . '&form-id=' . ($form_id + 1) ), 'rcl-form-action' ) . '"><i class="uspi fa-plus"></i> ' . __( 'Add form', 'usp-publication' ) . '</a></li>';
+        $content .= '<li><a class="action-form" href="' . wp_nonce_url( admin_url( 'admin.php?page=manage-public-form&form-action=new-form&post-type=' . $this->post_type . '&form-id=' . ($form_id + 1) ), 'uspp-form-action' ) . '"><i class="uspi fa-plus"></i> ' . __( 'Add form', 'usp-publication' ) . '</a></li>';
 
         $content .= '</ul>';
 
@@ -87,7 +87,7 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
                 array(
                     'label' => __( 'Delete form', 'usp-publication' ),
                     'icon'  => 'fa-trash',
-                    'href'  => wp_nonce_url( admin_url( 'admin.php?page=manage-public-form&form-action=delete-form&post-type=' . $this->post_type . '&form-id=' . $this->form_id ), 'rcl-form-action' )
+                    'href'  => wp_nonce_url( admin_url( 'admin.php?page=manage-public-form&form-action=delete-form&post-type=' . $this->post_type . '&form-id=' . $this->form_id ), 'uspp-form-action' )
                 )
                 ), $actionButtons );
         }

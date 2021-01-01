@@ -34,12 +34,12 @@ class USPP_Form_Fields {
 
         switch ( $this->type ) {
             case 'radio':
-                $content = '<span class="rcl-' . $this->type . '-box">';
+                $content = '<span class="uspp-' . $this->type . '-box">';
                 $content .= sprintf( '%s<label for="%s" class="block-label">%s</label>', $field, $this->id, $this->label );
                 $content .= '</span>';
                 break;
             case 'checkbox':
-                $content = '<span class="rcl-' . $this->type . '-box">';
+                $content = '<span class="uspp-' . $this->type . '-box">';
                 $content .= sprintf( '%s<label for="%s" class="block-label">%s</label>', $field, $this->id, $this->label );
                 $content .= '</span>';
                 break;
