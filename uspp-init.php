@@ -4,25 +4,24 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-if ( ! defined( USPP_PATH ) ) {
-    define( USPP_PATH, trailingslashit( plugin_dir_path( __FILE__ ) ) );
-}
+add_action( 'usp_init', 'uspp_loading_dependencies' );
+function uspp_loading_dependencies() {
+    require_once 'classes/class-uspp-form-fields.php';
+    require_once 'classes/class-uspp-edit-terms-list.php';
+    require_once 'classes/class-uspp-list-terms.php';
+    require_once 'classes/class-uspp-public-form-fields.php';
+    require_once 'classes/class-uspp-public-form.php';
+    require_once 'classes/class-uspp-post-list.php';
+    require_once 'classes/class-uspp-edit-post.php';
+    require_once 'core.php';
+    require_once 'shortcodes.php';
+    require_once 'functions-ajax.php';
+    require_once 'init.php';
 
-require_once 'classes/class-uspp-form-fields.php';
-require_once 'classes/class-uspp-edit-terms-list.php';
-require_once 'classes/class-uspp-list-terms.php';
-require_once 'classes/class-uspp-public-form-fields.php';
-require_once 'classes/class-uspp-public-form.php';
-require_once 'classes/class-uspp-post-list.php';
-require_once 'classes/class-uspp-edit-post.php';
-require_once 'core.php';
-require_once 'shortcodes.php';
-require_once 'functions-ajax.php';
-require_once 'init.php';
-
-if ( is_admin() ) {
-    require_once 'classes/class-uspp-public-form-manager.php';
-    require_once 'admin/index.php';
+    if ( is_admin() ) {
+        require_once 'classes/class-uspp-public-form-manager.php';
+        require_once 'admin/index.php';
+    }
 }
 
 if ( ! is_admin() ) {
