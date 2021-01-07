@@ -280,7 +280,7 @@ class USPP_List_Terms {
                 $args['class']    = 'required-checkbox';
             }
 
-            $options[] = rcl_form_field( $args );
+            $options[] = uspp_form_field( $args );
         }
 
         if ( ! $options )

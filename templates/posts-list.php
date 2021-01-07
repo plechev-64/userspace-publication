@@ -60,9 +60,9 @@ $Table = new USP_Table( array(
 
         <?php
 
-        if ( function_exists( 'rcl_format_rating' ) ) {
+        if ( function_exists( 'uspr_format_rating' ) ) {
             $rtng    = (isset( $ratings[$post->ID] )) ? $ratings[$post->ID] : 0;
-            $content .= rcl_rating_block( array( 'value' => $rtng ) );
+            $content .= uspr_rating_block( array( 'value' => $rtng ) );
         }
         ?>
         <?php $content .= apply_filters( 'uspp_content_postslist', '' ); ?>

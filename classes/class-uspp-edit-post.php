@@ -62,7 +62,7 @@ class USPP_Edit_Post {
 
             if ( $this->post_type == 'post-group' ) {
 
-                if ( rcl_can_user_edit_post_group( $this->post_id ) )
+                if ( uspg_can_user_edit_post_group( $this->post_id ) )
                     $this->user_can['edit'] = true;
             } else {
 
@@ -157,9 +157,9 @@ class USPP_Edit_Post {
         }
 
         if ( $gallery ) {
-            update_post_meta( $this->post_id, 'rcl_post_gallery', $gallery );
+            update_post_meta( $this->post_id, 'uspp_post_gallery', $gallery );
         } else {
-            delete_post_meta( $this->post_id, 'rcl_post_gallery' );
+            delete_post_meta( $this->post_id, 'uspp_post_gallery' );
         }
     }
 
@@ -188,7 +188,7 @@ class USPP_Edit_Post {
         $rating = usp_get_option( 'rating_no_moderation' );
 
         if ( $rating ) {
-            $all_r       = rcl_get_user_rating( $user_ID );
+            $all_r       = uspr_get_user_rating( $user_ID );
             if ( $all_r >= $rating )
                 $post_status = 'publish';
         }
@@ -272,7 +272,7 @@ class USPP_Edit_Post {
         do_action( 'uspp_update_post', $this->post_id, $postdata, $this->update, $this );
 
         if ( isset( $_POST['save-as-draft'] ) ) {
-            wp_redirect( get_permalink( usp_get_option( 'uspp_public_form_page' ) ) . '?draft=saved&rcl-post-edit=' . $this->post_id );
+            wp_redirect( get_permalink( usp_get_option( 'uspp_public_form_page' ) ) . '?draft=saved&uspp-post-edit=' . $this->post_id );
             exit;
         }
 

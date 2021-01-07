@@ -25,7 +25,7 @@ function uspp_get_publics_options_page( $options ) {
         $types[$post_type->name] = $post_type->label;
     }
 
-    $pages = rcl_get_pages_ids();
+    $pages = usp_get_pages_ids();
 
     $options->add_box( 'publicpost', array(
         'title' => __( 'Publication settings', 'usp-publication' ),

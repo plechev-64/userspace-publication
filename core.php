@@ -1,28 +1,28 @@
 <?php
 
 //deprecated
-//function rcl_get_custom_post_meta( $post_id ) {
+//function uspp_get_custom_post_meta( $post_id ) {
 //
 //    USP()->use_module( 'fields' );
 //
-//    $get_fields = rcl_get_custom_fields( $post_id );
+//    $get_fields = uspp_get_custom_fields( $post_id );
 //
 //    if ( $get_fields ) {
 //        $show_custom_field = '';
-//        $cf                = new Rcl_Custom_Fields();
+//        $cf                = new USPP_Custom_Fields();
 //        foreach ( $get_fields as $custom_field ) {
 //            $custom_field          = apply_filters( 'uspp_custom_post_meta', $custom_field );
 //            if ( ! $custom_field || ! isset( $custom_field['slug'] ) || ! $custom_field['slug'] )
 //                continue;
 //            $custom_field['value'] = get_post_meta( $post_id, $custom_field['slug'], true );
-//            $show_custom_field     .= Rcl_Field::setup( $custom_field )->get_field_value( 'title' );
+//            $show_custom_field     .= USP_Field::setup( $custom_field )->get_field_value( 'title' );
 //        }
 //
 //        return $show_custom_field;
 //    }
 //}
 
-function rcl_get_postslist( $post_type, $type_name ) {
+function uspp_get_postslist( $post_type, $type_name ) {
     global $user_LK;
 
     if ( ! class_exists( 'USPP_Post_List' ) )
@@ -33,12 +33,12 @@ function rcl_get_postslist( $post_type, $type_name ) {
     return $list->get_postlist_block();
 }
 
-function rcl_tab_postform( $master_id ) {
+function uspp_tab_postform( $master_id ) {
     return do_shortcode( '[public-form form_id="' . usp_get_option( 'uspp_id_public_form', 1 ) . '"]' );
 }
 
 //Прикрепление новой миниатюры к публикации из произвольного места на сервере
-/* function rcl_add_thumbnail_post( $post_id, $filepath ) {
+/* function uspp_add_thumbnail_post( $post_id, $filepath ) {
 
   require_once(ABSPATH . "wp-admin" . '/includes/image.php');
   require_once(ABSPATH . "wp-admin" . '/includes/file.php');
@@ -76,7 +76,7 @@ function rcl_tab_postform( $master_id ) {
   update_post_meta( $post_id, '_thumbnail_id', $attach_id );
   } */
 
-function rcl_edit_post_button_html( $post_id ) {
+function uspp_edit_post_button_html( $post_id ) {
     return '<p class="post-edit-button">'
         . '<a title="' . __( 'Edit', 'usp-publication' ) . '" object-id="none" href="' . get_edit_post_link( $post_id ) . '">'
         . '<i class="uspi fa-edit"></i>'
@@ -84,12 +84,15 @@ function rcl_edit_post_button_html( $post_id ) {
         . '</p>';
 }
 
-function rcl_get_editor_content( $post_content ) {
-    global $rcl_box;
+// don't used function
+function uspp_get_editor_content( $post_content ) {
+    global $uspp_box;
 
     remove_filter( 'the_content', 'add_button_bmk_in_content', 20 );
     remove_filter( 'the_content', 'get_notifi_bkms', 20 );
-    remove_filter( 'the_content', 'rcl_get_edit_post_button', 999 );
+
+    // don't used uspp_get_edit_post_button
+    remove_filter( 'the_content', 'uspp_get_edit_post_button', 999 );
 
     $content = apply_filters( 'the_content', $post_content );
 
@@ -109,21 +112,21 @@ function uspp_is_limit_editing( $post_date ) {
     return false;
 }
 
-function rcl_get_custom_fields_edit_box( $post_id, $post_type = false, $form_id = 1 ) {
+function uspp_get_custom_fields_edit_box( $post_id, $post_type = false, $form_id = 1 ) {
 
     $post = get_post( $post_id );
 
-    $RclForm = new USPP_Public_Form( array(
+    $usppForm = new USPP_Public_Form( array(
         'post_type' => $post->post_type,
         'post_id'   => $post_id,
         'form_id'   => $form_id
         ) );
 
-    $fields = $RclForm->get_custom_fields();
+    $fields = $usppForm->get_custom_fields();
 
-    if ( $RclForm->is_active_field( 'post_uploader' ) ) {
+    if ( $usppForm->is_active_field( 'post_uploader' ) ) {
 
-        $postUploader = $RclForm->get_field( 'post_uploader' );
+        $postUploader = $usppForm->get_field( 'post_uploader' );
         $postUploader->set_prop( 'fix_editor', 'content' );
 
         $fields = $fields ? [ 'post_uploader' => $postUploader ] + $fields : [ 'post_uploader' => $postUploader ];
@@ -141,7 +144,7 @@ function rcl_get_custom_fields_edit_box( $post_id, $post_type = false, $form_id 
         if ( ! isset( $field->slug ) )
             continue;
 
-        $content .= $RclForm->get_field_form( $field_id );
+        $content .= $usppForm->get_field_form( $field_id );
     }
 
     $content .= '</div>';
@@ -214,10 +217,10 @@ function uspp_update_post_custom_fields( $post_id, $id_form = false ) {
 
                 if ( $field->type == 'uploader' ) {
                     foreach ( $value as $val ) {
-                        rcl_delete_temp_media( $val );
+                        usp_delete_temp_media( $val );
                     }
                 } else if ( $field->type == 'file' ) {
-                    rcl_delete_temp_media( $value );
+                    usp_delete_temp_media( $value );
                 }
             }
         }
@@ -240,8 +243,8 @@ function uspp_update_post_custom_fields( $post_id, $id_form = false ) {
     }
 }
 
-usp_ajax_action( 'rcl_save_temp_async_uploaded_thumbnail', true );
-function rcl_save_temp_async_uploaded_thumbnail() {
+usp_ajax_action( 'uspp_save_temp_async_uploaded_thumbnail', true );
+function uspp_save_temp_async_uploaded_thumbnail() {
 
     $attachment_id  = intval( $_POST['attachment_id'] );
     $attachment_url = $_POST['attachment_url'];
@@ -252,19 +255,19 @@ function rcl_save_temp_async_uploaded_thumbnail() {
         );
     }
 
-    rcl_update_tempgallery( $attachment_id, $attachment_url );
+    uspp_update_tempgallery( $attachment_id, $attachment_url );
 
     return array(
         'save' => true
     );
 }
 
-function rcl_update_tempgallery( $attach_id, $attach_url ) {
+function uspp_update_tempgallery( $attach_id, $attach_url ) {
     global $user_ID;
 
     $user_id = ($user_ID) ? $user_ID : $_COOKIE['PHPSESSID'];
 
-    $temp_gal = get_site_option( 'rcl_tempgallery' );
+    $temp_gal = get_site_option( 'uspp_tempgallery' );
 
     if ( ! $temp_gal )
         $temp_gal = array();
@@ -274,12 +277,12 @@ function rcl_update_tempgallery( $attach_id, $attach_url ) {
         'url' => $attach_url
     );
 
-    update_site_option( 'rcl_tempgallery', $temp_gal );
+    update_site_option( 'uspp_tempgallery', $temp_gal );
 
     return $temp_gal;
 }
 
-function rcl_get_attachment_box( $attachment_id, $mime = 'image', $addToClick = true ) {
+function uspp_get_attachment_box( $attachment_id, $mime = 'image', $addToClick = true ) {
 
     if ( $mime == 'image' ) {
 
@@ -297,7 +300,8 @@ function rcl_get_attachment_box( $attachment_id, $mime = 'image', $addToClick = 
             $full_url  = wp_get_attachment_image_src( $attachment_id, 'full' );
             $act_sizes = wp_constrain_dimensions( $full_url[1], $full_url[2], $sizes[1], $sizes[2] );
 
-            return '<a onclick="rcl_add_image_in_form(this,\'<a href=' . $full_url[0] . '><img height=' . $act_sizes[1] . ' width=' . $act_sizes[0] . ' class=aligncenter  src=' . $full_url[0] . '></a>\');return false;" href="#">' . $image . '</a>';
+            // uspp_add_image_in_form not exists js function
+            return '<a onclick="uspp_add_image_in_form(this,\'<a href=' . $full_url[0] . '><img height=' . $act_sizes[1] . ' width=' . $act_sizes[0] . ' class=aligncenter  src=' . $full_url[0] . '></a>\');return false;" href="#">' . $image . '</a>';
         } else {
             return $image;
         }
@@ -311,29 +315,31 @@ function rcl_get_attachment_box( $attachment_id, $mime = 'image', $addToClick = 
 
             $url = wp_get_attachment_url( $attachment_id );
 
-            return '<a href="#" onclick="rcl_add_image_in_form(this,\'<a href=' . $url . '>' . $_post->post_title . '</a>\');return false;">' . $image . '</a>';
+            // uspp_add_image_in_form not exists js function
+            return '<a href="#" onclick="uspp_add_image_in_form(this,\'<a href=' . $url . '>' . $_post->post_title . '</a>\');return false;">' . $image . '</a>';
         } else {
             return $image;
         }
     }
 }
 
-function rcl_get_html_attachment( $attach_id, $mime_type, $addToClick = true ) {
+// don't used function
+function uspp_get_html_attachment( $attach_id, $mime_type, $addToClick = true ) {
 
     $mime = explode( '/', $mime_type );
 
     $content = "<li id='attachment-$attach_id' class='post-attachment attachment-$mime[0]' data-mime='$mime[0]' data-attachment-id='$attach_id'>";
-    $content .= rcl_button_fast_delete_post( $attach_id );
-    $content .= sprintf( "<label>%s</label>", apply_filters( 'uspp_post_attachment_html', rcl_get_attachment_box( $attach_id, $mime[0], $addToClick ), $attach_id, $mime ) );
+    $content .= uspp_button_fast_delete_post( $attach_id );
+    $content .= sprintf( "<label>%s</label>", apply_filters( 'uspp_post_attachment_html', uspp_get_attachment_box( $attach_id, $mime[0], $addToClick ), $attach_id, $mime ) );
     $content .= "</li>";
 
     return $content;
 }
 
-function rcl_button_fast_edit_post( $post_id ) {
-    return '<a class="rcl-edit-post uspp-service-button" data-post="' . $post_id . '" onclick="rcl_edit_post(this); return false;"><i class="uspi fa-edit"></i></a>';
+function uspp_button_fast_edit_post( $post_id ) {
+    return '<a class="uspp-edit-post uspp-service-button" data-post="' . $post_id . '" onclick="uspp_edit_post(this); return false;"><i class="uspi fa-edit"></i></a>';
 }
 
-function rcl_button_fast_delete_post( $post_id ) {
+function uspp_button_fast_delete_post( $post_id ) {
     return '<a class="uspp-delete-post uspp-service-button" data-post="' . $post_id . '" onclick="return confirm(\'' . __( 'Are you sure?', 'usp-publication' ) . '\')? uspp_delete_post(this): false;"><i class="uspi fa-trash"></i></a>';
 }

@@ -55,7 +55,7 @@ class USPP_Post_List {
             $p_list = array();
 
 
-            if ( function_exists( 'rcl_format_rating' ) ) {
+            if ( function_exists( 'uspr_format_rating' ) ) {
 
                 foreach ( $posts as $postdata ) {
                     foreach ( $postdata as $p ) {
@@ -63,7 +63,7 @@ class USPP_Post_List {
                     }
                 }
 
-                $rayt_p = rcl_get_rating_totals( array(
+                $rayt_p = uspr_get_rating_totals( array(
                     'object_id__in' => $p_list,
                     'number'        => -1,
                     'rating_type'   => $this->post_type
@@ -128,11 +128,11 @@ class USPP_Post_List {
             return false;
 
         /* deprecated, use class-usp-pager */
-        $rclnavi = new USP_PageNavi( $this->post_type . '-navi', $count, array( 'in_page' => $this->in_page ) );
+        $usppNavi = new USP_PageNavi( $this->post_type . '-navi', $count, array( 'in_page' => $this->in_page ) );
 
-        $this->offset = $rclnavi->offset;
+        $this->offset = $usppNavi->offset;
 
-        return $rclnavi->pagenavi();
+        return $usppNavi->pagenavi();
     }
 
 }

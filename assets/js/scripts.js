@@ -1,4 +1,4 @@
-var rcl_public_form = {
+var uspp_public_form = {
 	required: new Array()
 };
 
@@ -37,13 +37,13 @@ jQuery( document ).ready( function( $ ) {
 
 		var editor = $( this ).data( 'editor' );
 
-		var parent_id = ( ( rcl_url_params['rcl-post-edit'] ) ) ? rcl_url_params['rcl-post-edit'] : 0;
+		var parent_id = ( ( usp_url_params['uspp-post-edit'] ) ) ? usp_url_params['uspp-post-edit'] : 0;
 
 		wp.media.model.settings.post.id = parent_id;
 
 		wp.media.featuredImage.set = function( thumbnail_id ) {
 
-			rcl_get_post_thumbnail_html( thumbnail_id );
+			uspp_get_post_thumbnail_html( thumbnail_id );
 
 		};
 
@@ -58,7 +58,7 @@ jQuery( document ).ready( function( $ ) {
 		return false;
 	} );
 
-	jQuery( 'form[name="public_post"] input[name="rcl-edit-post"],form[name="public_post"] input[name="add_new_task"]' ).click( function() {
+	jQuery( 'form[name="public_post"] input[name="uspp-edit-post"],form[name="public_post"] input[name="add_new_task"]' ).click( function() {
 		var error = 0;
 		jQuery( 'form[name="public_post"]' ).find( ':input' ).each( function() {
 			for ( var i = 0; i < field.length; i++ ) {
@@ -80,8 +80,8 @@ jQuery( document ).ready( function( $ ) {
 
 } );
 
-usp_add_action( 'uspp_init_public_form', 'rcl_setup_async_upload' );
-function rcl_setup_async_upload() {
+usp_add_action( 'uspp_init_public_form', 'uspp_setup_async_upload' );
+function uspp_setup_async_upload() {
 
 	if ( typeof wp == 'undefined' || !wp.Uploader )
 		return false;
@@ -92,7 +92,7 @@ function rcl_setup_async_upload() {
 				return false;
 			usp_ajax( {
 				data: {
-					action: 'rcl_save_temp_async_uploaded_thumbnail',
+					action: 'uspp_save_temp_async_uploaded_thumbnail',
 					attachment_id: attachment.id,
 					attachment_url: attachment.attributes.url
 				}
@@ -110,13 +110,13 @@ function uspp_init_click_post_thumbnail() {
 	} );
 }
 
-function rcl_get_post_thumbnail_html( thumbnail_id ) {
+function uspp_get_post_thumbnail_html( thumbnail_id ) {
 
 	usp_preloader_show( jQuery( '.uspp-public-form' ) );
 
 	usp_ajax( {
 		data: {
-			action: 'rcl_get_post_thumbnail_html',
+			action: 'uspp_get_post_thumbnail_html',
 			thumbnail_id: thumbnail_id
 		},
 		success: function( result ) {
@@ -127,7 +127,7 @@ function rcl_get_post_thumbnail_html( thumbnail_id ) {
 
 }
 
-function rcl_remove_post_thumbnail() {
+function uspp_remove_post_thumbnail() {
 	jQuery( '#uspp-thumbnail-post .thumbnail-image' ).animateCss( 'flipOutX', function( e ) {
 		jQuery( e ).empty();
 	} );
@@ -139,7 +139,7 @@ function uspp_delete_post( element ) {
 	usp_preloader_show( jQuery( element ).parents( 'li' ) );
 
 	var objectData = {
-		action: 'rcl_ajax_delete_post',
+		action: 'uspp_ajax_delete_post',
 		post_id: jQuery( element ).data( 'post' )
 	};
 
@@ -172,18 +172,18 @@ function uspp_delete_thumbnail_attachment( data ) {
 		var currentThumbId = jQuery( '#uspp-thumbnail-post .thumbnail-id' ).val();
 
 		if ( currentThumbId == data['post_id'] )
-			rcl_remove_post_thumbnail();
+			uspp_remove_post_thumbnail();
 	}
 
 }
 
-function rcl_edit_post( element ) {
+function uspp_edit_post( element ) {
 
 	usp_preloader_show( jQuery( '#lk-content' ) );
 
 	usp_ajax( {
 		data: {
-			action: 'rcl_get_edit_postdata',
+			action: 'uspp_get_edit_postdata',
 			post_id: jQuery( element ).data( 'post' )
 		},
 		success: function( data ) {
@@ -192,17 +192,17 @@ function rcl_edit_post( element ) {
 
 				ssi_modal.show( {
 					title: USP.local.edit_box_title,
-					className: 'rcl-edit-post-form',
+					className: 'uspp-edit-post-form',
 					sizeClass: 'small',
 					buttons: [ {
 							label: USP.local.save,
 							closeAfter: false,
 							method: function() {
 
-								usp_preloader_show( '#rcl-popup-content form' );
+								usp_preloader_show( '#usp-popup-content form' );
 
 								usp_ajax( {
-									data: 'action=rcl_edit_postdata&' + jQuery( '#rcl-popup-content form' ).serialize()
+									data: 'action=uspp_edit_postdata&' + jQuery( '#usp-popup-content form' ).serialize()
 								} );
 
 							}
@@ -210,7 +210,7 @@ function rcl_edit_post( element ) {
 							label: USP.local.close,
 							closeAfter: true
 						} ],
-					content: '<div id="rcl-popup-content">' + data['content'] + '</div>'
+					content: '<div id="usp-popup-content">' + data['content'] + '</div>'
 				} );
 			}
 		}
@@ -218,13 +218,13 @@ function rcl_edit_post( element ) {
 
 }
 
-function rcl_preview( e ) {
+function uspp_preview( e ) {
 
 	var submit = jQuery( e );
 	var formblock = submit.parents( 'form' );
 	var post_type = formblock.data( 'post_type' );
 
-	if ( !rcl_check_required_fields( formblock ) )
+	if ( !uspp_check_required_fields( formblock ) )
 		return false;
 
 	usp_preloader_show( formblock );
@@ -240,7 +240,7 @@ function rcl_preview( e ) {
 	var button_preview = formblock.find( 'input[name="button-preview"]' ).val();
 
 	usp_ajax( {
-		data: 'action=rcl_preview_post&publish=0&' + formblock.serialize(),
+		data: 'action=uspp_preview_post&publish=0&' + formblock.serialize(),
 		error: function( data ) {
 			submit.attr( 'disabled', false ).val( USP.local.preview );
 		},
@@ -265,7 +265,7 @@ function rcl_preview( e ) {
 						label: USP.local.save_draft,
 						closeAfter: false,
 						method: function() {
-							rcl_save_draft();
+							uspp_save_draft();
 						}
 					};
 				}
@@ -285,7 +285,7 @@ function rcl_preview( e ) {
 					title: USP.local.preview,
 					className: 'uspp-preview-post',
 					buttons: buttons,
-					content: '<div id="rcl-preview">' + data['content'] + '</div>'
+					content: '<div id="usp-preview">' + data['content'] + '</div>'
 				} );
 
 				return true;
@@ -298,12 +298,12 @@ function rcl_preview( e ) {
 
 }
 
-function rcl_save_draft( e ) {
+function uspp_save_draft( e ) {
 
 	if ( !e )
-		e = jQuery( '#rcl-draft-post' );
+		e = jQuery( '#uspp-draft-post' );
 
-	if ( !rcl_check_publish( e ) )
+	if ( !uspp_check_publish( e ) )
 		return false;
 
 	jQuery( e ).after( '<input type="hidden" name="save-as-draft" value=1>' );
@@ -311,12 +311,12 @@ function rcl_save_draft( e ) {
 	jQuery( 'form.uspp-public-form' ).submit();
 }
 
-function rcl_check_publish( e ) {
+function uspp_check_publish( e ) {
 
 	var submit = jQuery( e );
 	var formblock = submit.parents( 'form' );
 
-	if ( !rcl_check_required_fields( formblock ) )
+	if ( !uspp_check_required_fields( formblock ) )
 		return false;
 
 	return true;
@@ -328,7 +328,7 @@ function uspp_publish( e ) {
 
 	var post_type = formblock.data( 'post_type' );
 
-	if ( !rcl_check_required_fields( formblock ) )
+	if ( !uspp_check_required_fields( formblock ) )
 		return false;
 
 	usp_preloader_show( formblock );
@@ -340,7 +340,7 @@ function uspp_publish( e ) {
 	}
 
 	usp_ajax( {
-		data: 'action=rcl_preview_post&publish=1&' + formblock.serialize(),
+		data: 'action=uspp_preview_post&publish=1&' + formblock.serialize(),
 		success: function( data ) {
 
 			if ( data.submit ) {
@@ -355,11 +355,11 @@ function uspp_publish( e ) {
 
 }
 
-function rcl_check_required_fields( form ) {
+function uspp_check_required_fields( form ) {
 
-	var rclFormFactory = new USPForm( form );
+	var usppFormFactory = new USPForm( form );
 
-	rclFormFactory.addChekForm( 'checkCats', {
+	usppFormFactory.addChekForm( 'checkCats', {
 		isValid: function() {
 			var valid = true;
 			if ( this.form.find( 'input[name="cats[]"]' ).length > 0 ) {
@@ -376,16 +376,16 @@ function rcl_check_required_fields( form ) {
 
 	} );
 
-	return rclFormFactory.validate();
+	return usppFormFactory.validate();
 
 }
 
-function rcl_get_prefiew_content( formblock, iframe ) {
+function uspp_get_prefiew_content( formblock, iframe ) {
 	formblock.find( 'textarea[name="post_content"]' ).html( iframe );
 	return formblock.serialize();
 }
 
-function rcl_preview_close( e ) {
+function uspp_preview_close( e ) {
 	ssi_modal.close();
 }
 
@@ -404,21 +404,21 @@ function uspp_init_public_form( post ) {
 		post_status = post.post_status;
 
 	jQuery( 'form.uspp-public-form' ).find( ':required' ).each( function() {
-		var i = rcl_public_form.required.length;
-		rcl_public_form.required[i] = jQuery( this ).attr( 'name' );
+		var i = uspp_public_form.required.length;
+		uspp_public_form.required[i] = jQuery( this ).attr( 'name' );
 	} );
 
 	var maxsize = size_files * 1024 * 1024;
 
-	usp_add_dropzone( '#rcl-public-dropzone-' + post_type );
+	usp_add_dropzone( '#uspp-public-dropzone-' + post_type );
 
 	jQuery( '#upload-public-form-' + post_type ).fileupload( {
 		dataType: 'json',
 		type: 'POST',
-		dropZone: jQuery( '#rcl-public-dropzone-' + post_type ),
+		dropZone: jQuery( '#uspp-public-dropzone-' + post_type ),
 		url: USP.ajaxurl,
 		formData: {
-			action: 'rcl_imagepost_upload',
+			action: 'uspp_imagepost_upload',
 			post_type: post_type,
 			post_id: post_id,
 			form_id: post.form_id,
@@ -470,7 +470,8 @@ function uspp_init_public_form( post ) {
 	} );
 }
 
-function rcl_init_thumbnail_uploader( e, options ) {
+// not used
+function uspp_init_thumbnail_uploader( e, options ) {
 
 	var form = jQuery( e ).parents( 'form' );
 
@@ -486,7 +487,7 @@ function rcl_init_thumbnail_uploader( e, options ) {
 		type: 'POST',
 		url: USP.ajaxurl,
 		formData: {
-			action: 'rcl_imagepost_upload',
+			action: 'uspp_imagepost_upload',
 			post_type: post_type,
 			post_id: post_id,
 			ext_types: ext_types,
@@ -539,13 +540,13 @@ function rcl_init_thumbnail_uploader( e, options ) {
 
 }
 
-function rcl_set_post_thumbnail( attach_id, parent_id, e ) {
+function uspp_set_post_thumbnail( attach_id, parent_id, e ) {
 
 	usp_preloader_show( jQuery( '.gallery-attachment-' + attach_id ) );
 
 	usp_ajax( {
 		data: {
-			action: 'rcl_set_post_thumbnail',
+			action: 'uspp_set_post_thumbnail',
 			thumbnail_id: attach_id,
 			parent_id: parent_id,
 			form_id: jQuery( 'form.uspp-public-form input[name="form_id"]' ).val(),
@@ -558,9 +559,9 @@ function rcl_set_post_thumbnail( attach_id, parent_id, e ) {
 
 }
 
-function rcl_switch_attachment_in_gallery( attachment_id, e ) {
+function uspp_switch_attachment_in_gallery( attachment_id, e ) {
 
-	var button = jQuery( '.rcl-switch-gallery-button-' + attachment_id );
+	var button = jQuery( '.uspp-switch-gallery-button-' + attachment_id );
 
 	if ( button.children( 'i' ).hasClass( 'fa-toggle-off' ) ) {
 		button.children( 'input' ).val( attachment_id );

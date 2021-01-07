@@ -37,8 +37,8 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
         $this->init_properties( $args );
 
-        if ( isset( $_GET['rcl-post-edit'] ) ) {
-            $this->post_id = intval( $_GET['rcl-post-edit'] );
+        if ( isset( $_GET['uspp-post-edit'] ) ) {
+            $this->post_id = intval( $_GET['uspp-post-edit'] );
         }
 
         if ( $this->post_id ) {
@@ -170,7 +170,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
             if ( ! $this->user_can['edit'] && $this->post_type == 'post-group' ) {
 
-                $this->user_can['edit'] = (rcl_can_user_edit_post_group( $this->post_id )) ? true : false;
+                $this->user_can['edit'] = (uspg_can_user_edit_post_group( $this->post_id )) ? true : false;
             }
 
             $this->user_can['delete'] = $this->user_can['edit'];
@@ -261,7 +261,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
             $attrsForm[] = $k . '="' . $v . '"';
         }
 
-        $content .= '<div class="uspp-public-box rcl-form">';
+        $content .= '<div class="uspp-public-box usp-form">';
 
         $buttons = [];
 
@@ -304,8 +304,8 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
         $content .= '<input type="hidden" name="post_id" value="' . $this->post_id . '">';
         $content .= '<input type="hidden" name="post_type" value="' . $this->post_type . '">';
-        $content .= '<input type="hidden" name="rcl-edit-post" value="1">';
-        $content .= wp_nonce_field( 'rcl-edit-post', '_wpnonce', true, false );
+        $content .= '<input type="hidden" name="uspp-edit-post" value="1">';
+        $content .= wp_nonce_field( 'uspp-edit-post', '_wpnonce', true, false );
         $content .= '</form>';
 
         if ( $this->user_can['delete'] && $this->options['delete'] ) {
@@ -335,23 +335,23 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
                 'attrs' => array(
                     'target' => '_blank'
                 ),
-                'id'    => 'rcl-view-post',
+                'id'    => 'uspp-view-post',
                 'icon'  => 'fa-share-square'
             );
         }
 
         if ( $this->options['draft'] && $this->user_can['draft'] ) {
             $buttons['draft'] = array(
-                'onclick' => 'rcl_save_draft(this); return false;',
+                'onclick' => 'uspp_save_draft(this); return false;',
                 'label'   => __( 'Save as Draft', 'usp-publication' ),
-                'id'      => 'rcl-draft-post',
+                'id'      => 'uspp-draft-post',
                 'icon'    => 'fa-shield'
             );
         }
 
         if ( $this->options['preview'] ) {
             $buttons['preview'] = array(
-                'onclick' => 'rcl_preview(this); return false;',
+                'onclick' => 'uspp_preview(this); return false;',
                 'label'   => __( 'Preview', 'usp-publication' ),
                 'id'      => 'uspp-preview-post',
                 'icon'    => 'fa-eye'
@@ -361,7 +361,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         $buttons['publish'] = array(
             'onclick' => 'uspp_publish(this); return false;',
             'label'   => __( 'Publish', 'usp-publication' ),
-            'id'      => 'rcl-publish-post',
+            'id'      => 'uspp-publish-post',
             'icon'    => 'fa-print'
         );
 
@@ -527,17 +527,17 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
             if ( $this->post_type == 'post-group' ) {
 
-                global $rcl_group;
+                global $uspg_group;
 
-                if ( isset( $rcl_group->term_id ) && $rcl_group->term_id ) {
-                    $group_id = $rcl_group->term_id;
+                if ( isset( $uspg_group->term_id ) && $uspg_group->term_id ) {
+                    $group_id = $uspg_group->term_id;
                 } else if ( $this->post_id ) {
-                    $group_id = rcl_get_group_id_by_post( $this->post_id );
+                    $group_id = uspg_get_group_id_by_post( $this->post_id );
                 }
 
-                $options_gr = rcl_get_options_group( $group_id );
+                $options_gr = uspg_get_options_group( $group_id );
 
-                $termList = rcl_get_tags_list_group( $options_gr['tags'], $this->post_id );
+                $termList = uspg_get_tags_list_group( $options_gr['tags'], $this->post_id );
 
                 if ( ! $termList )
                     return false;
@@ -651,7 +651,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         if ( ! $values )
             return false;
 
-        return Rcl_Field::setup( [
+        return USP_Field::setup( [
                 'type'       => 'checkbox',
                 'slug'       => $taxonomy . '-tags',
                 'input_name' => 'tags[' . $taxonomy . ']',
@@ -712,20 +712,20 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
         $args = array(
             'type'        => 'text',
-            'id'          => 'rcl-tags-' . $taxonomy,
+            'id'          => 'uspp-tags-' . $taxonomy,
             'name'        => 'tags[' . $taxonomy . ']',
             'placeholder' => $this->taxonomies[$taxonomy]->labels->new_item_name,
             'label'       => '<span>' . $this->taxonomies[$taxonomy]->labels->add_new_item . '</span><br><small>' . $this->taxonomies[$taxonomy]->labels->name . ' ' . __( 'It separates by push of Enter button', 'usp-publication' ) . '</small>'
         );
 
-        $fields = rcl_form_field( $args );
+        $fields = uspp_form_field( $args );
 
         $fields .= "<script>
 		jQuery(window).on('load', function(){
-			jQuery('#rcl-tags-" . $taxonomy . "').magicSuggest({
+			jQuery('#uspp-tags-" . $taxonomy . "').magicSuggest({
 				data: USP.ajaxurl,
 				dataUrlParams: { action: 'uspp_get_like_tags', taxonomy: '" . $taxonomy . "', ajax_nonce:USP.nonce },
-				noSuggestionText: '" . __( "Not found", "rcl-public" ) . "',
+				noSuggestionText: '" . __( "Not found", "usp-publication" ) . "',
 				ajaxConfig: {
 					  xhrFields: {
 						withCredentials: true

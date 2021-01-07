@@ -1,13 +1,13 @@
 <?php
 
 //удаление фото приложенных к публикации через загрузчик плагина
-usp_ajax_action( 'rcl_ajax_delete_post', true );
-function rcl_ajax_delete_post() {
+usp_ajax_action( 'uspp_ajax_delete_post', true );
+function uspp_ajax_delete_post() {
     global $user_ID;
 
     $user_id = ($user_ID) ? $user_ID : $_COOKIE['PHPSESSID'];
 
-    $temps    = get_site_option( 'rcl_tempgallery' );
+    $temps    = get_site_option( 'uspp_tempgallery' );
     $temp_gal = $temps[$user_id];
 
     if ( $temp_gal ) {
@@ -26,7 +26,7 @@ function rcl_ajax_delete_post() {
             unset( $temps[$user_id] );
     }
 
-    update_site_option( 'rcl_tempgallery', $temps );
+    update_site_option( 'uspp_tempgallery', $temps );
 
     $post = get_post( intval( $_POST['post_id'] ) );
 
@@ -49,8 +49,8 @@ function rcl_ajax_delete_post() {
 }
 
 //вызов быстрой формы редактирования публикации
-usp_ajax_action( 'rcl_get_edit_postdata', false );
-function rcl_get_edit_postdata() {
+usp_ajax_action( 'uspp_get_edit_postdata', false );
+function uspp_get_edit_postdata() {
     global $user_ID;
 
     $post_id = intval( $_POST['post_id'] );
@@ -59,7 +59,7 @@ function rcl_get_edit_postdata() {
     if ( $user_ID ) {
         $log['result']  = 100;
         $log['content'] = "
-        <form id='rcl-edit-form' method='post'>
+        <form id='uspp-edit-form' method='post'>
                 <label>" . __( "Name", 'usp-publication' ) . ":</label>
                  <input type='text' name='post_title' value='$post->post_title'>
                  <label>" . __( "Description", 'usp-publication' ) . ":</label>
@@ -74,8 +74,8 @@ function rcl_get_edit_postdata() {
 }
 
 //сохранение изменений в быстрой форме редактирования
-usp_ajax_action( 'rcl_edit_postdata', false );
-function rcl_edit_postdata() {
+usp_ajax_action( 'uspp_edit_postdata', false );
+function uspp_edit_postdata() {
     global $wpdb;
 
     $post_array                 = array();
@@ -100,7 +100,7 @@ function rcl_edit_postdata() {
     );
 }
 
-function rcl_edit_post() {
+function uspp_edit_post() {
     $edit = new USPP_Edit_Post();
     $edit->update_post();
 }
@@ -128,12 +128,13 @@ function uspp_get_like_tags() {
     wp_send_json( $tags );
 }
 
-add_filter( 'uspp_preview_post_content', 'rcl_add_registered_scripts' );
-usp_ajax_action( 'rcl_preview_post', true );
-function rcl_preview_post() {
+add_filter( 'uspp_preview_post_content', 'usp_add_registered_scripts' );
+
+usp_ajax_action( 'uspp_preview_post', true );
+function uspp_preview_post() {
     global $user_ID;
 
-    rcl_reset_wp_dependencies();
+    usp_reset_wp_dependencies();
 
     $log      = array();
     $postdata = $_POST;
@@ -229,7 +230,7 @@ function rcl_preview_post() {
 
         if ( ! $types || in_array( $postdata['post_type'], $types ) ) {
 
-            $fieldsBox = '<div class="rcl-custom-fields">';
+            $fieldsBox = '<div class="usp-custom-fields">';
 
             foreach ( $customFields as $field_id => $field ) {
                 $field->set_prop( 'value', isset( $_POST[$field_id] ) ? $_POST[$field_id] : false  );
@@ -259,7 +260,7 @@ function rcl_preview_post() {
         }
 
         if ( $gallery ) {
-            $post_content = '<div id="primary-preview-gallery">' . rcl_get_post_gallery( 'preview', $gallery ) . '</div>' . $post_content;
+            $post_content = '<div id="primary-preview-gallery">' . uspp_get_post_gallery( 'preview', $gallery ) . '</div>' . $post_content;
         }
     }
 
@@ -277,8 +278,8 @@ function rcl_preview_post() {
     );
 }
 
-usp_ajax_action( 'rcl_set_post_thumbnail', true );
-function rcl_set_post_thumbnail() {
+usp_ajax_action( 'uspp_set_post_thumbnail', true );
+function uspp_set_post_thumbnail() {
 
     $thumbnail_id = intval( $_POST['thumbnail_id'] );
     $parent_id    = intval( $_POST['parent_id'] );
@@ -316,8 +317,8 @@ function rcl_set_post_thumbnail() {
     return $result;
 }
 
-add_action( 'usp_upload', 'rcl_upload_post_thumbnail', 10, 2 );
-function rcl_upload_post_thumbnail( $uploads, $uploader ) {
+add_action( 'usp_upload', 'uspp_upload_post_thumbnail', 10, 2 );
+function uspp_upload_post_thumbnail( $uploads, $uploader ) {
 
     if ( $uploader->uploader_id != 'post_thumbnail' )
         return false;
@@ -329,7 +330,7 @@ function rcl_upload_post_thumbnail( $uploads, $uploader ) {
         update_post_meta( $uploader->post_parent, '_thumbnail_id', $thumbnail_id );
     } else {
 
-        rcl_add_temp_media( array(
+        usp_add_temp_media( array(
             'media_id'    => $thumbnail_id,
             'uploader_id' => $uploader->uploader_id
         ) );

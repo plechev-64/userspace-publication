@@ -11,12 +11,6 @@
 .uspp_author_postlist .usp-table__row:not(.usp-table__row-header) > div:nth-child(2) {
     justify-content: space-between;
 }
-.uspp_author_postlist .rating-rcl {
-    hyphens: none;
-    padding: 0 0 0 8px;
-    word-break: normal;
-    word-wrap: normal;
-}
 @media screen and (max-width:768px) {
     .uspp_author_postlist .usp-table__row-header ~ .usp-table__row .usp-table__cell::before {
         flex-basis: auto;
@@ -377,7 +371,7 @@ h3.pending-message {
 .mass-upload-box hr {
     margin: 3px;
 }
-.mass-upload-box .rcl-upload-button {
+.mass-upload-box .usp-upload-button {
     display: inline-block;
 }
 /*end*/

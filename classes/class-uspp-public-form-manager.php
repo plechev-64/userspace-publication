@@ -19,9 +19,9 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
             $types[$post_type->name] = $post_type->label;
         }
 
-        $content = '<div class="rcl-custom-fields-navi">';
+        $content = '<div class="usp-custom-fields-navi">';
 
-        $content .= '<ul class="rcl-types-list">';
+        $content .= '<ul class="usp-types-list">';
 
         foreach ( $types as $type => $name ) {
 
@@ -40,17 +40,17 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
 
         $form_id = 1;
 
-        $postForms = $wpdb->get_col( "SELECT option_name FROM " . $wpdb->options . " WHERE option_name LIKE 'rcl_fields_" . $this->post_type . "_%' AND option_name NOT LIKE '%_structure' ORDER BY option_id ASC" );
+        $postForms = $wpdb->get_col( "SELECT option_name FROM " . $wpdb->options . " WHERE option_name LIKE 'uspp_fields_" . $this->post_type . "_%' AND option_name NOT LIKE '%_structure' ORDER BY option_id ASC" );
 
         if ( $postForms )
             natcasesort( $postForms );
 
-        $content .= '<div class="rcl-custom-fields-navi">';
+        $content .= '<div class="usp-custom-fields-navi">';
 
-        $content .= '<ul class="rcl-types-list">';
+        $content .= '<ul class="usp-types-list">';
 
         foreach ( $postForms as $name ) {
-            preg_match( "/rcl_fields_" . $this->post_type . "_(\d+)\z/", $name, $matches );
+            preg_match( "/uspp_fields_" . $this->post_type . "_(\d+)\z/", $name, $matches );
 
             if ( ! $matches )
                 continue;
@@ -77,7 +77,7 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
             array(
                 'label'   => __( 'Copy', 'usp-publication' ),
                 'icon'    => 'fa-copy',
-                'onclick' => 'rcl_manager_copy_fields("' . $this->post_type . '_' . ($form_id + 1) . '");'
+                'onclick' => 'usp_manager_copy_fields("' . $this->post_type . '_' . ($form_id + 1) . '");'
             )
         );
 
@@ -98,7 +98,7 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
 
             $content .= '<div class="uspp-custom-fields-menu">';
 
-            $content .= '<ul class="rcl-types-list">';
+            $content .= '<ul class="usp-types-list">';
 
             foreach ( $actionButtons as $actionButton ) {
 

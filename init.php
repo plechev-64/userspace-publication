@@ -1,15 +1,15 @@
 <?php
 
-add_action( 'wp', 'rcl_deleted_post_notice' );
-function rcl_deleted_post_notice() {
+add_action( 'wp', 'uspp_deleted_post_notice' );
+function uspp_deleted_post_notice() {
     if ( isset( $_GET['public'] ) && $_GET['public'] == 'deleted' )
         add_action( 'usp_area_notice', function() {
             echo usp_get_notice( [ 'text' => __( 'The publication has been successfully removed!', 'usp-publication' ) ] );
         } );
 }
 
-add_filter( 'usp_init_js_variables', 'rcl_init_js_public_variables', 10 );
-function rcl_init_js_public_variables( $data ) {
+add_filter( 'usp_init_js_variables', 'uspp_init_js_public_variables', 10 );
+function uspp_init_js_public_variables( $data ) {
 
     $data['local']['preview']            = __( 'Preview', 'usp-publication' );
     $data['local']['publish']            = __( 'Publish', 'usp-publication' );
@@ -22,17 +22,17 @@ function rcl_init_js_public_variables( $data ) {
     return $data;
 }
 
-add_action( 'wp', 'rcl_edit_post_activate' );
-function rcl_edit_post_activate() {
+add_action( 'wp', 'uspp_edit_post_activate' );
+function uspp_edit_post_activate() {
     if ( defined( 'DOING_AJAX' ) && DOING_AJAX )
         return false;
-    if ( isset( $_POST['rcl-edit-post'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'rcl-edit-post' ) ) {
-        rcl_edit_post();
+    if ( isset( $_POST['uspp-edit-post'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'uspp-edit-post' ) ) {
+        uspp_edit_post();
     }
 }
 
-add_action( 'init', 'rcl_setup_author_role', 10 );
-function rcl_setup_author_role() {
+add_action( 'init', 'uspp_setup_author_role', 10 );
+function uspp_setup_author_role() {
     global $current_user;
 
     if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX )
@@ -45,8 +45,8 @@ function rcl_setup_author_role() {
     }
 }
 
-add_action( 'usp_init_tabs', 'rcl_init_publics_block', 20 );
-function rcl_init_publics_block() {
+add_action( 'usp_init_tabs', 'uspp_init_publics_block', 20 );
+function uspp_init_publics_block() {
 
     if ( usp_get_option( 'uspp_show_list_of_publications', 1 ) == 1 ) {
 
@@ -90,19 +90,19 @@ function rcl_init_publics_block() {
                     'title'    => __( 'Published', 'usp-publication' ) . ' "' . $name . '"',
                     'icon'     => 'fa-list',
                     'callback' => array(
-                        'name' => 'rcl_get_postslist',
+                        'name' => 'uspp_get_postslist',
                         'args' => array( $post_type, $name )
                     )
                 );
             }
 
-            rcl_tab( $tab_data );
+            usp_tab( $tab_data );
         }
     }
 
     if ( usp_get_option( 'uspp_tab_public_form', 1 ) == 1 ) {
 
-        rcl_tab(
+        usp_tab(
             array(
                 'id'      => 'postform',
                 'name'    => __( 'Publication', 'usp-publication' ),
@@ -112,7 +112,7 @@ function rcl_init_publics_block() {
                 'content' => array(
                     array(
                         'callback' => array(
-                            'name' => 'rcl_tab_postform'
+                            'name' => 'uspp_tab_postform'
                         )
                     )
                 )

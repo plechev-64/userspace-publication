@@ -7,8 +7,8 @@ function uspp_public_admin_scripts() {
     wp_enqueue_style( 'uspp_public_admin_style', plugin_dir_url( __FILE__ ) . 'admin/assets/style.css' );
 }
 
-add_action( 'admin_menu', 'rcl_admin_page_publicform', 30 );
-function rcl_admin_page_publicform() {
+add_action( 'admin_menu', 'uspp_admin_page_publicform', 30 );
+function uspp_admin_page_publicform() {
     add_submenu_page( 'manage-userspace', __( 'Form of publication', 'usp-publication' ), __( 'Form of publication', 'usp-publication' ), 'manage_options', 'manage-public-form', 'uspp_public_form_manager' );
 }
 
@@ -55,7 +55,7 @@ function uspp_custom_fields_list_posteditor( $post ) {
     if ( $post->ID && $post->post_type == 'post' )
         $form_id = get_post_meta( $post->ID, 'publicform-id', 1 );
 
-    $content = rcl_get_custom_fields_edit_box( $post->ID, $post->post_type, $form_id );
+    $content = uspp_get_custom_fields_edit_box( $post->ID, $post->post_type, $form_id );
 
     if ( ! $content )
         return false;
@@ -65,8 +65,8 @@ function uspp_custom_fields_list_posteditor( $post ) {
     echo '<input type="hidden" name="uspp_custom_fields_nonce" value="' . wp_create_nonce( __FILE__ ) . '" />';
 }
 
-add_action( 'save_post', 'rcl_custom_fields_update', 0 );
-function rcl_custom_fields_update( $post_id ) {
+add_action( 'save_post', 'uspp_custom_fields_update', 0 );
+function uspp_custom_fields_update( $post_id ) {
     if ( ! isset( $_POST['uspp_custom_fields_nonce'] ) )
         return false;
     if ( ! wp_verify_nonce( $_POST['uspp_custom_fields_nonce'], __FILE__ ) )
@@ -81,8 +81,8 @@ function rcl_custom_fields_update( $post_id ) {
     return $post_id;
 }
 
-add_action( 'admin_init', 'rcl_public_form_admin_actions', 10 );
-function rcl_public_form_admin_actions() {
+add_action( 'admin_init', 'uspp_public_form_admin_actions', 10 );
+function uspp_public_form_admin_actions() {
 
     if ( ! isset( $_GET['page'] ) || $_GET['page'] != 'manage-public-form' )
         return false;
@@ -96,7 +96,7 @@ function rcl_public_form_admin_actions() {
 
             $newFormId = $_GET['form-id'];
 
-            add_option( 'rcl_fields_post_' . $newFormId, array() );
+            add_option( 'uspp_fields_post_' . $newFormId, array() );
 
             wp_redirect( admin_url( 'admin.php?page=manage-public-form&post-type=post&form-id=' . $newFormId ) );
             exit;
@@ -107,7 +107,7 @@ function rcl_public_form_admin_actions() {
 
             $delFormId = $_GET['form-id'];
 
-            delete_site_option( 'rcl_fields_post_' . $delFormId );
+            delete_site_option( 'uspp_fields_post_' . $delFormId );
 
             wp_redirect( admin_url( 'admin.php?page=manage-public-form&post-type=post' ) );
             exit;
@@ -117,12 +117,12 @@ function rcl_public_form_admin_actions() {
 }
 
 /* deprecated: add_dashboard_metabox not used */
-//add_action( 'rcl_add_dashboard_metabox', 'rcl_add_publicpost_metabox' );
-//function rcl_add_publicpost_metabox( $screen ) {
-//    add_meta_box( 'rcl-publicpost-metabox', __( 'Posts awaiting approval', 'usp-publication' ), 'rcl_publicpost_metabox', $screen->id, 'column3' );
+//add_action( 'usp_add_dashboard_metabox', 'uspp_add_publicpost_metabox' );
+//function uspp_add_publicpost_metabox( $screen ) {
+//    add_meta_box( 'uspp-publicpost-metabox', __( 'Posts awaiting approval', 'usp-publication' ), 'uspp_publicpost_metabox', $screen->id, 'column3' );
 //}
 
-//function rcl_publicpost_metabox() {
+//function uspp_publicpost_metabox() {
 //
 //    $posts = get_posts( array( 'numberposts' => -1, 'post_type' => 'any', 'post_status' => 'pending' ) );
 //
