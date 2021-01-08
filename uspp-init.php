@@ -39,7 +39,7 @@ function uspp_autocomplete_scripts() {
 
 add_filter( 'usp_init_js_variables', 'uspp_public_add_js_locale', 10 );
 function uspp_public_add_js_locale( $data ) {
-    $data['errors']['cats_important'] = __( 'Choose a category', 'usp-publication' );
+    $data['errors']['cats_important'] = __( 'Choose a category', 'userspace-publication' );
     return $data;
 }
 
@@ -227,9 +227,9 @@ function uspp_delete_notice_author_post( $post_id ) {
 
     $post = get_post( $post_id );
 
-    $subject  = __( 'Your post has been deleted', 'usp-publication' );
-    $textmail = '<h3>' . __( 'Post', 'usp-publication' ) . ' "' . $post->post_title . '" ' . __( 'has been deleted', 'usp-publication' ) . '</h3>
-    <p>' . __( 'Notice of a moderator', 'usp-publication' ) . ': ' . $_POST['reason_content'] . '</p>';
+    $subject  = __( 'Your post has been deleted', 'userspace-publication' );
+    $textmail = '<h3>' . __( 'Post', 'userspace-publication' ) . ' "' . $post->post_title . '" ' . __( 'has been deleted', 'userspace-publication' ) . '</h3>
+    <p>' . __( 'Notice of a moderator', 'userspace-publication' ) . ': ' . $_POST['reason_content'] . '</p>';
 
     usp_mail( get_the_author_meta( 'user_email', $post->post_author ), $subject, $textmail );
 }
@@ -281,7 +281,7 @@ function uspp_setup_edit_post_button() {
         usp_post_bar_add_item( 'uspp-edit-post', array(
             'url'   => get_edit_post_link( $post->ID ),
             'icon'  => 'fa-edit',
-            'title' => __( 'Edit', 'usp-publication' )
+            'title' => __( 'Edit', 'userspace-publication' )
             )
         );
 
@@ -506,13 +506,13 @@ function uspp_send_mail_about_new_post( $post_id, $postData, $update ) {
     if ( $update || usp_check_access_console() )
         return false;
 
-    $title = __( 'New write', 'usp-publication' );
+    $title = __( 'New write', 'userspace-publication' );
     $email = get_site_option( 'admin_email' );
 
-    $textm = '<p>' . sprintf( __( 'An user added new write on the website "%s"', 'usp-publication' ), get_bloginfo( 'name' ) ) . '.</p>';
-    $textm .= '<p>' . __( 'The name of the write', 'usp-publication' ) . ': <a href="' . get_permalink( $post_id ) . '">' . get_the_title( $post_id ) . '</a>' . '</p>';
-    $textm .= '<p>' . __( 'The author of the write', 'usp-publication' ) . ': <a href="' . usp_get_user_url( $postData['post_author'] ) . '">' . get_the_author_meta( 'display_name', $postData['post_author'] ) . '</a>' . '</p>';
-    $textm .= '<p>' . __( 'Don\'t forget to check this write, probably it is waiting for your moderation', 'usp-publication' ) . '.</p>';
+    $textm = '<p>' . sprintf( __( 'An user added new write on the website "%s"', 'userspace-publication' ), get_bloginfo( 'name' ) ) . '.</p>';
+    $textm .= '<p>' . __( 'The name of the write', 'userspace-publication' ) . ': <a href="' . get_permalink( $post_id ) . '">' . get_the_title( $post_id ) . '</a>' . '</p>';
+    $textm .= '<p>' . __( 'The author of the write', 'userspace-publication' ) . ': <a href="' . usp_get_user_url( $postData['post_author'] ) . '">' . get_the_author_meta( 'display_name', $postData['post_author'] ) . '</a>' . '</p>';
+    $textm .= '<p>' . __( 'Don\'t forget to check this write, probably it is waiting for your moderation', 'userspace-publication' ) . '.</p>';
 
     usp_mail( $email, $title, $textm );
 }
@@ -535,7 +535,7 @@ function uspp_add_post_uploader_image_buttons( $items, $attachment_id, $uploader
 
         $items[] = array(
             'icon'    => 'fa-image',
-            'title'   => __( 'Appoint a thumbnail', 'usp-publication' ),
+            'title'   => __( 'Appoint a thumbnail', 'userspace-publication' ),
             'onclick' => 'uspp_set_post_thumbnail(' . $attachment_id . ',' . $uploader->post_parent . ',this);return false;'
         );
     }
@@ -558,7 +558,7 @@ function uspp_add_post_uploader_image_buttons( $items, $attachment_id, $uploader
         $items[] = array(
             'icon'    => ($postGallery && in_array( $attachment_id, $postGallery )) ? 'fa-toggle-on' : 'fa-toggle-off',
             'class'   => 'uspp-switch-gallery-button-' . $attachment_id,
-            'title'   => __( 'Output in a gallery', 'usp-publication' ),
+            'title'   => __( 'Output in a gallery', 'userspace-publication' ),
             'content' => '<input type="hidden" id="uspp-post-gallery-attachment-' . $attachment_id . '" name="uspp-post-gallery[]" value="' . $valueGallery . '">',
             'onclick' => 'uspp_switch_attachment_in_gallery(' . $attachment_id . ',this);return false;'
         );
@@ -603,7 +603,7 @@ function uspp_add_public_form_captcha( $form ) {
 
     $form .= '
       <div class="form-block-usp">
-        <label>' . __( 'Enter characters', 'usp-publication' ) . ' <span class="required">*</span></label>
+        <label>' . __( 'Enter characters', 'userspace-publication' ) . ' <span class="required">*</span></label>
         <img src="' . $captcha->img_src . '" alt="captcha" width="' . $captcha->img_size[0] . '" height="' . $captcha->img_size[1] . '" />
         <input id="usp_captcha_code" required name="usp_captcha_code" style="width: 160px;" size="' . $captcha->char_length . '" type="text" />
         <input id="usp_captcha_prefix" name="usp_captcha_prefix" type="hidden" value="' . $captcha->prefix . '" />
@@ -621,7 +621,7 @@ function uspp_check_public_form_captcha() {
         $usp_captcha_correct = usp_captcha_check_correct( $_POST['usp_captcha_code'], $_POST['usp_captcha_prefix'] );
 
         if ( ! $usp_captcha_correct ) {
-            wp_die( __( 'Incorrect CAPTCHA!', 'usp-publication' ) );
+            wp_die( __( 'Incorrect CAPTCHA!', 'userspace-publication' ) );
         }
     }
 }

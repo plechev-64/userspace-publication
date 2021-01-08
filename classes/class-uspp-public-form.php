@@ -112,13 +112,13 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         $guestFields = array(
             array(
                 'slug'     => 'name-user',
-                'title'    => __( 'Your Name', 'usp-publication' ),
+                'title'    => __( 'Your Name', 'userspace-publication' ),
                 'required' => 1,
                 'type'     => 'text'
             ),
             array(
                 'slug'     => 'email-user',
-                'title'    => __( 'Your E-mail', 'usp-publication' ),
+                'title'    => __( 'Your E-mail', 'userspace-publication' ),
                 'required' => 1,
                 'type'     => 'email'
             )
@@ -187,14 +187,14 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         if ( ! $this->user_can['publish'] ) {
 
             if ( ! $user_ID )
-                $errors[] = __( 'You must be logged in to post. Login or register', 'usp-publication' );
+                $errors[] = __( 'You must be logged in to post. Login or register', 'userspace-publication' );
             else if ( $this->post_type == 'post-group' ) {
-                $errors[] = __( 'Sorry, but you have no rights to publish in this group :(', 'usp-publication' );
+                $errors[] = __( 'Sorry, but you have no rights to publish in this group :(', 'userspace-publication' );
             } else {
-                $errors[] = __( 'Sorry, but you have no right to post on this site :(', 'usp-publication' );
+                $errors[] = __( 'Sorry, but you have no right to post on this site :(', 'userspace-publication' );
             }
         } else if ( $this->post_id && ! $this->user_can['edit'] ) {
-            $errors[] = __( 'You can not edit this publication :(', 'usp-publication' );
+            $errors[] = __( 'You can not edit this publication :(', 'userspace-publication' );
         }
 
         $errors = apply_filters( 'uspp_public_form_errors', $errors, $this );
@@ -229,7 +229,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         if ( isset( $_GET['draft'] ) && $_GET['draft'] == 'saved' ) {
             $content .= usp_get_notice( array(
                 'type' => 'success',
-                'text' => __( 'The draft has been saved successfully!', 'usp-publication' )
+                'text' => __( 'The draft has been saved successfully!', 'userspace-publication' )
                 ) );
         }
 
@@ -269,7 +269,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
             $buttons[] = [
                 'href'  => admin_url( 'admin.php?page=manage-public-form&post-type=' . $this->post_type . '&form-id=' . $this->form_id ),
-                'label' => __( 'Edit this form', 'usp-publication' ),
+                'label' => __( 'Edit this form', 'userspace-publication' ),
                 'icon'  => 'fa-list',
                 'type'  => 'clear'
             ];
@@ -331,7 +331,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         if ( $this->post_id ) {
             $buttons['gotopost'] = array(
                 'href'  => $this->post->post_status != 'publish' ? get_bloginfo( 'wpurl' ) . '/?p=' . $this->post_id . '&preview=true' : get_permalink( $this->post_id ),
-                'label' => __( 'Go to the post', 'usp-publication' ),
+                'label' => __( 'Go to the post', 'userspace-publication' ),
                 'attrs' => array(
                     'target' => '_blank'
                 ),
@@ -343,7 +343,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         if ( $this->options['draft'] && $this->user_can['draft'] ) {
             $buttons['draft'] = array(
                 'onclick' => 'uspp_save_draft(this); return false;',
-                'label'   => __( 'Save as Draft', 'usp-publication' ),
+                'label'   => __( 'Save as Draft', 'userspace-publication' ),
                 'id'      => 'uspp-draft-post',
                 'icon'    => 'fa-shield'
             );
@@ -352,7 +352,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         if ( $this->options['preview'] ) {
             $buttons['preview'] = array(
                 'onclick' => 'uspp_preview(this); return false;',
-                'label'   => __( 'Preview', 'usp-publication' ),
+                'label'   => __( 'Preview', 'userspace-publication' ),
                 'id'      => 'uspp-preview-post',
                 'icon'    => 'fa-eye'
             );
@@ -360,7 +360,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
         $buttons['publish'] = array(
             'onclick' => 'uspp_publish(this); return false;',
-            'label'   => __( 'Publish', 'usp-publication' ),
+            'label'   => __( 'Publish', 'userspace-publication' ),
             'id'      => 'uspp-publish-post',
             'icon'    => 'fa-print'
         );
@@ -715,7 +715,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
             'id'          => 'uspp-tags-' . $taxonomy,
             'name'        => 'tags[' . $taxonomy . ']',
             'placeholder' => $this->taxonomies[$taxonomy]->labels->new_item_name,
-            'label'       => '<span>' . $this->taxonomies[$taxonomy]->labels->add_new_item . '</span><br><small>' . $this->taxonomies[$taxonomy]->labels->name . ' ' . __( 'It separates by push of Enter button', 'usp-publication' ) . '</small>'
+            'label'       => '<span>' . $this->taxonomies[$taxonomy]->labels->add_new_item . '</span><br><small>' . $this->taxonomies[$taxonomy]->labels->name . ' ' . __( 'It separates by push of Enter button', 'userspace-publication' ) . '</small>'
         );
 
         $fields = uspp_form_field( $args );
@@ -800,20 +800,20 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
             $content = '<div id="uspp-delete-post">
 						' . usp_get_button( array(
-                    'label' => __( 'Delete post', 'usp-publication' ),
+                    'label' => __( 'Delete post', 'userspace-publication' ),
                     'class' => array( 'public-form-button delete-toggle' ),
                     'icon'  => 'fa-trash'
                 ) ) . '
 						<div class="delete-form-contayner">
-							<form action="" method="post"  onsubmit="return confirm(\'' . __( 'Are you sure?', 'usp-publication' ) . '\');">
+							<form action="" method="post"  onsubmit="return confirm(\'' . __( 'Are you sure?', 'userspace-publication' ) . '\');">
 							' . wp_nonce_field( 'uspp-delete-post', '_wpnonce', true, false ) . '
 							' . $this->get_reasons_list() . '
-							<label>' . __( 'or enter your own', 'usp-publication' ) . '</label>
+							<label>' . __( 'or enter your own', 'userspace-publication' ) . '</label>
 							<textarea required id="reason_content" name="reason_content"></textarea>
-							<p><input type="checkbox" name="no-reason" onclick="(!document.getElementById(\'reason_content\').getAttribute(\'disabled\')) ? document.getElementById(\'reason_content\').setAttribute(\'disabled\', \'disabled\') : document.getElementById(\'reason_content\').removeAttribute(\'disabled\')" value="1"> ' . __( 'Without notice', 'usp-publication' ) . '</p>
+							<p><input type="checkbox" name="no-reason" onclick="(!document.getElementById(\'reason_content\').getAttribute(\'disabled\')) ? document.getElementById(\'reason_content\').setAttribute(\'disabled\', \'disabled\') : document.getElementById(\'reason_content\').removeAttribute(\'disabled\')" value="1"> ' . __( 'Without notice', 'userspace-publication' ) . '</p>
 							' . usp_get_button( array(
                     'submit' => true,
-                    'label'  => __( 'Delete post', 'usp-publication' ),
+                    'label'  => __( 'Delete post', 'userspace-publication' ),
                     'icon'   => 'fa-trash'
                 ) ) . '<input type="hidden" name="uspp-delete-post" value="1">
 							<input type="hidden" name="post_id" value="' . $this->post_id . '">
@@ -822,11 +822,11 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 					</div>';
         } else {
 
-            $content = '<form method="post" action="" onsubmit="return confirm(\'' . __( 'Are you sure?', 'usp-publication' ) . '\');">
+            $content = '<form method="post" action="" onsubmit="return confirm(\'' . __( 'Are you sure?', 'userspace-publication' ) . '\');">
 						' . wp_nonce_field( 'uspp-delete-post', '_wpnonce', true, false ) . '
 						' . usp_get_button( array(
                     'submit' => true,
-                    'label'  => __( 'Delete post', 'usp-publication' ),
+                    'label'  => __( 'Delete post', 'userspace-publication' ),
                     //'class'	 => array( 'delete-post-submit public-form-button' ),
                     'icon'   => 'fa-trash'
                 ) ) . '
@@ -842,16 +842,16 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
         $reasons = array(
             array(
-                'value'   => __( 'Does not correspond the topic', 'usp-publication' ),
-                'content' => __( 'The publication does not correspond to the site topic', 'usp-publication' ),
+                'value'   => __( 'Does not correspond the topic', 'userspace-publication' ),
+                'content' => __( 'The publication does not correspond to the site topic', 'userspace-publication' ),
             ),
             array(
-                'value'   => __( 'Not completed', 'usp-publication' ),
-                'content' => __( 'Publication does not correspond the rules', 'usp-publication' ),
+                'value'   => __( 'Not completed', 'userspace-publication' ),
+                'content' => __( 'Publication does not correspond the rules', 'userspace-publication' ),
             ),
             array(
-                'value'   => __( 'Advertising/Spam', 'usp-publication' ),
-                'content' => __( 'Publication labeled as advertising or spam', 'usp-publication' ),
+                'value'   => __( 'Advertising/Spam', 'userspace-publication' ),
+                'content' => __( 'Publication labeled as advertising or spam', 'userspace-publication' ),
             )
         );
 
@@ -860,7 +860,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         if ( ! $reasons )
             return false;
 
-        $content = '<label>' . __( 'Use blank notice', 'usp-publication' ) . ':</label>';
+        $content = '<label>' . __( 'Use blank notice', 'userspace-publication' ) . ':</label>';
 
         foreach ( $reasons as $reason ) {
             $content .= usp_get_button( array(

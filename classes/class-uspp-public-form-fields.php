@@ -58,15 +58,15 @@ class USPP_Public_Form_Fields extends USP_Fields_Manager {
                 array(
                     'slug'  => 'notice',
                     'type'  => 'textarea',
-                    'title' => __( 'field description', 'usp-publication' )
+                    'title' => __( 'field description', 'userspace-publication' )
                 ),
                 array(
                     'slug'   => 'required',
                     'type'   => 'radio',
-                    'title'  => __( 'required field', 'usp-publication' ),
+                    'title'  => __( 'required field', 'userspace-publication' ),
                     'values' => array(
-                        __( 'No', 'usp-publication' ),
-                        __( 'Yes', 'usp-publication' )
+                        __( 'No', 'userspace-publication' ),
+                        __( 'Yes', 'userspace-publication' )
                     )
                 )
             )
@@ -82,7 +82,7 @@ class USPP_Public_Form_Fields extends USP_Fields_Manager {
             array(
                 'slug'      => 'post_title',
                 'maxlength' => 100,
-                'title'     => __( 'Title', 'usp-publication' ),
+                'title'     => __( 'Title', 'userspace-publication' ),
                 'type'      => 'text'
             )
         );
@@ -96,7 +96,7 @@ class USPP_Public_Form_Fields extends USP_Fields_Manager {
                     $label = $object->labels->name;
 
                     if ( $taxonomy == 'groups' )
-                        $label = __( 'Group category', 'usp-publication' );
+                        $label = __( 'Group category', 'userspace-publication' );
 
                     $options = array();
 
@@ -106,27 +106,27 @@ class USPP_Public_Form_Fields extends USP_Fields_Manager {
                             array(
                                 'slug'   => 'number-select',
                                 'type'   => 'number',
-                                'title'  => __( 'Amount to choose', 'usp-publication' ),
-                                'notice' => __( 'only when output through select', 'usp-publication' )
+                                'title'  => __( 'Amount to choose', 'userspace-publication' ),
+                                'notice' => __( 'only when output through select', 'userspace-publication' )
                             ),
                             array(
                                 'slug'   => 'type-select',
                                 'type'   => 'select',
-                                'title'  => __( 'Output option', 'usp-publication' ),
+                                'title'  => __( 'Output option', 'userspace-publication' ),
                                 'values' => array(
-                                    'select'      => __( 'Select', 'usp-publication' ),
-                                    'checkbox'    => __( 'Checkbox', 'usp-publication' ),
-                                    'multiselect' => __( 'Multiselect', 'usp-publication' )
+                                    'select'      => __( 'Select', 'userspace-publication' ),
+                                    'checkbox'    => __( 'Checkbox', 'userspace-publication' ),
+                                    'multiselect' => __( 'Multiselect', 'userspace-publication' )
                                 )
                             ),
                             array(
                                 'slug'   => 'only-child',
                                 'type'   => 'select',
-                                'title'  => __( 'Only child terms', 'usp-publication' ),
-                                'notice' => __( 'Attach only the selected child terms to the post, ignoring parents', 'usp-publication' ),
+                                'title'  => __( 'Only child terms', 'userspace-publication' ),
+                                'notice' => __( 'Attach only the selected child terms to the post, ignoring parents', 'userspace-publication' ),
                                 'values' => array(
-                                    __( 'Disable', 'usp-publication' ),
-                                    __( 'Enable', 'usp-publication' )
+                                    __( 'Disable', 'userspace-publication' ),
+                                    __( 'Enable', 'userspace-publication' )
                                 )
                             )
                         );
@@ -145,13 +145,13 @@ class USPP_Public_Form_Fields extends USP_Fields_Manager {
         $fields[] = array(
             'slug'      => 'post_excerpt',
             'maxlength' => 200,
-            'title'     => __( 'Short entry', 'usp-publication' ),
+            'title'     => __( 'Short entry', 'userspace-publication' ),
             'type'      => 'textarea'
         );
 
         $fields[] = array(
             'slug'        => 'post_content',
-            'title'       => __( 'Content of the publication', 'usp-publication' ),
+            'title'       => __( 'Content of the publication', 'userspace-publication' ),
             'type'        => 'textarea',
             'post-editor' => array( 'html', 'editor' ),
             'required'    => 1,
@@ -159,12 +159,12 @@ class USPP_Public_Form_Fields extends USP_Fields_Manager {
                 array(
                     'slug'    => 'post-editor',
                     'type'    => 'checkbox',
-                    'title'   => __( 'Editor settings', 'usp-publication' ),
+                    'title'   => __( 'Editor settings', 'userspace-publication' ),
                     'default' => array( 'html', 'editor' ),
                     'values'  => array(
-                        'media'  => __( 'Media loader', 'usp-publication' ),
-                        'html'   => __( 'HTML editor', 'usp-publication' ),
-                        'editor' => __( 'Visual editor', 'usp-publication' )
+                        'media'  => __( 'Media loader', 'userspace-publication' ),
+                        'html'   => __( 'HTML editor', 'userspace-publication' ),
+                        'editor' => __( 'Visual editor', 'userspace-publication' )
                     )
                 )
             )
@@ -172,7 +172,7 @@ class USPP_Public_Form_Fields extends USP_Fields_Manager {
 
         $fields[] = array(
             'slug'       => 'post_uploader',
-            'title'      => __( 'usp-publication media loader', 'usp-publication' ),
+            'title'      => __( 'usp-publication media loader', 'userspace-publication' ),
             'type'       => 'uploader',
             'multiple'   => 1,
             'temp_media' => 1,
@@ -182,10 +182,10 @@ class USPP_Public_Form_Fields extends USP_Fields_Manager {
                 array(
                     'slug'    => 'fix_editor',
                     'type'    => 'radio',
-                    'title'   => __( 'Adding of an image to the text editor', 'usp-publication' ),
+                    'title'   => __( 'Adding of an image to the text editor', 'userspace-publication' ),
                     'values'  => array(
-                        __( 'Disabled', 'usp-publication' ),
-                        'post_content' => __( 'Enabled', 'usp-publication' )
+                        __( 'Disabled', 'userspace-publication' ),
+                        'post_content' => __( 'Enabled', 'userspace-publication' )
                     ),
                     'default' => 'post_content'
                 ),
@@ -202,10 +202,10 @@ class USPP_Public_Form_Fields extends USP_Fields_Manager {
                 array(
                     'slug'    => 'gallery',
                     'type'    => 'radio',
-                    'title'   => __( 'Offer an output of images in a gallery', 'usp-publication' ),
+                    'title'   => __( 'Offer an output of images in a gallery', 'userspace-publication' ),
                     'values'  => array(
-                        __( 'Disabled', 'usp-publication' ),
-                        __( 'Enabled', 'usp-publication' )
+                        __( 'Disabled', 'userspace-publication' ),
+                        __( 'Enabled', 'userspace-publication' )
                     ),
                     'default' => 1
                 )
@@ -216,7 +216,7 @@ class USPP_Public_Form_Fields extends USP_Fields_Manager {
 
             $fields[] = array(
                 'slug'       => 'post_thumbnail',
-                'title'      => __( 'Thumbnail of the publication', 'usp-publication' ),
+                'title'      => __( 'Thumbnail of the publication', 'userspace-publication' ),
                 'type'       => 'uploader',
                 'temp_media' => 1,
                 'file_types' => 'png, gif, jpg',
@@ -245,10 +245,10 @@ class USPP_Public_Form_Fields extends USP_Fields_Manager {
                     array(
                         'slug'    => 'fix_editor',
                         'type'    => 'radio',
-                        'title'   => __( 'Adding of an image to the text editor', 'usp-publication' ),
+                        'title'   => __( 'Adding of an image to the text editor', 'userspace-publication' ),
                         'values'  => array(
-                            __( 'Disabled', 'usp-publication' ),
-                            'post_content' => __( 'Enabled', 'usp-publication' )
+                            __( 'Disabled', 'userspace-publication' ),
+                            'post_content' => __( 'Enabled', 'userspace-publication' )
                         ),
                         'default' => 'post_content'
                     )
@@ -274,15 +274,15 @@ class USPP_Public_Form_Fields extends USP_Fields_Manager {
                             array(
                                 'slug'  => 'number-tags',
                                 'type'  => 'number',
-                                'title' => __( 'Maximum output', 'usp-publication' )
+                                'title' => __( 'Maximum output', 'userspace-publication' )
                             ),
                             array(
                                 'slug'   => 'input-tags',
                                 'type'   => 'select',
-                                'title'  => __( 'New values entry field', 'usp-publication' ),
+                                'title'  => __( 'New values entry field', 'userspace-publication' ),
                                 'values' => array(
-                                    __( 'Disable', 'usp-publication' ),
-                                    __( 'Enable', 'usp-publication' )
+                                    __( 'Disable', 'userspace-publication' ),
+                                    __( 'Enable', 'userspace-publication' )
                                 )
                             )
                         )
@@ -321,7 +321,7 @@ class USPP_Public_Form_Fields extends USP_Fields_Manager {
                 unset( $options['required'] );
                 unset( $options['values'] );
             } else if ( isset( $options['values'] ) ) {
-                $options['values']['title'] = __( 'Specify term_ID to be selected', 'usp-publication' );
+                $options['values']['title'] = __( 'Specify term_ID to be selected', 'userspace-publication' );
             }
         }
 

@@ -16,7 +16,7 @@ function uspp_mark_own_page( $post_states, $post ) {
             return $post_states;
 
         if ( $post->ID == $plugin_page ) {
-            $post_states[] = __( 'The page of plugin UserSpace Publication', 'usp-publication' );
+            $post_states[] = __( 'The page of plugin UserSpace Publication', 'userspace-publication' );
         }
     }
 
@@ -25,7 +25,7 @@ function uspp_mark_own_page( $post_states, $post ) {
 
 add_action( 'admin_menu', 'uspp_admin_page_publicform', 30 );
 function uspp_admin_page_publicform() {
-    add_submenu_page( 'manage-userspace', __( 'Form of publication', 'usp-publication' ), __( 'Form of publication', 'usp-publication' ), 'manage_options', 'manage-public-form', 'uspp_public_form_manager' );
+    add_submenu_page( 'manage-userspace', __( 'Form of publication', 'userspace-publication' ), __( 'Form of publication', 'userspace-publication' ), 'manage_options', 'manage-public-form', 'uspp_public_form_manager' );
 }
 
 function uspp_public_form_manager() {
@@ -43,15 +43,15 @@ function uspp_public_form_manager() {
         'form_id' => $form_id
         ) );
 
-    $content = '<h2>' . __( 'Manage publication forms', 'usp-publication' ) . '</h2>';
+    $content = '<h2>' . __( 'Manage publication forms', 'userspace-publication' ) . '</h2>';
 
-    $content .= '<p>' . __( 'On this page you can manage the creation of publications for registered record types. Create custom fields for the form of publication of various types and manage', 'usp-publication' ) . '</p>';
+    $content .= '<p>' . __( 'On this page you can manage the creation of publications for registered record types. Create custom fields for the form of publication of various types and manage', 'userspace-publication' ) . '</p>';
 
     $content .= '<div id="uspp-public-form-manager">';
 
     $content .= $formManager->form_navi();
 
-    $content .= usp_get_notice( [ 'text' => __( 'Use shortcode for publication form', 'usp-publication' ) . ' [' . $shortCode . ']' ] );
+    $content .= usp_get_notice( [ 'text' => __( 'Use shortcode for publication form', 'userspace-publication' ) . ' [' . $shortCode . ']' ] );
 
     $content .= $formManager->get_manager();
 
@@ -62,7 +62,7 @@ function uspp_public_form_manager() {
 
 add_action( 'add_meta_boxes', 'uspp_custom_fields_editor_post', 1, 2 );
 function uspp_custom_fields_editor_post( $post_type, $post ) {
-    add_meta_box( 'custom_fields_editor_post', __( 'Arbitrary fields of  publication', 'usp-publication' ), 'uspp_custom_fields_list_posteditor', $post->post_type, 'normal', 'high' );
+    add_meta_box( 'custom_fields_editor_post', __( 'Arbitrary fields of  publication', 'userspace-publication' ), 'uspp_custom_fields_list_posteditor', $post->post_type, 'normal', 'high' );
 }
 
 function uspp_custom_fields_list_posteditor( $post ) {
@@ -135,7 +135,7 @@ function uspp_public_form_admin_actions() {
 /* deprecated: add_dashboard_metabox not used */
 //add_action( 'usp_add_dashboard_metabox', 'uspp_add_publicpost_metabox' );
 //function uspp_add_publicpost_metabox( $screen ) {
-//    add_meta_box( 'uspp-publicpost-metabox', __( 'Posts awaiting approval', 'usp-publication' ), 'uspp_publicpost_metabox', $screen->id, 'column3' );
+//    add_meta_box( 'uspp-publicpost-metabox', __( 'Posts awaiting approval', 'userspace-publication' ), 'uspp_publicpost_metabox', $screen->id, 'column3' );
 //}
 
 //function uspp_publicpost_metabox() {
@@ -143,15 +143,15 @@ function uspp_public_form_admin_actions() {
 //    $posts = get_posts( array( 'numberposts' => -1, 'post_type' => 'any', 'post_status' => 'pending' ) );
 //
 //    if ( ! $posts ) {
-//        echo '<p>' . __( 'No posts under moderation', 'usp-publication' ) . '</p>';
+//        echo '<p>' . __( 'No posts under moderation', 'userspace-publication' ) . '</p>';
 //        return;
 //    }
 //
 //    echo '<table class="wp-list-table widefat fixed striped">';
 //    echo '<tr>'
-//    . '<th>' . __( 'Header', 'usp-publication' ) . '</th>'
-//    . '<th>' . __( 'Author', 'usp-publication' ) . '</th>'
-//    . '<th>' . __( 'Type', 'usp-publication' ) . '</th>'
+//    . '<th>' . __( 'Header', 'userspace-publication' ) . '</th>'
+//    . '<th>' . __( 'Author', 'userspace-publication' ) . '</th>'
+//    . '<th>' . __( 'Type', 'userspace-publication' ) . '</th>'
 //    . '</tr>';
 //    foreach ( $posts as $post ) {
 //        echo '<tr>'

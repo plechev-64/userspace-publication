@@ -53,7 +53,7 @@ class USPP_List_Terms {
             $content .= '<select class="postform" name="cats[' . $this->taxonomy . '][]">';
 
             if ( $a > 0 || $this->first_option )
-                $content .= '<option value="">' . __( 'Not selected', 'usp-publication' ) . '</option>';
+                $content .= '<option value="">' . __( 'Not selected', 'userspace-publication' ) . '</option>';
 
             $content .= $this->get_options_list();
 
@@ -82,7 +82,7 @@ class USPP_List_Terms {
             $content .= '<select id="taxonomy-field-' . $this->taxonomy . '" class="postform" name="cats[' . $this->taxonomy . '][]" multiple>';
 
             if ( $a > 0 || $this->first_option )
-                $content .= '<option value="">' . __( 'Not selected', 'usp-publication' ) . '</option>';
+                $content .= '<option value="">' . __( 'Not selected', 'userspace-publication' ) . '</option>';
 
             $content .= $this->get_options_list();
 

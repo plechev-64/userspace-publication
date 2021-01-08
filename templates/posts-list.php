@@ -16,16 +16,16 @@ $Table = new USP_Table( array(
     'cols'   => array(
         array(
             'align' => 'center',
-            'title' => __( 'Date', 'usp-publication' ),
+            'title' => __( 'Date', 'userspace-publication' ),
             'width' => 15
         ),
         array(
-            'title' => __( 'Title', 'usp-publication' ),
+            'title' => __( 'Title', 'userspace-publication' ),
             'width' => 65
         ),
         array(
             'align' => 'center',
-            'title' => __( 'Status', 'usp-publication' ),
+            'title' => __( 'Status', 'userspace-publication' ),
             'width' => 20
         )
     ),
@@ -45,13 +45,13 @@ $Table = new USP_Table( array(
         <?php
 
         if ( $post->post_status == 'pending' )
-            $status           = '<span class="status-pending">' . __( 'to be approved', 'usp-publication' ) . '</span>';
+            $status           = '<span class="status-pending">' . __( 'to be approved', 'userspace-publication' ) . '</span>';
         elseif ( $post->post_status == 'trash' )
-            $status           = '<span class="status-pending">' . __( 'deleted', 'usp-publication' ) . '</span>';
+            $status           = '<span class="status-pending">' . __( 'deleted', 'userspace-publication' ) . '</span>';
         elseif ( $post->post_status == 'draft' )
-            $status           = '<span class="status-draft">' . __( 'draft', 'usp-publication' ) . '</span>';
+            $status           = '<span class="status-draft">' . __( 'draft', 'userspace-publication' ) . '</span>';
         else
-            $status           = '<span class="status-publish">' . __( 'published', 'usp-publication' ) . '</span>';
+            $status           = '<span class="status-publish">' . __( 'published', 'userspace-publication' ) . '</span>';
         ?>
 
         <?php $content          = ''; ?>

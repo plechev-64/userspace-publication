@@ -42,7 +42,7 @@ class USPP_Edit_Post {
         $this->setup_user_can();
 
         if ( ! $this->user_can )
-            $this->error( __( 'Error publishing!', 'usp-publication' ) . ' Error 100' );
+            $this->error( __( 'Error publishing!', 'userspace-publication' ) . ' Error 100' );
 
         do_action( 'uspp_init_update_post', $this );
     }
@@ -235,7 +235,7 @@ class USPP_Edit_Post {
             $this->post_id = wp_insert_post( $postdata );
 
             if ( ! $this->post_id ) {
-                $this->error( __( 'Error publishing!', 'usp-publication' ) . ' Error 101' );
+                $this->error( __( 'Error publishing!', 'userspace-publication' ) . ' Error 101' );
             } else {
 
                 if ( $formID > 1 )

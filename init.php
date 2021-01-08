@@ -4,20 +4,20 @@ add_action( 'wp', 'uspp_deleted_post_notice' );
 function uspp_deleted_post_notice() {
     if ( isset( $_GET['public'] ) && $_GET['public'] == 'deleted' )
         add_action( 'usp_area_notice', function() {
-            echo usp_get_notice( [ 'text' => __( 'The publication has been successfully removed!', 'usp-publication' ) ] );
+            echo usp_get_notice( [ 'text' => __( 'The publication has been successfully removed!', 'userspace-publication' ) ] );
         } );
 }
 
 add_filter( 'usp_init_js_variables', 'uspp_init_js_public_variables', 10 );
 function uspp_init_js_public_variables( $data ) {
 
-    $data['local']['preview']            = __( 'Preview', 'usp-publication' );
-    $data['local']['publish']            = __( 'Publish', 'usp-publication' );
-    $data['local']['save_draft']         = __( 'Save as Draft', 'usp-publication' );
-    $data['local']['edit']               = __( 'Edit', 'usp-publication' );
-    $data['local']['edit_box_title']     = __( 'Quick edit', 'usp-publication' );
-    $data['local']['allowed_downloads']  = __( 'You have exceeded the allowed number of downloads! Max:', 'usp-publication' );
-    $data['local']['upload_size_public'] = __( 'Exceeds the maximum file size! Max:', 'usp-publication' );
+    $data['local']['preview']            = __( 'Preview', 'userspace-publication' );
+    $data['local']['publish']            = __( 'Publish', 'userspace-publication' );
+    $data['local']['save_draft']         = __( 'Save as Draft', 'userspace-publication' );
+    $data['local']['edit']               = __( 'Edit', 'userspace-publication' );
+    $data['local']['edit_box_title']     = __( 'Quick edit', 'userspace-publication' );
+    $data['local']['allowed_downloads']  = __( 'You have exceeded the allowed number of downloads! Max:', 'userspace-publication' );
+    $data['local']['upload_size_public'] = __( 'Exceeds the maximum file size! Max:', 'userspace-publication' );
 
     return $data;
 }
@@ -55,7 +55,7 @@ function uspp_init_publics_block() {
             '_builtin' => false
             ), 'objects' );
 
-        $types = array( 'post' => __( 'Records', 'usp-publication' ) );
+        $types = array( 'post' => __( 'Records', 'userspace-publication' ) );
 
         foreach ( $post_types as $post_type ) {
             $types[$post_type->name] = $post_type->label;
@@ -74,8 +74,8 @@ function uspp_init_publics_block() {
 
             $tab_data = array(
                 'id'       => 'publics',
-                'name'     => __( 'Posts', 'usp-publication' ),
-                'title'    => __( 'Published', 'usp-publication' ) . ' "' . __( 'Posts', 'usp-publication' ) . '"',
+                'name'     => __( 'Posts', 'userspace-publication' ),
+                'title'    => __( 'Published', 'userspace-publication' ) . ' "' . __( 'Posts', 'userspace-publication' ) . '"',
                 'supports' => array( 'ajax', 'cache' ),
                 'public'   => usp_get_option( 'uspp_tab_list_of_publications', 1 ),
                 'icon'     => 'fa-list',
@@ -87,7 +87,7 @@ function uspp_init_publics_block() {
                 $tab_data['content'][] = array(
                     'id'       => 'type-' . $post_type,
                     'name'     => $name,
-                    'title'    => __( 'Published', 'usp-publication' ) . ' "' . $name . '"',
+                    'title'    => __( 'Published', 'userspace-publication' ) . ' "' . $name . '"',
                     'icon'     => 'fa-list',
                     'callback' => array(
                         'name' => 'uspp_get_postslist',
@@ -105,8 +105,8 @@ function uspp_init_publics_block() {
         usp_tab(
             array(
                 'id'      => 'postform',
-                'name'    => __( 'Publication', 'usp-publication' ),
-                'title'   => __( 'Form of publication', 'usp-publication' ),
+                'name'    => __( 'Publication', 'userspace-publication' ),
+                'title'   => __( 'Form of publication', 'userspace-publication' ),
                 'public'  => 0,
                 'icon'    => 'fa-edit',
                 'content' => array(

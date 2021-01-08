@@ -78,7 +78,7 @@ function uspp_tab_postform( $master_id ) {
 
 function uspp_edit_post_button_html( $post_id ) {
     return '<p class="post-edit-button">'
-        . '<a title="' . __( 'Edit', 'usp-publication' ) . '" object-id="none" href="' . get_edit_post_link( $post_id ) . '">'
+        . '<a title="' . __( 'Edit', 'userspace-publication' ) . '" object-id="none" href="' . get_edit_post_link( $post_id ) . '">'
         . '<i class="uspi fa-edit"></i>'
         . '</a>'
         . '</p>';
@@ -251,7 +251,7 @@ function uspp_save_temp_async_uploaded_thumbnail() {
 
     if ( ! $attachment_id || ! $attachment_url ) {
         return array(
-            'error' => __( 'Error', 'usp-publication' )
+            'error' => __( 'Error', 'userspace-publication' )
         );
     }
 
@@ -341,5 +341,5 @@ function uspp_button_fast_edit_post( $post_id ) {
 }
 
 function uspp_button_fast_delete_post( $post_id ) {
-    return '<a class="uspp-delete-post uspp-service-button" data-post="' . $post_id . '" onclick="return confirm(\'' . __( 'Are you sure?', 'usp-publication' ) . '\')? uspp_delete_post(this): false;"><i class="uspi fa-trash"></i></a>';
+    return '<a class="uspp-delete-post uspp-service-button" data-post="' . $post_id . '" onclick="return confirm(\'' . __( 'Are you sure?', 'userspace-publication' ) . '\')? uspp_delete_post(this): false;"><i class="uspi fa-trash"></i></a>';
 }

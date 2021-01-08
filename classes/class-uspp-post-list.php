@@ -85,7 +85,7 @@ class USPP_Post_List {
         } else {
             $posts_block = usp_get_notice( array(
                 'type' => 'info',
-                'text' => __( 'Here has nothing been published yet', 'usp-publication' )
+                'text' => __( 'Here has nothing been published yet', 'userspace-publication' )
                 ) );
         }
 

@@ -13,7 +13,7 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
             '_builtin' => false
             ), 'objects' );
 
-        $types = array( 'post' => __( 'Records', 'usp-publication' ) );
+        $types = array( 'post' => __( 'Records', 'userspace-publication' ) );
 
         foreach ( $post_types as $post_type ) {
             $types[$post_type->name] = $post_type->label;
@@ -64,10 +64,10 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
 
             $class = ($this->form_id == $form_id) ? 'class="current-item"' : '';
 
-            $content .= '<li ' . $class . '><a href="' . admin_url( 'admin.php?page=manage-public-form&post-type=' . $this->post_type . '&form-id=' . $form_id ) . '">' . __( 'Form', 'usp-publication' ) . ' ID: ' . $form_id . '</a></li>';
+            $content .= '<li ' . $class . '><a href="' . admin_url( 'admin.php?page=manage-public-form&post-type=' . $this->post_type . '&form-id=' . $form_id ) . '">' . __( 'Form', 'userspace-publication' ) . ' ID: ' . $form_id . '</a></li>';
         }
 
-        $content .= '<li><a class="action-form" href="' . wp_nonce_url( admin_url( 'admin.php?page=manage-public-form&form-action=new-form&post-type=' . $this->post_type . '&form-id=' . ($form_id + 1) ), 'uspp-form-action' ) . '"><i class="uspi fa-plus"></i><span>' . __( 'Add form', 'usp-publication' ) . '</span></a></li>';
+        $content .= '<li><a class="action-form" href="' . wp_nonce_url( admin_url( 'admin.php?page=manage-public-form&form-action=new-form&post-type=' . $this->post_type . '&form-id=' . ($form_id + 1) ), 'uspp-form-action' ) . '"><i class="uspi fa-plus"></i><span>' . __( 'Add form', 'userspace-publication' ) . '</span></a></li>';
 
         $content .= '</ul>';
 
@@ -75,7 +75,7 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
 
         $actionButtons = array(
             array(
-                'label'   => __( 'Copy', 'usp-publication' ),
+                'label'   => __( 'Copy', 'userspace-publication' ),
                 'icon'    => 'fa-copy',
                 'onclick' => 'usp_manager_copy_fields("' . $this->post_type . '_' . ($form_id + 1) . '");'
             )
@@ -85,7 +85,7 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
 
             $actionButtons = array_merge( array(
                 array(
-                    'label' => __( 'Delete form', 'usp-publication' ),
+                    'label' => __( 'Delete form', 'userspace-publication' ),
                     'icon'  => 'fa-trash',
                     'href'  => wp_nonce_url( admin_url( 'admin.php?page=manage-public-form&form-action=delete-form&post-type=' . $this->post_type . '&form-id=' . $this->form_id ), 'uspp-form-action' )
                 )

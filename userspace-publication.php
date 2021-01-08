@@ -6,7 +6,7 @@
   Version: 1.0.0
   Author: Plechev Andrey
   Author URI: http://user-space.com/
-  Text Domain: usp-publication
+  Text Domain: userspace-publication
   License: GPLv2 or later (license.txt)
  */
 
@@ -29,7 +29,7 @@ function uspp_activate() {
     global $user_ID;
 
     $args = [
-        'post_title'   => __( 'Form of publication', 'usp-publication' ),
+        'post_title'   => __( 'Form of publication', 'userspace-publication' ),
         'post_content' => '[public-form]',
         'post_name'    => 'uspp-postedit',
         'post_status'  => 'publish',
