@@ -7,6 +7,22 @@ function uspp_public_admin_scripts() {
     wp_enqueue_style( 'uspp_public_admin_style', plugin_dir_url( __FILE__ ) . 'admin/assets/style.css' );
 }
 
+add_filter( 'display_post_states', 'uspp_mark_own_page', 10, 2 );
+function uspp_mark_own_page( $post_states, $post ) {
+    if ( $post->post_type === 'page' ) {
+        $plugin_page = get_site_option( 'uspp_publication_page' );
+
+        if ( ! $plugin_page )
+            return $post_states;
+
+        if ( $post->ID == $plugin_page ) {
+            $post_states[] = __( 'The page of plugin UserSpace Publication', 'usp-publication' );
+        }
+    }
+
+    return $post_states;
+}
+
 add_action( 'admin_menu', 'uspp_admin_page_publicform', 30 );
 function uspp_admin_page_publicform() {
     add_submenu_page( 'manage-userspace', __( 'Form of publication', 'usp-publication' ), __( 'Form of publication', 'usp-publication' ), 'manage_options', 'manage-public-form', 'uspp_public_form_manager' );
