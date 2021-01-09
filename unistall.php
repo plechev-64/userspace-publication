@@ -29,7 +29,7 @@ if ( $usp_options ) {
     unset( $usp_options['uspp_cf_place'] );
     unset( $usp_options['uspp_cf_post_types'] );
 
-    update_site_option( 'rcl_global_options', $rcl_options );
+    update_site_option( 'usp_global_options', $usp_options );
 }
 
 // delete created pages
