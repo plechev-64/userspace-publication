@@ -13,7 +13,7 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
             '_builtin' => false
             ), 'objects' );
 
-        $types = array( 'post' => __( 'Records', 'userspace-publication' ) );
+        $types = array( 'post' => __( 'Posts', 'userspace-publication' ) );
 
         foreach ( $post_types as $post_type ) {
             $types[$post_type->name] = $post_type->label;
