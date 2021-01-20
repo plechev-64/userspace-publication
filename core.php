@@ -301,7 +301,7 @@ function uspp_get_attachment_box( $attachment_id, $mime = 'image', $addToClick =
             $act_sizes = wp_constrain_dimensions( $full_url[1], $full_url[2], $sizes[1], $sizes[2] );
 
             // uspp_add_image_in_form not exists js function
-            return '<a onclick="uspp_add_image_in_form(this,\'<a href=' . $full_url[0] . '><img height=' . $act_sizes[1] . ' width=' . $act_sizes[0] . ' class=aligncenter  src=' . $full_url[0] . '></a>\');return false;" href="#">' . $image . '</a>';
+            return '<a onclick="uspp_add_image_in_form(this,\'<a href=' . $full_url[0] . '><img height=' . $act_sizes[1] . ' width=' . $act_sizes[0] . ' class=usps__text-center  src=' . $full_url[0] . '></a>\');return false;" href="#">' . $image . '</a>';
         } else {
             return $image;
         }
