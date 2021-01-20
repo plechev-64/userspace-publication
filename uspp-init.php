@@ -250,7 +250,7 @@ function uspp_edit_post_link( $admin_url, $post_id ) {
     }
 }
 
-add_action( 'usp_post_bar_setup', 'uspp_setup_edit_post_button', 10 );
+add_action( 'uspp_post_bar_setup', 'uspp_setup_edit_post_button', 10 );
 function uspp_setup_edit_post_button() {
     global $post, $user_ID, $current_user;
 
@@ -625,3 +625,26 @@ function uspp_check_public_form_captcha() {
         }
     }
 }
+
+add_filter( 'the_content', 'uspp_message_post_moderation' );
+function uspp_message_post_moderation( $content ) {
+    global $post;
+
+    if ( ! isset( $post ) || ! $post )
+        return $content;
+
+    if ( $post->post_status == 'pending' ) {
+        $content = usp_get_notice( [ 'text' => __( 'Publication pending approval!', 'userspace' ), 'type' => 'error' ] ) . $content;
+    }
+
+    if ( $post->post_status == 'draft' ) {
+        $content = usp_get_notice( [ 'text' => __( 'Draft of a post!', 'userspace' ), 'type' => 'error' ] ) . $content;
+    }
+
+    return $content;
+}
+
+//add_action( 'wp', 'uspp_post_bar_setup', 10 );
+//function uspp_post_bar_setup() {
+//    do_action( 'uspp_post_bar_setup' );
+//}
