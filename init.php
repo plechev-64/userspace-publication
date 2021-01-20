@@ -8,9 +8,11 @@ function uspp_deleted_post_notice() {
         } );
 }
 
+// translation for js-file
 add_filter( 'usp_init_js_variables', 'uspp_init_js_public_variables', 10 );
 function uspp_init_js_public_variables( $data ) {
 
+    $data['local']['save']               = __( 'Save', 'userspace-publication' );
     $data['local']['preview']            = __( 'Preview', 'userspace-publication' );
     $data['local']['publish']            = __( 'Publish', 'userspace-publication' );
     $data['local']['save_draft']         = __( 'Save as Draft', 'userspace-publication' );
