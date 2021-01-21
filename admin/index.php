@@ -4,7 +4,7 @@ require_once 'settings-page.php';
 
 add_action( 'admin_init', 'uspp_public_admin_scripts' );
 function uspp_public_admin_scripts() {
-    wp_enqueue_style( 'uspp_public_admin_style', plugin_dir_url( __FILE__ ) . 'admin/assets/style.css' );
+    wp_enqueue_style( 'uspp_public_admin_style', plugin_dir_url( __FILE__ ) . 'assets/style.css' );
 }
 
 add_filter( 'display_post_states', 'uspp_mark_own_page', 10, 2 );
