@@ -61,10 +61,10 @@
     margin: 0 8px 0 5px;
 }
 .uspp-public-box .uspp-service-button {
-    background-color: rgba(30, 56, 75, 0.7);
+    background-color: rgba(30, 56, 75, .7);
     border: none;
     box-shadow: none;
-    color: rgb(229, 57, 53);
+    color: var(--uspRed-500);
     cursor: pointer;
     font-size: 24px;
     line-height: 1;
@@ -166,7 +166,7 @@
 .uspp-public-box .uspp-tags-list .ms-ctn .ms-helper {
     background-color: #ffe2e2;
     border-radius: 1px;
-    color: red;
+    color: var(--uspRed-500);
     font-size: 14px;
     padding: 0 6px;
     right: 42px;
@@ -293,7 +293,7 @@
 }
 h3.pending-message {
     background: rgb(255, 207, 207);
-    color: red;
+    color: var(--uspRed-500);
     font-size: 19px;
     margin: 0 auto;
     padding: 5px;
