@@ -58,12 +58,12 @@ class USPP_Public_Form_Fields extends USP_Fields_Manager {
                 array(
                     'slug'  => 'notice',
                     'type'  => 'textarea',
-                    'title' => __( 'field description', 'userspace-publication' )
+                    'title' => __( 'Field description', 'userspace-publication' )
                 ),
                 array(
                     'slug'   => 'required',
                     'type'   => 'radio',
-                    'title'  => __( 'required field', 'userspace-publication' ),
+                    'title'  => __( 'Required field', 'userspace-publication' ),
                     'values' => array(
                         __( 'No', 'userspace-publication' ),
                         __( 'Yes', 'userspace-publication' )
@@ -107,7 +107,7 @@ class USPP_Public_Form_Fields extends USP_Fields_Manager {
                                 'slug'   => 'number-select',
                                 'type'   => 'number',
                                 'title'  => __( 'Amount to choose', 'userspace-publication' ),
-                                'notice' => __( 'only when output through select', 'userspace-publication' )
+                                'notice' => __( 'Only when output through select', 'userspace-publication' )
                             ),
                             array(
                                 'slug'   => 'type-select',
