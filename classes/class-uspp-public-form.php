@@ -279,7 +279,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
         if ( $buttons ) {
 
-            $content .= '<div id="uspp-public-form-top-manager" class="usps usps__right">';
+            $content .= '<div id="uspp-public-form-top-manager" class="usps usps__jc-end">';
 
             foreach ( $buttons as $button ) {
                 $content .= usp_get_button( $button );
