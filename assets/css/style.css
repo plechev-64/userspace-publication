@@ -62,7 +62,7 @@
 }
 .uspp-public-box .uspp-service-button {
     background-color: rgba(30, 56, 75, .7);
-    border: none;
+    border: 0;
     box-shadow: none;
     color: var(--uspRed-500);
     cursor: pointer;
@@ -177,7 +177,7 @@
 }
 .uspp-form-field.maybe-gallery-box .block-label {
     background-color: transparent;
-    border: none;
+    border: 0;
     padding: 0;
 }
 .uspp-public-box .submit-public-form {
