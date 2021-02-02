@@ -209,7 +209,7 @@
     color: #fff;
     display: block;
     font-size: 14px;
-    font-weight: normal;
+    font-weight: 400;
     padding: 4px 5px;
     text-align: center;
     white-space: normal;
@@ -317,7 +317,7 @@ h3.pending-message {
 }
 #uspp-delete-post label {
     display: block;
-    font-weight: normal;
+    font-weight: 400;
     margin: 5px 10px;
 }
 #uspp-delete-post .reason-delete {
