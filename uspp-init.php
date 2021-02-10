@@ -559,7 +559,7 @@ function uspp_add_post_uploader_image_buttons( $items, $attachment_id, $uploader
             'icon'    => ($postGallery && in_array( $attachment_id, $postGallery )) ? 'fa-toggle-on' : 'fa-toggle-off',
             'class'   => 'uspp-switch-gallery-button-' . $attachment_id,
             'title'   => __( 'Output in a gallery', 'userspace-publication' ),
-            'content' => '<input type="hidden" id="uspp-post-gallery-attachment-' . $attachment_id . '" name="uspp-post-gallery[]" value="' . $valueGallery . '">',
+            'content' => '<input type="hidden" id="uspp-post-usp-media__item-' . $attachment_id . '" name="uspp-post-gallery[]" value="' . $valueGallery . '">',
             'onclick' => 'uspp_switch_attachment_in_gallery(' . $attachment_id . ',this);return false;'
         );
     }

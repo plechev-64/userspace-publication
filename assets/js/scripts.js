@@ -8,9 +8,9 @@ jQuery( document ).ready( function( $ ) {
 
 		USPUploaders.get( 'post_thumbnail' ).appendInGallery = function( file ) {
 
-			jQuery( '#usp-upload-gallery-' + this.uploader_id ).html( '' ).append( file.thumbnail.html ).animateCss( 'flipInX' );
-			jQuery( '#usp-upload-gallery-post_uploader' ).append( file.postmedia );
-			jQuery( '#usp-upload-gallery-post_uploader div' ).last().animateCss( 'flipInX' );
+			jQuery( '#usp-media-' + this.uploader_id ).html( '' ).append( file.thumbnail.html ).animateCss( 'flipInX' );
+			jQuery( '#usp-media-post_uploader' ).append( file.postmedia );
+			jQuery( '#usp-media-post_uploader div' ).last().animateCss( 'flipInX' );
 
 		};
 
@@ -20,7 +20,7 @@ jQuery( document ).ready( function( $ ) {
 
 				var postUploader = USPUploaders.get( 'post_uploader' );
 
-				var inGalleryNow = jQuery( '#usp-upload-gallery-post_uploader .gallery-attachment' ).length + 1;
+				var inGalleryNow = jQuery( '#usp-media-post_uploader .usp-media__item' ).length + 1;
 
 				if ( inGalleryNow > postUploader.options.max_files ) {
 					errors.push( USP.errors.file_max_num + '. Max: ' + postUploader.options.max_files );
@@ -542,7 +542,7 @@ function uspp_init_thumbnail_uploader( e, options ) {
 
 function uspp_set_post_thumbnail( attach_id, parent_id, e ) {
 
-	usp_preloader_show( jQuery( '.gallery-attachment-' + attach_id ) );
+	usp_preloader_show( jQuery( '.usp-media__item-' + attach_id ) );
 
 	usp_ajax( {
 		data: {
@@ -553,7 +553,7 @@ function uspp_set_post_thumbnail( attach_id, parent_id, e ) {
 			post_type: jQuery( 'form.uspp-public-form input[name="post_type"]' ).val()
 		},
 		success: function( result ) {
-			jQuery( '#usp-upload-gallery-post_thumbnail' ).html( result.html ).animateCss( 'flipInX' );
+			jQuery( '#usp-media-post_thumbnail' ).html( result.html ).animateCss( 'flipInX' );
 		}
 	} );
 
