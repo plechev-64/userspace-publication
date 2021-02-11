@@ -93,7 +93,12 @@ class USPP_List_Terms {
 
         $content .= '</div>';
 
-        $content .= '<script>jQuery(window).on("load", function() {jQuery("#taxonomy-field-' . $this->taxonomy . '").fSelect();});</script>';
+        $content .= '<script>jQuery(window).on("load", function() {jQuery("#taxonomy-field-' . $this->taxonomy . '").fSelect({
+                                                        placeholder: "' . __( 'Select some options', 'userspace' ) . '",
+                                                        overflowText: "' . __( '{n} selected', 'userspace' ) . '",
+                                                        noResultsText: "' . __( 'No results found', 'userspace' ) . '",
+                                                        searchText: "' . __( 'Search', 'userspace' ) . '",
+                                                    });});</script>';
 
         return $content;
     }
