@@ -11,7 +11,7 @@
     margin: 0;
 }
 .uspp-custom-fields-menu a {
-    background-color: #e5e5e5;
+    background: #e5e5e5;
     border: 1px solid #ccc;
     color: #555;
     display: flex;
@@ -20,8 +20,8 @@
     text-decoration: none;
 }
 .uspp-custom-fields-menu a:hover {
-    background-color: #eee;
-    color: #000;
+    background: #eee;
+    color: var(--uspBlack);
 }
 .uspp-custom-fields-menu .fa-trash {
     color: var(--uspRed-500);

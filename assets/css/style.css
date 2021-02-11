@@ -25,7 +25,7 @@
 
 /* block author */
 #usp_block_author {
-    background: rgba(243, 243, 243, 0.3);
+    background: rgba(243, 243, 243, .3);
     box-shadow: 0 0 1px 1px rgb(243, 243, 243);
     clear: both;
     margin: 15px 3px;
@@ -61,7 +61,7 @@
     margin: 0 8px 0 5px;
 }
 .uspp-public-box .uspp-service-button {
-    background-color: rgba(30, 56, 75, .7);
+    background: rgba(30, 56, 75, .7);
     border: 0;
     box-shadow: none;
     color: var(--uspRed-500);
@@ -75,10 +75,10 @@
     z-index: 2;
 }
 .uspp-public-box .uspp-service-button i:hover {
-    opacity: 0.8;
+    opacity: .8;
 }
 .uspp-public-box .uspp-form-field {
-    background-color: #f7f7f7;
+    background: #f7f7f7;
     border: 1px solid #e5e5e5;
     box-sizing: border-box;
     margin: 7px 0;
@@ -98,7 +98,7 @@
     width: auto;
 }
 #form-field-post_content textarea.wp-editor-area {
-    background-color: #fff;
+    background: var(--uspWhite);
     min-height: 300px;
 }
 .uspp-public-box .uspp-form-field .uspp-terms-select .usp-field-input {
@@ -117,7 +117,7 @@
     display: none;
 }
 .uspp-public-box .uspp-tags-list > .block-label {
-    background: #fff;
+    background: var(--uspWhite);
     box-shadow: none;
     clear: both;
     cursor: default;
@@ -146,7 +146,7 @@
     padding: 5px;
 }
 .uspp-public-box .uspp-tags-list .ms-ctn .ms-sel-ctn input {
-    background-color: #fafafa;
+    background: #fafafa;
     border: 1px solid #ddd;
     clear: both;
     display: block;
@@ -156,15 +156,15 @@
     width: 100% !important;
 }
 .uspp-public-box .uspp-tags-list .ms-ctn .ms-sel-ctn input:focus {
-    background-color: #fff;
+    background: var(--uspWhite);
     border-color: #c5c5c5;
 }
 .uspp-public-box .uspp-tags-list .ms-ctn .ms-trigger {
-    background: #fff;
+    background: var(--uspWhite);
     box-sizing: border-box;
 }
 .uspp-public-box .uspp-tags-list .ms-ctn .ms-helper {
-    background-color: #ffe2e2;
+    background: #ffe2e2;
     border-radius: 1px;
     color: var(--uspRed-500);
     font-size: 14px;
@@ -173,10 +173,10 @@
     top: 15px;
 }
 .uspp-form-field.maybe-gallery-box {
-    background-color: #f2f2f2;
+    background: #f2f2f2;
 }
 .uspp-form-field.maybe-gallery-box .block-label {
-    background-color: transparent;
+    background: transparent;
     border: 0;
     padding: 0;
 }
@@ -189,7 +189,7 @@
     margin-right: 10px;
 }
 .uspp-public-form .category-list .child-list-category {
-    background: #fff;
+    background: var(--uspWhite);
     padding: 5px;
     margin-left: 10px;
     margin-bottom: 5px;
@@ -206,7 +206,7 @@
     width: 100%;
 }
 .uspp-public-form .attachments-post .set-thumbnail-post a {
-    color: #fff;
+    color: var(--uspWhite);
     display: block;
     font-size: 14px;
     font-weight: 400;
@@ -252,11 +252,11 @@
     width: 100%;
 }
 .uspp-public-box .attachments-post li {
-    background-color: #e5e5e5;
+    background: #e5e5e5;
     box-sizing: border-box;
     float: left;
     list-style: none!important;
-    margin: 5px 0.5%;
+    margin: 5px .5%;
     padding: 5px;
     position: relative;
     width: 24%;
@@ -266,7 +266,7 @@
 }
 .uspp-public-box .attachments-post li img:hover {
     box-shadow: 0 0 1px 1px rgb(30, 56, 75);
-    opacity: 0.8;
+    opacity: .8;
 }
 .uspp-public-box .attachments-post label span {
     cursor: pointer;
@@ -277,12 +277,12 @@
     margin: 0 5px 0 0;
 }
 .ssi-modalOuter.uspp-preview-post .uspp-notice-preview {
-    background: rgba(229, 57, 53, 0.15);
+    background: rgba(229, 57, 53, .15);
     display: block;
     text-align: center;
 }
 .ssi-modalOuter.uspp-preview-post .uspp-notice-preview p {
-    color: #000;
+    color: var(--uspBlack);
     font-size: 16px;
     font-weight: bold;
     margin: 0;
@@ -309,7 +309,7 @@ h3.pending-message {
     padding-bottom: 0;
 }
 #uspp-delete-post .delete-form-contayner {
-    background-color: #fafafa;
+    background: #fafafa;
     border: 1px solid #ddd;
     display: none;
     margin-bottom: 7px;
@@ -320,11 +320,8 @@ h3.pending-message {
     font-weight: 400;
     margin: 5px 10px;
 }
-#uspp-delete-post .reason-delete {
-
-}
 #uspp-delete-post textarea {
-    background-color: #fff;
+    background: var(--uspWhite);
     border-radius: 0;
     border: 1px solid #ddd;
     box-shadow: none;
@@ -351,12 +348,12 @@ h3.pending-message {
 
 /*mass uploader*/
 .mass-upload-box {
-    background: rgba(219, 219, 219, 0.3);
-    box-shadow: 0 0 1px 1px rgba(219, 219, 219, 0.6);
+    background: rgba(219, 219, 219, .3);
+    box-shadow: 0 0 1px 1px rgba(219, 219, 219, .6);
     padding: 5px;
 }
 .mass-upload-box .mass-upload-area {
-    background-color: #ccc;
+    background: #ccc;
     padding: 20px;
     text-align: center;
 }
