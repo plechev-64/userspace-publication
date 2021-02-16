@@ -24,7 +24,7 @@
 
 
 /* block author */
-#usp_block_author {
+#uspp_block_author {
     background: rgba(243, 243, 243, .3);
     box-shadow: 0 0 1px 1px rgb(243, 243, 243);
     clear: both;
@@ -32,14 +32,14 @@
     overflow: hidden;
     padding: 2px;
 }
-#usp_block_author > h3 {
+#uspp_block_author > h3 {
     font-size: 18px;
     letter-spacing: normal;
     line-height: 1.4;
     margin: 0;
     padding: 0 0 5px 5px;
 }
-#usp_block_author .userlist .user-single {
+#uspp_block_author .userlist .user-single {
     background: transparent;
     box-shadow: none;
     margin: 0;

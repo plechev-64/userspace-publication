@@ -129,7 +129,32 @@ function uspp_author_info( $content ) {
             return $content;
     }
 
-    $content .= usp_get_author_block();
+    $content .= uspp_get_author_block();
+
+    return $content;
+}
+
+function uspp_get_author_block() {
+    global $post;
+
+    $content = '<div id="uspp_block_author">';
+    $content .= '<h3>' . __( 'Publication author', 'userspace-publication' ) . '</h3>';
+
+    if ( function_exists( 'usp_add_userlist_follow_button' ) )
+        add_action( 'usp_user_fields_after', 'usp_add_userlist_follow_button', 90 );
+
+    $content .= usp_get_userlist( array(
+        'template' => 'rows',
+        'orderby'  => 'display_name',
+        'include'  => $post->post_author,
+        'filter'   => 0,
+        'data'     => 'rating_total,description,posts_count,user_registered,comments_count'
+        ) );
+
+    if ( function_exists( 'usp_add_userlist_follow_button' ) )
+        remove_action( 'usp_user_fields_after', 'usp_add_userlist_follow_button', 90 );
+
+    $content .= '</div>';
 
     return $content;
 }
