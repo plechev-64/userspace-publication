@@ -12,7 +12,7 @@
 }
 .uspp-custom-fields-menu a {
     background: #e5e5e5;
-    border: 1px solid #ccc;
+    border: 1px solid var(--uspGray-300);
     color: #555;
     display: flex;
     margin: 0 0 0 10px;

@@ -353,7 +353,7 @@ h3.pending-message {
     padding: 5px;
 }
 .mass-upload-box .mass-upload-area {
-    background: #ccc;
+    background: var(--uspGray-300);
     padding: 20px;
     text-align: center;
 }
