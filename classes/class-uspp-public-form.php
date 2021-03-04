@@ -207,10 +207,10 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         $errorContent = '';
 
         foreach ( $this->get_errors() as $error ) {
-            $errorContent .= usp_get_notice( array(
+            $errorContent .= usp_get_notice( [
                 'type' => 'error',
                 'text' => $error
-                ) );
+                ] );
         }
 
         return $errorContent;
@@ -227,10 +227,10 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         }
 
         if ( isset( $_GET['draft'] ) && $_GET['draft'] == 'saved' ) {
-            $content .= usp_get_notice( array(
+            $content .= usp_get_notice( [
                 'type' => 'success',
                 'text' => __( 'The draft has been saved successfully!', 'userspace-publication' )
-                ) );
+                ] );
         }
 
         $dataPost = $this->get_object_form();

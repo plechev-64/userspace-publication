@@ -83,10 +83,7 @@ class USPP_Post_List {
 
             wp_reset_postdata();
         } else {
-            $posts_block = usp_get_notice( array(
-                'type' => 'info',
-                'text' => __( 'Here has nothing been published yet', 'userspace-publication' )
-                ) );
+            $posts_block = usp_get_notice( [ 'text' => __( 'Here has nothing been published yet', 'userspace-publication' ) ] );
         }
 
         return $posts_block;
