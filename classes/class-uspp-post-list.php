@@ -124,12 +124,15 @@ class USPP_Post_List {
         if ( ! $count )
             return false;
 
-        /* deprecated, use class-usp-pager */
-        $usppNavi = new USP_PageNavi( $this->post_type . '-navi', $count, array( 'in_page' => $this->in_page ) );
+        $pagenavi = new USP_Pager( array(
+            'total'  => $count,
+            'number' => $this->in_page,
+            'id'     => $this->post_type . '-navi',
+            ) );
 
-        $this->offset = $usppNavi->offset;
+        $this->offset = $pagenavi->offset;
 
-        return $usppNavi->pagenavi();
+        return $pagenavi->get_navi();
     }
 
 }
