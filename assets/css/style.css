@@ -20,31 +20,19 @@
         flex-grow: 1;
     }
 }
-/*end*/
 
 
 /* block author */
 #uspp_block_author {
-    background: rgba(243, 243, 243, .3);
-    box-shadow: 0 0 1px 1px rgb(243, 243, 243);
-    clear: both;
-    margin: 15px 3px;
-    overflow: hidden;
-    padding: 2px;
+    margin: 18px 0;
 }
 #uspp_block_author > h3 {
     font-size: 18px;
     letter-spacing: normal;
     line-height: 1.4;
-    margin: 0;
-    padding: 0 0 5px 5px;
+    margin: 0 0 6px;
+    padding: 0;
 }
-#uspp_block_author .userlist .user-single {
-    background: transparent;
-    box-shadow: none;
-    margin: 0;
-}
-/*end*/
 
 
 /* publicpost */
@@ -79,7 +67,7 @@
 }
 .uspp-public-box .uspp-form-field {
     background: #f7f7f7;
-    border: 1px solid #e5e5e5;
+    border: var(--uspLine200);
     box-sizing: border-box;
     margin: 7px 0;
     padding: 8px;
@@ -127,7 +115,7 @@
     padding: 10px;
 }
 .uspp-public-box .uspp-tags-list .ms-ctn {
-    border: 1px solid #ddd;
+    border: var(--uspLine300);
     box-shadow: none;
     line-height: normal;
     margin-top: 5px;
@@ -147,7 +135,7 @@
 }
 .uspp-public-box .uspp-tags-list .ms-ctn .ms-sel-ctn input {
     background: #fafafa;
-    border: 1px solid #ddd;
+    border: var(--uspLine300);
     clear: both;
     display: block;
     float: none;
@@ -157,7 +145,7 @@
 }
 .uspp-public-box .uspp-tags-list .ms-ctn .ms-sel-ctn input:focus {
     background: var(--uspWhite);
-    border-color: #c5c5c5;
+    border-color: var(--uspGray-300);
 }
 .uspp-public-box .uspp-tags-list .ms-ctn .ms-trigger {
     background: var(--uspWhite);
@@ -310,7 +298,7 @@ h3.pending-message {
 }
 #uspp-delete-post .delete-form-contayner {
     background: #fafafa;
-    border: 1px solid #ddd;
+    border: var(--uspLine300);
     display: none;
     margin-bottom: 7px;
     padding: 7px;
@@ -323,7 +311,7 @@ h3.pending-message {
 #uspp-delete-post textarea {
     background: var(--uspWhite);
     border-radius: 0;
-    border: 1px solid #ddd;
+    border: var(--uspLine300);
     box-shadow: none;
     box-sizing: border-box;
     float: none;

@@ -67,7 +67,7 @@ jQuery( document ).ready( function( $ ) {
 						jQuery( this ).attr( 'style', 'border:1px solid red !important' );
 						error = 1;
 					} else {
-						jQuery( this ).attr( 'style', 'border:1px solid #E6E6E6 !important' );
+						jQuery( this ).attr( 'style', 'border:var(--uspLine200) !important' );
 					}
 				}
 			}
