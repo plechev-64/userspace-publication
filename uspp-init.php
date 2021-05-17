@@ -43,7 +43,7 @@ function uspp_public_add_js_locale( $data ) {
     return $data;
 }
 
-//выводим в медиабиблиотеке только медиафайлы текущего автора
+// we display only the media files of the current author in the media library
 add_action( 'pre_get_posts', 'uspp_restrict_media_library' );
 function uspp_restrict_media_library( $wp_query_obj ) {
     global $current_user, $pagenow;
@@ -71,7 +71,7 @@ function uspp_update_postdata_excerpt( $postdata ) {
     return $postdata;
 }
 
-//формируем галерею записи
+// creating a gallery of the post
 add_filter( 'the_content', 'uspp_post_gallery', 10 );
 function uspp_post_gallery( $content ) {
     global $post;
@@ -108,7 +108,7 @@ function uspp_post_gallery( $content ) {
     return $content;
 }
 
-//Выводим инфу об авторе записи в конце поста
+// display information about the author of the post at the end of the post
 add_filter( 'the_content', 'uspp_author_info', 70 );
 function uspp_author_info( $content ) {
 
@@ -275,25 +275,28 @@ function uspp_edit_post_link( $admin_url, $post_id ) {
     }
 }
 
-add_action( 'uspp_post_bar_setup', 'uspp_setup_edit_post_button', 10 );
-function uspp_setup_edit_post_button() {
-    global $post, $user_ID, $current_user;
+// Adds a button before the post: "edit message"
+add_filter( 'usp_before_content_buttons', 'uspp_setup_edit_post_button', 22 );
+function uspp_setup_edit_post_button( $content ) {
+    global $post;
 
     if ( ! is_user_logged_in() || ! $post )
-        return false;
+        return $content;
 
     if ( is_front_page() || is_tax( 'groups' ) || $post->post_type == 'page' )
-        return false;
+        return $content;
 
     if ( ! current_user_can( 'edit_post', $post->ID ) )
-        return false;
+        return $content;
+
+    global $user_ID, $current_user;
 
     $user_info = get_userdata( $current_user->ID );
 
     if ( $post->post_author != $user_ID ) {
         $author_info = get_userdata( $post->post_author );
         if ( $user_info->user_level < $author_info->user_level )
-            return false;
+            return $content;
     }
 
     $frontEdit = usp_get_option( 'uspp_front_post_edit', array( 0 ) );
@@ -301,19 +304,17 @@ function uspp_setup_edit_post_button() {
     if ( false !== array_search( $user_info->user_level, $frontEdit ) || $user_info->user_level >= usp_get_option( 'consol_access_usp', 7 ) ) {
 
         if ( $user_info->user_level < 10 && uspp_is_limit_editing( $post->post_date ) )
-            return false;
+            return $content;
 
-        usp_post_bar_add_item( 'uspp-edit-post', array(
-            'url'   => get_edit_post_link( $post->ID ),
-            'icon'  => 'fa-edit',
-            'title' => __( 'Edit', 'userspace-publication' )
-            )
+        return $content . usp_get_button( [
+                'href'  => get_edit_post_link( $post->ID ),
+                'icon'  => 'fa-edit',
+                'title' => __( 'Edit', 'userspace-publication' )
+                ]
         );
-
-        return true;
     }
 
-    return false;
+    return $content;
 }
 
 add_filter( 'uspp_pre_update_postdata', 'uspp_add_taxonomy_in_postdata', 50, 2 );
@@ -668,8 +669,3 @@ function uspp_message_post_moderation( $content ) {
 
     return $content;
 }
-
-//add_action( 'wp', 'uspp_post_bar_setup', 10 );
-//function uspp_post_bar_setup() {
-//    do_action( 'uspp_post_bar_setup' );
-//}
