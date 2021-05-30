@@ -17,7 +17,7 @@ class USPP_Post_List {
 
     function get_postlist_block() {
 
-        $posts_block = '<div id="' . $this->post_type . '-postlist" class="">';
+        $posts_block = '<div id="' . $this->post_type . '-postlist" class="uspp-postlist">';
         $posts_block .= $this->get_postslist();
         $posts_block .= '</div>';
 
@@ -26,7 +26,7 @@ class USPP_Post_List {
 
     function get_postslist_table() {
 
-        global $wpdb, $post, $posts, $ratings, $user_ID;
+        global $wpdb, $posts, $user_ID;
 
         $postStatus = array( 'publish' );
 
@@ -36,8 +36,7 @@ class USPP_Post_List {
             $postStatus[] = 'draft';
         }
 
-        $ratings = array();
-        $posts   = array();
+        $posts = array();
 
         $posts[] = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->base_prefix . "posts WHERE post_author='%d' AND post_type='%s' AND post_status IN ('" . implode( "','", $postStatus ) . "') ORDER BY post_date DESC LIMIT $this->offset, " . $this->in_page, $this->user_id, $this->post_type ) );
 
@@ -52,10 +51,11 @@ class USPP_Post_List {
 
         if ( $posts[0] ) {
 
-            $p_list = array();
-
-
             if ( function_exists( 'uspr_format_rating' ) ) {
+                global $ratings;
+
+                $p_list  = [];
+                $ratings = [];
 
                 foreach ( $posts as $postdata ) {
                     foreach ( $postdata as $p ) {
@@ -76,10 +76,11 @@ class USPP_Post_List {
                 }
             }
 
-            if ( usp_get_template_path( 'posts-list-' . $this->post_type . '.php', __FILE__ ) )
-                $posts_block = usp_get_include_template( 'posts-list-' . $this->post_type . '.php', __FILE__ );
-            else
-                $posts_block = usp_get_include_template( 'posts-list.php', __FILE__ );
+            if ( usp_get_template_path( 'posts-list-' . $this->post_type . '.php', USPP_PATH . 'templates' ) ) {
+                $posts_block = usp_get_include_template( 'posts-list-' . $this->post_type . '.php', USPP_PATH . 'templates' );
+            } else {
+                $posts_block = usp_get_include_template( 'posts-list.php', USPP_PATH . 'templates' );
+            }
 
             wp_reset_postdata();
         } else {

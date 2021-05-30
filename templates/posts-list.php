@@ -79,5 +79,6 @@ $Table = new USP_Table( array(
     <?php } ?>
 <?php } ?>
 
-<?php echo $Table->get_table(); ?>
+<?php
 
+echo $Table->get_table();
