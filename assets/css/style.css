@@ -36,8 +36,8 @@
 
 
 /* publicpost */
-.uspp-public-box {
-    position: relative;
+.uspp-bttn__edit-form {
+    margin: 0 0 12px;
 }
 .uspp-public-box .edit-form-link > a {
     align-items: center;
@@ -168,7 +168,7 @@
     border: 0;
     padding: 0;
 }
-.uspp-public-box .submit-public-form {
+.uspp-public-box .uspp-submit-public-form {
     margin: 10px 0;
     padding-bottom: 0;
     text-align: right;
@@ -292,10 +292,6 @@ h3.pending-message {
 
 
 /*delete-post form*/
-#form-field-delete {
-    overflow: hidden;
-    padding-bottom: 0;
-}
 #uspp-delete-post .delete-form-contayner {
     background: #fafafa;
     border: var(--uspLine300);

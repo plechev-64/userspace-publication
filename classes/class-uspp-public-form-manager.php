@@ -25,9 +25,9 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
 
         foreach ( $types as $type => $name ) {
 
-            $class = ($this->post_type == $type) ? 'class="current-item"' : '';
+            $class = ($this->post_type == $type) ? 'class="usps__inline current-item"' : '';
 
-            $content .= '<li ' . $class . '><a href="' . admin_url( 'admin.php?page=manage-public-form&post-type=' . $type ) . '">' . $name . '</a></li>';
+            $content .= '<li ' . $class . '><a class="usps__inline usps__ai-center" href="' . admin_url( 'admin.php?page=manage-public-form&post-type=' . $type ) . '">' . $name . '</a></li>';
         }
 
         $content .= '</ul>';
@@ -62,12 +62,12 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
 
             $form_id = $id;
 
-            $class = ($this->form_id == $form_id) ? 'class="current-item"' : '';
+            $class = ($this->form_id == $form_id) ? 'class="usps__inline current-item"' : '';
 
-            $content .= '<li ' . $class . '><a href="' . admin_url( 'admin.php?page=manage-public-form&post-type=' . $this->post_type . '&form-id=' . $form_id ) . '">' . __( 'Form', 'userspace-publication' ) . ' ID: ' . $form_id . '</a></li>';
+            $content .= '<li ' . $class . '><a class="usps__inline usps__ai-center" href="' . admin_url( 'admin.php?page=manage-public-form&post-type=' . $this->post_type . '&form-id=' . $form_id ) . '">' . __( 'Form', 'userspace-publication' ) . ' ID: ' . $form_id . '</a></li>';
         }
 
-        $content .= '<li><a class="action-form" href="' . wp_nonce_url( admin_url( 'admin.php?page=manage-public-form&form-action=new-form&post-type=' . $this->post_type . '&form-id=' . ($form_id + 1) ), 'uspp-form-action' ) . '"><i class="uspi fa-plus"></i><span>' . __( 'Add form', 'userspace-publication' ) . '</span></a></li>';
+        $content .= '<li class="usps__inline"><a class="usps__inline usps__ai-center action-form" href="' . wp_nonce_url( admin_url( 'admin.php?page=manage-public-form&form-action=new-form&post-type=' . $this->post_type . '&form-id=' . ($form_id + 1) ), 'uspp-form-action' ) . '"><i class="uspi fa-plus"></i><span>' . __( 'Add form', 'userspace-publication' ) . '</span></a></li>';
 
         $content .= '</ul>';
 
@@ -104,7 +104,7 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
 
                 $actionButton['class'] = 'action-button';
 
-                $content .= '<li>' . usp_get_button( $actionButton ) . '</li>';
+                $content .= '<li class="usps__inline">' . usp_get_button( $actionButton ) . '</li>';
             }
 
             $content .= '</ul>';

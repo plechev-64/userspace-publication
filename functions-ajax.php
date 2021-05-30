@@ -110,9 +110,11 @@ add_action( 'wp_ajax_uspp_get_like_tags', 'uspp_get_like_tags', 10 );
 add_action( 'wp_ajax_nopriv_uspp_get_like_tags', 'uspp_get_like_tags', 10 );
 function uspp_get_like_tags() {
 
+    usp_verify_ajax_nonce();
+
     if ( ! $_POST['query'] ) {
-        return array( array( 'id' => '' ) );
-    };
+        wp_send_json( array( [ 'id' => '' ] ) );
+    }
 
     $query    = $_POST['query'];
     $taxonomy = $_POST['taxonomy'];
