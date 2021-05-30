@@ -261,7 +261,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
             $attrsForm[] = $k . '="' . $v . '"';
         }
 
-        $content .= '<div class="uspp-public-box usp-form">';
+        $content .= '<div class="uspp-public-box usp-form usps__relative">';
 
         $buttons = [];
 
@@ -271,7 +271,8 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
                 'href'  => admin_url( 'admin.php?page=manage-public-form&post-type=' . $this->post_type . '&form-id=' . $this->form_id ),
                 'label' => __( 'Edit this form', 'userspace-publication' ),
                 'icon'  => 'fa-list',
-                'type'  => 'clear'
+                'type'  => 'clear',
+                'class' => 'uspp-bttn__edit-form'
             ];
         }
 
@@ -310,7 +311,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
         if ( $this->user_can['delete'] && $this->options['delete'] ) {
 
-            $content .= '<div id="form-field-delete" class="uspp-form-field">';
+            $content .= '<div id="uspp-form-field-delete" class="usp-field">';
 
             $content .= $this->get_delete_box();
 
@@ -370,7 +371,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         if ( ! $buttons )
             return false;
 
-        $content = '<div class="uspp-form-field submit-public-form">';
+        $content = '<div class="usp-field uspp-submit-public-form">';
 
         foreach ( $buttons as $button ) {
             $content .= usp_get_button( $button );
@@ -504,9 +505,9 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         if ( ! $contentField )
             return false;
 
-        $content = '<div id="form-field-' . $field_id . '" class="uspp-form-field field-' . $field_id . '">';
+        $content = '<div id="form-field-' . $field_id . '" class="usp-field field-' . $field_id . '">';
 
-        $content .= '<label>' . $field->get_title() . '</label>';
+        $content .= $field->get_title();
 
         $content .= $contentField;
 

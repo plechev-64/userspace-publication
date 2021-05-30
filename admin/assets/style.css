@@ -1,28 +1,14 @@
-#uspp-post-fields-admin-box .uspp-form-field{
-	margin-bottom:15px;
-}
-#uspp-post-fields-admin-box .uspp-form-field > label{
-	font-weight: bold;
-	font-size: 16px;
-	margin-bottom:10px;
-}
 .uspp-custom-fields-menu li {
-    display: inline-block;
     margin: 0;
+    padding: 0;
 }
 .uspp-custom-fields-menu a {
-    background: #e5e5e5;
     border: var(--uspLine300);
-    color: #555;
-    display: flex;
-    margin: 0 0 0 10px;
-    padding: 8px 10px;
-    text-decoration: none;
+    color: var(--uspGray-700);
+    padding: 6px 12px;
+    background: var(--uspGray-200);
 }
 .uspp-custom-fields-menu a:hover {
-    background: #eee;
+    background: var(--uspGray-100);
     color: var(--uspBlack);
-}
-.uspp-custom-fields-menu .fa-trash {
-    color: var(--uspRed-500);
 }
