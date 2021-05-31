@@ -32,11 +32,6 @@ function uspp_publics_scripts() {
     usp_enqueue_script( 'uspp-publics', plugin_dir_url( __FILE__ ) . 'assets/js/scripts.js' );
 }
 
-function uspp_autocomplete_scripts() {
-    usp_enqueue_style( 'magicsuggest', plugin_dir_url( __FILE__ ) . 'assets/js/magicsuggest/magicsuggest-min.css' );
-    usp_enqueue_script( 'magicsuggest', plugin_dir_url( __FILE__ ) . 'assets/js/magicsuggest/magicsuggest-min.js' );
-}
-
 add_filter( 'usp_init_js_variables', 'uspp_public_add_js_locale', 10 );
 function uspp_public_add_js_locale( $data ) {
     $data['errors']['cats_important'] = __( 'Choose a category', 'userspace-publication' );

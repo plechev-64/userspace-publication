@@ -709,7 +709,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
     function get_tags_input( $taxonomy = 'post_tag' ) {
 
-        uspp_autocomplete_scripts();
+        usp_autocomplete_scripts();
 
         $args = array(
             'type'        => 'text',
