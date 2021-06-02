@@ -1,0 +1,10 @@
+#uspp_block_author {
+    margin: 18px 0;
+}
+#uspp_block_author > h3 {
+    font-size: 18px;
+    letter-spacing: normal;
+    line-height: 1.4;
+    margin: 0 0 6px;
+    padding: 0;
+}

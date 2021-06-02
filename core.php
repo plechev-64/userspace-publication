@@ -25,6 +25,8 @@
 function uspp_get_postslist( $post_type, $type_name ) {
     global $user_LK;
 
+    uspp_postlist_style();
+
     if ( ! class_exists( 'USPP_Post_List' ) )
         include_once USPP_PATH . 'classes/class-uspp-post-list';
 
@@ -336,10 +338,54 @@ function uspp_get_html_attachment( $attach_id, $mime_type, $addToClick = true ) 
     return $content;
 }
 
+/**
+ * Get button to fast edit post
+ *
+ * @since 1.0
+ *
+ * @param int $post_id    id of the post to edit.
+ *
+ * @return string html button.
+ */
 function uspp_button_fast_edit_post( $post_id ) {
-    return '<a class="uspp-edit-post uspp-service-button" data-post="' . $post_id . '" onclick="uspp_edit_post(this); return false;"><i class="uspi fa-edit"></i></a>';
+    if ( ! $post_id )
+        return;
+
+    usp_dialog_scripts();
+    uspp_publics_scripts();
+
+    $args = [
+        'class'   => 'uspp-edit-post uspp-service-button',
+        'data'    => [ 'post' => $post_id ],
+        'onclick' => 'uspp_edit_post(this); return false;',
+        'icon'    => 'fa-edit'
+    ];
+
+    return usp_get_button( $args );
 }
 
+/**
+ * Get button to fast delete post with confirm
+ *
+ * @since 1.0
+ *
+ * @param int $post_id    id of the post to delete.
+ *
+ * @return string html button.
+ */
 function uspp_button_fast_delete_post( $post_id ) {
-    return '<a class="uspp-delete-post uspp-service-button" data-post="' . $post_id . '" onclick="return confirm(\'' . __( 'Are you sure?', 'userspace-publication' ) . '\')? uspp_delete_post(this): false;"><i class="uspi fa-trash"></i></a>';
+    if ( ! $post_id )
+        return;
+
+    usp_dialog_scripts();
+    uspp_publics_scripts();
+
+    $args = [
+        'class'   => 'uspp-delete-post uspp-service-button',
+        'data'    => [ 'post' => $post_id ],
+        'onclick' => 'return confirm("' . __( 'Are you sure?', 'userspace-publication' ) . '")? uspp_delete_post(this): false;',
+        'icon'    => 'fa-trash'
+    ];
+
+    return usp_get_button( $args );
 }

@@ -17,11 +17,11 @@ $Table = new USP_Table( array(
         array(
             'align' => 'center',
             'title' => __( 'Date', 'userspace-publication' ),
-            'width' => 15
+            'width' => 20
         ),
         array(
             'title' => __( 'Title', 'userspace-publication' ),
-            'width' => 65
+            'width' => 60
         ),
         array(
             'align' => 'center',

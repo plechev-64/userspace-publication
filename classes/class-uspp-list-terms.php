@@ -266,9 +266,9 @@ class USPP_List_Terms {
             if ( $term['parent'] )
                 continue;
 
-            if ( $term['childrens'] ) {
+            if ( isset( $term['childrens'] ) ) {
                 $options[] = '<div class="child-list-category">'
-                    . '<span class="parent-category">' . $term['name'] . '</span>'
+                    . '<div class="uspp-parent-category">' . $term['name'] . '</div>'
                     . $this->get_checkbox_list( $term['childrens'] )
                     . '</div>';
                 continue;

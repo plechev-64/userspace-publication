@@ -1,0 +1,121 @@
+.uspp-bttn__edit-form {
+    margin: 0 0 12px;
+}
+.uspp-public-box #form-field-post_content .button-small {
+    border-radius: 2px;
+    line-height: 1;
+    margin: 3px;
+    padding: 6px 9px;
+    width: auto;
+    font-size: 14px;
+}
+#form-field-post_content textarea.wp-editor-area {
+    background: var(--uspWhite);
+    border: 0;
+}
+.uspp-block-label {
+    padding: 12px 0 0;
+}
+.usp-field.field-post_excerpt .usp-maxlength {
+    height: auto;
+}
+.uspp-public-box .uspp-tags-list .ms-ctn {
+    border: var(--uspLine300);
+    margin-top: 6px;
+    padding: 6px;
+    box-shadow: none;
+}
+.uspp-public-box .uspp-tags-list .ms-ctn .ms-sel-ctn {
+    margin: 0;
+}
+.uspp-public-box .uspp-tags-list .ms-ctn .ms-sel-ctn .ms-sel-item {
+    border-radius: 0;
+    display: inline-block;
+    float: none;
+    font-size: 14px;
+    margin: 0 6px 6px 0;
+    padding: 6px 9px;
+    color: var(--uspGray-500);
+    background: var(--uspGray-100);
+}
+.uspp-public-box .uspp-tags-list .ms-ctn .ms-sel-ctn input {
+    clear: both;
+    display: block;
+    float: none;
+    width: 100% !important;
+}
+.uspp-public-box .uspp-tags-list .ms-ctn .ms-trigger {
+    background: var(--uspWhite);
+    box-sizing: border-box;
+}
+.uspp-public-box .uspp-tags-list .ms-ctn .ms-helper {
+    color: var(--uspRed-800);
+    font-size: 14px;
+    padding: 0 6px;
+    right: 42px;
+    top: 14px;
+    background: var(--uspRed-100);
+}
+.uspp-public-box .uspp-submit-public-form {
+    margin: 12px 0;
+    text-align: right;
+}
+.uspp-public-box .uspp-submit-public-form a {
+    margin-left: 6px;
+}
+.uspp-public-form .category-list .child-list-category {
+    margin-bottom: 6px;
+}
+.uspp-public-form .uspp-parent-category {
+    font-weight: 500;
+    margin: 12px 0 3px;
+}
+
+/* ? */
+#uspp-thumbnail-post {
+    background: #e5e5e5;
+    box-sizing: border-box;
+    max-width: 180px;
+    padding: 10px;
+    text-align: center;
+}
+#uspp-thumbnail-post .thumbnail-wrapper {
+    overflow: hidden;
+    position: relative;
+}
+#uspp-thumbnail-post .thumbnail-image img {
+    width: 100%;
+}
+#uspp-thumbnail-post #uspp-thumbnail-uploader {
+    cursor: pointer;
+}
+#uspp-thumbnail-post .delete-post-thumbnail {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+/**/
+
+
+.ssi-modalOuter.uspp-preview-post a {
+    color: var(--uspBlue-500);
+}
+
+/*delete-post form*/
+.uspp-delete-form {
+    border: var(--uspLine200);
+    display: none;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: var(--uspGray-50);
+}
+.uspp-delete-text {
+    margin: 0 0 6px;
+}
+.uspp-reason-bttn {
+    margin: 0 6px 6px 0;
+}
+#uspp-without-notify {
+    display: flex;
+    margin: 12px 0;
+}

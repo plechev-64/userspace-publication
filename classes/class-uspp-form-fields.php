@@ -34,16 +34,16 @@ class USPP_Form_Fields {
 
         switch ( $this->type ) {
             case 'radio':
-                $content = '<span class="uspp-' . $this->type . '-box">';
-                $content .= sprintf( '%s<label for="%s" class="block-label">%s</label>', $field, $this->id, $this->label );
+                $content = '<span class="usp-' . $this->type . '-box">';
+                $content .= sprintf( '%s<label for="%s" class="usp-label usps usps__ai-center usps__no-select">%s</label>', $field, $this->id, $this->label );
                 $content .= '</span>';
                 break;
             case 'checkbox':
-                $content = '<span class="uspp-' . $this->type . '-box">';
-                $content .= sprintf( '%s<label for="%s" class="block-label">%s</label>', $field, $this->id, $this->label );
+                $content = '<span class="usp-' . $this->type . '-box checkbox-display-inline usps__inline usps__relative">';
+                $content .= sprintf( '%s<label for="%s" class="usp-label usps usps__ai-center usps__no-select">%s</label>', $field, $this->id, $this->label );
                 $content .= '</span>';
                 break;
-            default: $content = sprintf( '<label class="block-label">%s</label>%s', $this->label, $field );
+            default: $content = sprintf( '<div class="uspp-block-label">%s</div>%s', $this->label, $field );
         }
 
         return $content;

@@ -37,6 +37,9 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
         $this->init_properties( $args );
 
+        uspp_publics_scripts();
+        uspp_publicform_style();
+
         if ( isset( $_GET['uspp-post-edit'] ) ) {
             $this->post_id = intval( $_GET['uspp-post-edit'] );
         }
@@ -311,7 +314,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
         if ( $this->user_can['delete'] && $this->options['delete'] ) {
 
-            $content .= '<div id="uspp-form-field-delete" class="usp-field">';
+            $content .= '<div id="uspp-form-delete-post" class="usp-field">';
 
             $content .= $this->get_delete_box();
 
@@ -798,42 +801,45 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         global $user_ID;
 
         if ( usp_is_user_role( $user_ID, array( 'administrator', 'editor' ) ) ) {
-
-            $content = '<div id="uspp-delete-post">
-						' . usp_get_button( array(
-                    'label' => __( 'Delete post', 'userspace-publication' ),
-                    'class' => array( 'public-form-button delete-toggle' ),
-                    'icon'  => 'fa-trash'
-                ) ) . '
-						<div class="delete-form-contayner">
-							<form action="" method="post"  onsubmit="return confirm(\'' . __( 'Are you sure?', 'userspace-publication' ) . '\');">
-							' . wp_nonce_field( 'uspp-delete-post', '_wpnonce', true, false ) . '
-							' . $this->get_reasons_list() . '
-							<label>' . __( 'or enter your own', 'userspace-publication' ) . '</label>
-							<textarea required id="reason_content" name="reason_content"></textarea>
-							<p><input type="checkbox" name="no-reason" onclick="(!document.getElementById(\'reason_content\').getAttribute(\'disabled\')) ? document.getElementById(\'reason_content\').setAttribute(\'disabled\', \'disabled\') : document.getElementById(\'reason_content\').removeAttribute(\'disabled\')" value="1"> ' . __( 'Without notice', 'userspace-publication' ) . '</p>
-							' . usp_get_button( array(
-                    'submit' => true,
-                    'label'  => __( 'Delete post', 'userspace-publication' ),
-                    'icon'   => 'fa-trash'
-                ) ) . '<input type="hidden" name="uspp-delete-post" value="1">
-							<input type="hidden" name="post_id" value="' . $this->post_id . '">
-							</form>
-						</div>
-					</div>';
+            $content = usp_get_button( array(
+                'label'      => __( 'Options delete post', 'userspace-publication' ),
+                'class'      => [ 'public-form-button uspp-delete-toggle' ],
+                'icon'       => 'fa-angle-down',
+                'icon_align' => 'right'
+                ) );
+            $content .= '<div class="uspp-delete-form">';
+            $content .= '<form action="" method="post"  onsubmit="return confirm(\'' . __( 'Are you sure?', 'userspace-publication' ) . '\');">';
+            $content .= wp_nonce_field( 'uspp-delete-post', '_wpnonce', true, false );
+            $content .= $this->get_reasons_list();
+            $content .= '<div class="uspp-delete-text">' . __( 'or enter your own', 'userspace-publication' ) . '</div>';
+            $content .= '<textarea required id="reason_content" name="reason_content"></textarea>';
+            $content .= '<span id="uspp-without-notify" class="usp-checkbox-box checkbox-display-inline usps__inline usps__relative">'
+                . '<input type="checkbox" id="uspp-delete-silence" class="checkbox-field" name="no-reason" onclick="(!document.getElementById(\'reason_content\').getAttribute(\'disabled\')) ? document.getElementById(\'reason_content\').setAttribute(\'disabled\', \'disabled\') : document.getElementById(\'reason_content\').removeAttribute(\'disabled\')" value="1"> '
+                . '<label class="usp-label usps usps__ai-center usps__no-select" for="uspp-delete-silence">' . __( 'Without notice', 'userspace-publication' ) . '</label>'
+                . '</span>';
+            $content .= usp_get_button( array(
+                'submit' => true,
+                'label'  => __( 'Delete post', 'userspace-publication' ),
+                'icon'   => 'fa-trash',
+                'class'  => 'uspp-bttn-delete-post'
+                ) );
+            $content .= '<input type="hidden" name="uspp-delete-post" value="1">';
+            $content .= '<input type="hidden" name="post_id" value="' . $this->post_id . '">';
+            $content .= '</form>';
+            $content .= '</div>';
         } else {
 
-            $content = '<form method="post" action="" onsubmit="return confirm(\'' . __( 'Are you sure?', 'userspace-publication' ) . '\');">
-						' . wp_nonce_field( 'uspp-delete-post', '_wpnonce', true, false ) . '
-						' . usp_get_button( array(
-                    'submit' => true,
-                    'label'  => __( 'Delete post', 'userspace-publication' ),
-                    //'class'	 => array( 'delete-post-submit public-form-button' ),
-                    'icon'   => 'fa-trash'
-                ) ) . '
-						<input type="hidden" name="uspp-delete-post" value="1">
-						<input type="hidden" name="post_id" value="' . $this->post_id . '">'
-                . '</form>';
+            $content = '<form method="post" action="" onsubmit="return confirm(\'' . __( 'Are you sure?', 'userspace-publication' ) . '\');">';
+            $content .= wp_nonce_field( 'uspp-delete-post', '_wpnonce', true, false );
+            $content .= usp_get_button( array(
+                'submit' => true,
+                'label'  => __( 'Delete post', 'userspace-publication' ),
+                'class'  => 'uspp-bttn-delete-post',
+                'icon'   => 'fa-trash'
+                ) );
+            $content .= '<input type="hidden" name="uspp-delete-post" value="1">';
+            $content .= '<input type="hidden" name="post_id" value="' . $this->post_id . '">';
+            $content .= '</form>';
         }
 
         return $content;
@@ -861,13 +867,13 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
         if ( ! $reasons )
             return false;
 
-        $content = '<label>' . __( 'Use blank notice', 'userspace-publication' ) . ':</label>';
+        $content = '<div class="uspp-delete-text">' . __( 'Use blank notice', 'userspace-publication' ) . ':</div>';
 
         foreach ( $reasons as $reason ) {
             $content .= usp_get_button( array(
                 'onclick' => 'document.getElementById("reason_content").value="' . $reason['content'] . '"',
                 'label'   => $reason['value'],
-                'class'   => 'reason-delete'
+                'class'   => 'uspp-reason-bttn'
                 ) );
         }
 

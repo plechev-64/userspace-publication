@@ -24,12 +24,20 @@ function uspp_loading_dependencies() {
     }
 }
 
-if ( ! is_admin() ) {
-    add_action( 'usp_enqueue_scripts', 'uspp_publics_scripts', 10 );
-}
 function uspp_publics_scripts() {
-    usp_enqueue_style( 'uspp-publics', plugin_dir_url( __FILE__ ) . 'assets/css/style.css' );
-    usp_enqueue_script( 'uspp-publics', plugin_dir_url( __FILE__ ) . 'assets/js/scripts.js' );
+    usp_enqueue_script( 'uspp-publics', USPP_URL . 'assets/js/public-form.js' );
+}
+
+function uspp_block_author_style() {
+    usp_enqueue_style( 'uspp-author', USPP_URL . 'assets/css/block-author.css' );
+}
+
+function uspp_postlist_style() {
+    usp_enqueue_style( 'uspp-postlist', USPP_URL . 'assets/css/postlist.css' );
+}
+
+function uspp_publicform_style() {
+    usp_enqueue_style( 'uspp-publicform', USPP_URL . 'assets/css/public-form.css' );
 }
 
 add_filter( 'usp_init_js_variables', 'uspp_public_add_js_locale', 10 );
@@ -123,6 +131,8 @@ function uspp_author_info( $content ) {
         if ( ! in_array( $post->post_type, usp_get_option( 'uspp_author_box_post_types' ) ) )
             return $content;
     }
+
+    uspp_block_author_style();
 
     $content .= uspp_get_author_block();
 

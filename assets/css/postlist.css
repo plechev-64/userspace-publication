@@ -1,0 +1,21 @@
+.usp-tab-publics .usp-table__cell:not(:nth-child(3)) {
+    min-width: 75px;
+}
+.usp-tab-publics .usp-table__row > div:nth-child(3) {
+    min-width: 100px;
+}
+.usp-tab-publics .uspp_author_postlist a:hover {
+    text-decoration: underline;
+}
+.usp-tab-publics .usp-table__row:not(.usp-table__row-header) > div:nth-child(2) {
+    justify-content: space-between;
+}
+@media screen and (max-width:768px) {
+    .usp-tab-publics .usp-table__row-header ~ .usp-table__row .usp-table__cell::before {
+        flex-basis: auto;
+        min-width: 90px;
+    }
+    .usp-tab-publics .usp-table__cell > a {
+        flex-grow: 1;
+    }
+}

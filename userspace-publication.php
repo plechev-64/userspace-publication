@@ -15,6 +15,10 @@ if ( ! defined( 'USPP_PATH' ) ) {
     define( 'USPP_PATH', trailingslashit( plugin_dir_path( __FILE__ ) ) );
 }
 
+if ( ! defined( 'USPP_URL' ) ) {
+    define( 'USPP_URL', trailingslashit( plugin_dir_url( __FILE__ ) ) );
+}
+
 // set the first settings
 register_activation_hook( __FILE__, 'uspp_activate' );
 function uspp_activate() {

@@ -53,7 +53,7 @@ jQuery( document ).ready( function( $ ) {
 
 	} );
 
-	jQuery( '#uspp-delete-post .delete-toggle' ).click( function() {
+	jQuery( '.uspp-delete-toggle' ).click( function() {
 		jQuery( this ).next().toggle( 'fast' );
 		return false;
 	} );

@@ -7,6 +7,12 @@ function uspp_ajax_delete_post() {
 
     $user_id = ($user_ID) ? $user_ID : $_COOKIE['PHPSESSID'];
 
+    if ( ! current_user_can( 'delete_posts', intval( $_POST['post_id'] ) ) ) {
+        $log['error'] = __( 'Deletion failed!', 'userspace-publication' );
+
+        return $log;
+    }
+
     $temps    = get_site_option( 'uspp_tempgallery' );
     $temp_gal = $temps[$user_id];
 
@@ -56,7 +62,7 @@ function uspp_get_edit_postdata() {
     $post_id = intval( $_POST['post_id'] );
     $post    = get_post( $post_id );
 
-    if ( $user_ID ) {
+    if ( $user_ID && current_user_can( 'edit_post', $post_id ) ) {
         $log['result']  = 100;
         $log['content'] = "
         <form id='uspp-edit-form' method='post'>
