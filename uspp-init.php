@@ -4,23 +4,30 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+
+
 add_action( 'usp_init', 'uspp_loading_dependencies' );
 function uspp_loading_dependencies() {
-    require_once 'classes/class-uspp-form-fields.php';
-    require_once 'classes/class-uspp-edit-terms-list.php';
-    require_once 'classes/class-uspp-list-terms.php';
-    require_once 'classes/class-uspp-public-form-fields.php';
-    require_once 'classes/class-uspp-public-form.php';
-    require_once 'classes/class-uspp-post-list.php';
-    require_once 'classes/class-uspp-edit-post.php';
-    require_once 'core.php';
-    require_once 'shortcodes.php';
-    require_once 'functions-ajax.php';
-    require_once 'init.php';
+    USP()->use_module( 'content-manager' );
+
+    require_once USPP_PATH . 'classes/class-uspp-form-fields.php';
+    require_once USPP_PATH . 'classes/class-uspp-edit-terms-list.php';
+    require_once USPP_PATH . 'classes/class-uspp-list-terms.php';
+    require_once USPP_PATH . 'classes/class-uspp-public-form-fields.php';
+    require_once USPP_PATH . 'classes/class-uspp-public-form.php';
+    //require_once 'classes/class-uspp-post-list.php';
+    require_once USPP_PATH . 'classes/class-uspp-edit-post.php';
+    require_once USPP_PATH . 'core.php';
+    require_once USPP_PATH . 'shortcodes.php';
+    require_once USPP_PATH . 'functions-ajax.php';
+    require_once USPP_PATH . 'init.php';
+
+    if ( ! class_exists( 'USPP_Author_Postlist' ) )
+        require_once USPP_PATH . 'classes/class-uspp-author-postlist.php';
 
     if ( is_admin() ) {
-        require_once 'classes/class-uspp-public-form-manager.php';
-        require_once 'admin/index.php';
+        require_once USPP_PATH . 'classes/class-uspp-public-form-manager.php';
+        require_once USPP_PATH . 'admin/index.php';
     }
 }
 
@@ -33,7 +40,7 @@ function uspp_block_author_style() {
 }
 
 function uspp_postlist_style() {
-    usp_enqueue_style( 'uspp-postlist', USPP_URL . 'assets/css/postlist.css' );
+    usp_enqueue_style( 'uspp-postlist', USPP_URL . 'assets/css/author-postlist.css' );
 }
 
 function uspp_publicform_style() {

@@ -26,13 +26,25 @@ function uspp_get_postslist( $post_type, $type_name ) {
     global $user_LK;
 
     uspp_postlist_style();
+//
+//    if ( ! class_exists( 'USPP_Post_List' ) )
+//        include_once USPP_PATH . 'classes/class-uspp-post-list';
+//
+//    $list = new USPP_Post_List( $user_LK, $post_type, $type_name );
+//
+//    return $list->get_postlist_block();
 
-    if ( ! class_exists( 'USPP_Post_List' ) )
-        include_once USPP_PATH . 'classes/class-uspp-post-list';
 
-    $list = new USPP_Post_List( $user_LK, $post_type, $type_name );
+    $manager = new USPP_Author_Postlist( [
+        'post_author' => $user_LK,
+        'post_type'   => $post_type
+        ] );
 
-    return $list->get_postlist_block();
+    $content = '<div id="uspp-postlist-' . $post_type . '" class="uspp-postlist">';
+    $content .= $manager->get_manager();
+    $content .= '</div>';
+
+    return $content;
 }
 
 function uspp_tab_postform( $master_id ) {

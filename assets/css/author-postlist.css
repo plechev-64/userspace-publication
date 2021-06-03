@@ -4,7 +4,7 @@
 .usp-tab-publics .usp-table__row > div:nth-child(3) {
     min-width: 100px;
 }
-.usp-tab-publics .uspp_author_postlist a:hover {
+.usp-tab-publics .uspp-postlist a:hover {
     text-decoration: underline;
 }
 .usp-tab-publics .usp-table__row:not(.usp-table__row-header) > div:nth-child(2) {

@@ -1,5 +1,7 @@
 <?php
 
+// deprecated. use class-uspp-author-postlist.php
+
 class USPP_Post_List {
 
     public $post_type;
