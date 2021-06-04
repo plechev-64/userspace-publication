@@ -1,6 +1,6 @@
 <?php
 
-add_shortcode( 'public-form', 'uspp_publicform' );
+add_shortcode( 'uspp-public-form', 'uspp_publicform' );
 function uspp_publicform( $atts, $content = null ) {
 
     if ( usp_is_gutenberg() )

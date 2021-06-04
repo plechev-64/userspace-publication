@@ -48,7 +48,7 @@ function uspp_get_postslist( $post_type, $type_name ) {
 }
 
 function uspp_tab_postform( $master_id ) {
-    return do_shortcode( '[public-form form_id="' . usp_get_option( 'uspp_id_public_form', 1 ) . '"]' );
+    return do_shortcode( '[uspp-public-form form_id="' . usp_get_option( 'uspp_id_public_form', 1 ) . '"]' );
 }
 
 //Прикрепление новой миниатюры к публикации из произвольного места на сервере

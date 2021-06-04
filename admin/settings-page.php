@@ -38,7 +38,7 @@ function uspp_get_publics_options_page( $options ) {
             'slug'   => 'uspp_public_form_page',
             'title'  => __( 'Publishing and editing', 'userspace-publication' ),
             'values' => $pages,
-            'notice' => __( 'You are required to publish a links to managing publications, you must specify the page with the shortcode [public-form]', 'userspace-publication' )
+            'notice' => __( 'You are required to publish a links to managing publications, you must specify the page with the shortcode [uspp-public-form]', 'userspace-publication' )
         ),
         array(
             'type'      => 'switch',

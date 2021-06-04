@@ -34,7 +34,7 @@ function uspp_activate() {
 
     $args = [
         'post_title'   => __( 'Form of publication', 'userspace-publication' ),
-        'post_content' => '[public-form]',
+        'post_content' => '[uspp-public-form]',
         'post_name'    => 'uspp-postedit',
         'post_status'  => 'publish',
         'post_author'  => $user_ID,

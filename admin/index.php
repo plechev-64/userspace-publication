@@ -36,7 +36,7 @@ function uspp_public_form_manager() {
     $post_type = (isset( $_GET['post-type'] )) ? $_GET['post-type'] : 'post';
     $form_id   = (isset( $_GET['form-id'] )) ? $_GET['form-id'] : 1;
 
-    $shortCode = 'public-form post_type="' . $post_type . '"';
+    $shortCode = 'uspp-public-form post_type="' . $post_type . '"';
 
     if ( $form_id > 1 ) {
         $shortCode .= ' form_id="' . $form_id . '"';
