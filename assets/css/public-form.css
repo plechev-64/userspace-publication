@@ -67,7 +67,7 @@
     margin-bottom: 6px;
 }
 .uspp-public-form .uspp-parent-category {
-    font-weight: 500;
+    font-weight: var(--uspWeight5);
     margin: 12px 0 3px;
 }
 
