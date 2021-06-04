@@ -629,6 +629,9 @@ function uspp_get_post_gallery( $gallery_id, $attachment_ids ) {
 
 add_filter( 'uspp_public_form', 'uspp_add_public_form_captcha', 100 );
 function uspp_add_public_form_captcha( $form ) {
+    if ( ! class_exists( 'ReallySimpleCaptcha' ) )
+        return $form;
+
     global $user_ID;
 
     if ( $user_ID )

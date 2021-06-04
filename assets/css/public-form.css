@@ -19,43 +19,6 @@
 .usp-field.field-post_excerpt .usp-maxlength {
     height: auto;
 }
-.uspp-public-box .uspp-tags-list .ms-ctn {
-    border: var(--uspLine300);
-    margin-top: 6px;
-    padding: 6px;
-    box-shadow: none;
-}
-.uspp-public-box .uspp-tags-list .ms-ctn .ms-sel-ctn {
-    margin: 0;
-}
-.uspp-public-box .uspp-tags-list .ms-ctn .ms-sel-ctn .ms-sel-item {
-    border-radius: 0;
-    display: inline-block;
-    float: none;
-    font-size: 14px;
-    margin: 0 6px 6px 0;
-    padding: 6px 9px;
-    color: var(--uspGray-500);
-    background: var(--uspGray-100);
-}
-.uspp-public-box .uspp-tags-list .ms-ctn .ms-sel-ctn input {
-    clear: both;
-    display: block;
-    float: none;
-    width: 100% !important;
-}
-.uspp-public-box .uspp-tags-list .ms-ctn .ms-trigger {
-    background: var(--uspWhite);
-    box-sizing: border-box;
-}
-.uspp-public-box .uspp-tags-list .ms-ctn .ms-helper {
-    color: var(--uspRed-800);
-    font-size: 14px;
-    padding: 0 6px;
-    right: 42px;
-    top: 14px;
-    background: var(--uspRed-100);
-}
 .uspp-public-box .uspp-submit-public-form {
     margin: 12px 0;
     text-align: right;
