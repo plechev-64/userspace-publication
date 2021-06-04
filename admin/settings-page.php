@@ -41,13 +41,14 @@ function uspp_get_publics_options_page( $options ) {
             'notice' => __( 'You are required to publish a links to managing publications, you must specify the page with the shortcode [public-form]', 'userspace-publication' )
         ),
         array(
-            'type'      => 'select',
+            'type'      => 'switch',
             'slug'      => 'uspp_author_box',
             'title'     => __( 'Display information about the author', 'userspace-publication' ),
-            'values'    => array(
-                __( 'Disabled', 'userspace-publication' ),
-                __( 'Enabled', 'userspace-publication' )
-            ),
+            'text'      => [
+                'off' => __( 'No', 'userspace-publication' ),
+                'on'  => __( 'Yes', 'userspace-publication' )
+            ],
+            'default'   => 1,
             'childrens' => array(
                 1 => array(
                     array(
@@ -61,10 +62,14 @@ function uspp_get_publics_options_page( $options ) {
             )
         ),
         array(
-            'type'      => 'select',
+            'type'      => 'switch',
             'slug'      => 'uspp_show_list_of_publications',
-            'title'     => __( 'List of publications tab', 'userspace-publication' ),
-            'values'    => array( __( 'Disabled', 'userspace-publication' ), __( 'Enabled', 'userspace-publication' ) ),
+            'title'     => __( 'Show list of publications tab', 'userspace-publication' ),
+            'text'      => [
+                'off' => __( 'No', 'userspace-publication' ),
+                'on'  => __( 'Yes', 'userspace-publication' )
+            ],
+            'default'   => 1,
             'childrens' => array(
                 1 => array(
                     array(
@@ -75,10 +80,11 @@ function uspp_get_publics_options_page( $options ) {
                         'notice' => __( 'Select the type of post which will be to output its archive of writes in this tab. If nothing is specified, it will be outputed a writes all types', 'userspace-publication' )
                     ),
                     array(
-                        'type'   => 'select',
-                        'slug'   => 'uspp_tab_list_of_publications',
-                        'title'  => __( 'List of publications of the user', 'userspace-publication' ),
-                        'values' => array( __( 'Only owner of the account', 'userspace-publication' ), __( 'Show everyone including guests', 'userspace-publication' ) )
+                        'type'    => 'radio',
+                        'slug'    => 'uspp_tab_list_of_publications',
+                        'title'   => __( 'List of publications of the user', 'userspace-publication' ),
+                        'values'  => array( __( 'Only owner of the account', 'userspace-publication' ), __( 'Show everyone including guests', 'userspace-publication' ) ),
+                        'default' => 1,
                     )
                 )
             )
@@ -90,29 +96,40 @@ function uspp_get_publics_options_page( $options ) {
     ) )->add_options( array(
         array(
             'type'   => 'select',
-            'slug'   => 'uspp_public_preview',
-            'title'  => __( 'Use preview', 'userspace-publication' ),
-            'values' => array( __( 'No', 'userspace-publication' ), __( 'Yes', 'userspace-publication' ) )
-        ),
-        array(
-            'type'   => 'select',
-            'slug'   => 'uspp_public_draft',
-            'title'  => __( 'Use draft', 'userspace-publication' ),
-            'values' => array( __( 'No', 'userspace-publication' ), __( 'Yes', 'userspace-publication' ) )
-        ),
-        array(
-            'type'   => 'select',
             'slug'   => 'uspp_default_thumb',
             'title'  => __( 'The image size in editor by default', 'userspace-publication' ),
             'values' => $d_sizes,
             'notice' => __( 'Select image size for the visual editor during publishing', 'userspace-publication' )
         ),
         array(
-            'type'      => 'select',
+            'type'    => 'switch',
+            'slug'    => 'uspp_public_preview',
+            'title'   => __( 'Show preview button', 'userspace-publication' ),
+            'text'    => [
+                'off' => __( 'No', 'userspace-publication' ),
+                'on'  => __( 'Yes', 'userspace-publication' )
+            ],
+            'default' => 1,
+        ),
+        array(
+            'type'    => 'switch',
+            'slug'    => 'uspp_public_draft',
+            'title'   => __( 'Show draft button', 'userspace-publication' ),
+            'text'    => [
+                'off' => __( 'No', 'userspace-publication' ),
+                'on'  => __( 'Yes', 'userspace-publication' )
+            ],
+            'default' => 1,
+        ),
+        array(
+            'type'      => 'switch',
             'slug'      => 'uspp_tab_public_form',
-            'title'     => __( 'Form of publication output in the personal cabinet', 'userspace-publication' ),
-            'values'    => array( __( 'Do not display', 'userspace-publication' ), __( 'Output', 'userspace-publication' ) ),
-            'default'   => 1,
+            'title'     => __( 'Show form of publication in the personal cabinet', 'userspace-publication' ),
+            'text'      => [
+                'off' => __( 'No', 'userspace-publication' ),
+                'on'  => __( 'Yes', 'userspace-publication' )
+            ],
+            'default'   => 0,
             'childrens' => array(
                 1 => array(
                     array(
@@ -134,7 +151,7 @@ function uspp_get_publics_options_page( $options ) {
             'slug'      => 'uspp_access_publicform',
             'title'     => __( 'Publication is allowed', 'userspace-publication' ),
             'values'    => array(
-                10 => __( 'only Administrators', 'userspace-publication' ),
+                10 => __( 'Only Administrators', 'userspace-publication' ),
                 7  => __( 'Editors and higher', 'userspace-publication' ),
                 2  => __( 'Authors and higher', 'userspace-publication' ),
                 0  => __( 'Guests and users', 'userspace-publication' )
@@ -152,10 +169,11 @@ function uspp_get_publics_options_page( $options ) {
             )
         ),
         array(
-            'type'      => 'select',
+            'type'      => 'radio',
             'slug'      => 'uspp_send_to_moderation',
             'title'     => __( 'Moderation of publications', 'userspace-publication' ),
             'values'    => array( __( 'Publish now', 'userspace-publication' ), __( 'Send for moderation', 'userspace-publication' ) ),
+            'default'   => 0,
             'notice'    => __( 'If subject to moderation: To allow the user to see their publication before moderation has been completed, the user should be classifies as Author or higher', 'userspace-publication' ),
             'childrens' => array(
                 1 => array(
@@ -196,18 +214,23 @@ function uspp_get_publics_options_page( $options ) {
         'title' => __( 'Custom fields', 'userspace-publication' )
     ) )->add_options( array(
         array(
-            'type'      => 'select',
+            'type'      => 'switch',
             'slug'      => 'uspp_custom_fields',
             'title'     => __( 'Automatic output', 'userspace-publication' ),
-            'values'    => array( __( 'No', 'userspace-publication' ), __( 'Yes', 'userspace-publication' ) ),
+            'text'      => [
+                'off' => __( 'No', 'userspace-publication' ),
+                'on'  => __( 'Yes', 'userspace-publication' )
+            ],
+            'default'   => 1,
             'notice'    => __( 'Settings only for fields created using the form of the publication usp-publication', 'userspace-publication' ),
             'childrens' => array(
                 1 => array(
                     array(
-                        'type'   => 'select',
-                        'slug'   => 'uspp_cf_place',
-                        'title'  => __( 'Output fields location', 'userspace-publication' ),
-                        'values' => array( __( 'Above publication content', 'userspace-publication' ), __( 'On content recording', 'userspace-publication' ) )
+                        'type'    => 'radio',
+                        'slug'    => 'uspp_cf_place',
+                        'title'   => __( 'Output fields location', 'userspace-publication' ),
+                        'values'  => array( __( 'Before content', 'userspace-publication' ), __( 'After content', 'userspace-publication' ) ),
+                        'default' => 1,
                     ),
                     array(
                         'type'   => 'checkbox',
