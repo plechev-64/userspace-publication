@@ -114,13 +114,13 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
         $guestFields = array(
             array(
-                'slug'     => 'name-user',
+                'slug'     => 'user_login',
                 'title'    => __( 'Your Name', 'userspace-publication' ),
                 'required' => 1,
                 'type'     => 'text'
             ),
             array(
-                'slug'     => 'email-user',
+                'slug'     => 'user_email',
                 'title'    => __( 'Your E-mail', 'userspace-publication' ),
                 'required' => 1,
                 'type'     => 'email'
@@ -442,12 +442,13 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 
                             $thumbnail_id = get_post_meta( $this->post_id, '_thumbnail_id', 1 );
                         } else {
+                            $session_id = isset( $_COOKIE['PHPSESSID'] ) && $_COOKIE['PHPSESSID'] ? $_COOKIE['PHPSESSID'] : 'none';
 
                             $thumbnail_id = RQ::tbl( new USP_Temp_Media() )
                                 ->select( [ 'media_id' ] )
                                 ->where( [
                                     'user_id'         => $uploader->user_id ? $uploader->user_id : 0,
-                                    'session_id'      => $uploader->user_id ? '' : $_COOKIE['PHPSESSID'],
+                                    'session_id'      => $uploader->user_id ? '' : $session_id,
                                     'uploader_id__in' => array( 'post_thumbnail' )
                                 ] )
                                 ->limit( 1 )
@@ -477,12 +478,13 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
                                     'post_type'   => 'attachment',
                                 ] )->limit( -1 )->order( 'ASC' )->get_col();
                         } else {
+                            $session_id = isset( $_COOKIE['PHPSESSID'] ) && $_COOKIE['PHPSESSID'] ? $_COOKIE['PHPSESSID'] : 'none';
 
                             $imagIds = RQ::tbl( new USP_Temp_Media() )
                                     ->select( [ 'media_id' ] )
                                     ->where( [
                                         'user_id'         => $uploader->user_id ? $uploader->user_id : 0,
-                                        'session_id'      => $uploader->user_id ? '' : $_COOKIE['PHPSESSID'],
+                                        'session_id'      => $uploader->user_id ? '' : $session_id,
                                         'uploader_id__in' => array( 'post_uploader', 'post_thumbnail' )
                                     ] )
                                     ->limit( -1 )->order( 'ASC' )->get_col();

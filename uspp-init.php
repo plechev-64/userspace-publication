@@ -421,7 +421,7 @@ function uspp_register_author_post( $postdata ) {
 
     if ( ! $postdata['post_author'] ) {
 
-        $email_new_user = sanitize_email( $_POST['email-user'] );
+        $email_new_user = sanitize_email( $_POST['user_email'] );
 
         if ( $email_new_user ) {
 
@@ -433,7 +433,7 @@ function uspp_register_author_post( $postdata ) {
                 'user_pass'    => $random_password,
                 'user_login'   => $email_new_user,
                 'user_email'   => $email_new_user,
-                'display_name' => $_POST['name-user']
+                'display_name' => $_POST['user_login']
             );
 
             $user_id = usp_insert_user( $userdata );

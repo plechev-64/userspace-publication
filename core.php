@@ -241,7 +241,7 @@ function uspp_update_post_custom_fields( $post_id, $id_form = false ) {
     }
 
     //support of uploader in admin
-    if ( isset( $_POST['post_uploader'] ) && $_POST['post_uploader'] ) {
+    if ( is_admin() && isset( $_POST['post_uploader'] ) && $_POST['post_uploader'] ) {
         global $user_ID;
 
         $editPost = new USPP_Edit_Post();

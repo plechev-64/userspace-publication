@@ -149,8 +149,8 @@ function uspp_preview_post() {
 
     if ( ! usp_get_option( 'public_access' ) && ! $user_ID ) {
 
-        $email_new_user = sanitize_email( $postdata['email-user'] );
-        $name_new_user  = $postdata['name-user'];
+        $email_new_user = sanitize_email( $postdata['user_email'] );
+        $name_new_user  = $postdata['user_login'];
 
         if ( ! $email_new_user ) {
             $log['error'] = __( 'Enter your e-mail!', 'userspace-publication' );
@@ -175,7 +175,7 @@ function uspp_preview_post() {
             }
         }
 
-        if ( $log['error'] ) {
+        if ( isset( $log['error'] ) ) {
             return $log;
         }
     }
