@@ -259,7 +259,7 @@ function uspp_delete_post() {
 add_action( 'uspp_after_delete_post', 'uspp_delete_notice_author_post' );
 function uspp_delete_notice_author_post( $post_id ) {
 
-    if ( ! $_POST['reason_content'] )
+    if ( ! isset( $_POST['reason_content'] ) )
         return false;
 
     $post = get_post( $post_id );

@@ -20,11 +20,11 @@
     height: auto;
 }
 .uspp-public-box .uspp-submit-public-form {
-    margin: 12px 0;
+    margin: 12px 0 6px;
     text-align: right;
 }
 .uspp-public-box .uspp-submit-public-form a {
-    margin-left: 6px;
+    margin: 0 0 6px 6px;
 }
 .uspp-public-form .category-list .child-list-category {
     margin-bottom: 6px;

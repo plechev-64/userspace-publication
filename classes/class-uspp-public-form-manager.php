@@ -21,7 +21,7 @@ class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
 
         $content = '<div class="usp-custom-fields-navi">';
 
-        $content .= '<ul class="usp-types-list">';
+        $content .= '<ul class="usp-types-list usps">';
 
         foreach ( $types as $type => $name ) {
 

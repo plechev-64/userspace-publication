@@ -281,7 +281,7 @@ function uspp_preview( e ) {
 				};
 
 				ssi_modal.show( {
-					sizeClass: 'small',
+					sizeClass: 'medium',
 					title: USP.local.preview,
 					className: 'uspp-preview-post',
 					buttons: buttons,

@@ -27,6 +27,7 @@ class USPP_Author_Postlist extends USP_Table_Manager {
             $postStatus[] = 'private';
             $postStatus[] = 'pending';
             $postStatus[] = 'draft';
+            $postStatus[] = 'trash';
         }
 
         $data = RQ::tbl( new USP_Posts_Query() )
