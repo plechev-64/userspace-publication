@@ -30,7 +30,7 @@ class USPP_Author_Postlist extends USP_Table_Manager {
             $postStatus[] = 'trash';
         }
 
-        $data = RQ::tbl( new USP_Posts_Query() )
+        $data = ( new USP_Posts_Query() )
             ->select( [
                 'ID',
                 'post_date',

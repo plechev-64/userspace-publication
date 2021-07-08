@@ -444,7 +444,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
                         } else {
                             $session_id = isset( $_COOKIE['PHPSESSID'] ) && $_COOKIE['PHPSESSID'] ? $_COOKIE['PHPSESSID'] : 'none';
 
-                            $thumbnail_id = RQ::tbl( new USP_Temp_Media() )
+                            $thumbnail_id = ( new USP_Temp_Media() )
                                 ->select( [ 'media_id' ] )
                                 ->where( [
                                     'user_id'         => $uploader->user_id ? $uploader->user_id : 0,
@@ -473,14 +473,14 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
                         $uploader = $field->get_uploader();
 
                         if ( $this->post_id ) {
-                            $imagIds = RQ::tbl( new USP_Posts_Query() )->select( [ 'ID' ] )->where( [
+                            $imagIds = ( new USP_Posts_Query() )->select( [ 'ID' ] )->where( [
                                     'post_parent' => $this->post_id,
                                     'post_type'   => 'attachment',
                                 ] )->limit( -1 )->order( 'ASC' )->get_col();
                         } else {
                             $session_id = isset( $_COOKIE['PHPSESSID'] ) && $_COOKIE['PHPSESSID'] ? $_COOKIE['PHPSESSID'] : 'none';
 
-                            $imagIds = RQ::tbl( new USP_Temp_Media() )
+                            $imagIds = ( new USP_Temp_Media() )
                                     ->select( [ 'media_id' ] )
                                     ->where( [
                                         'user_id'         => $uploader->user_id ? $uploader->user_id : 0,
