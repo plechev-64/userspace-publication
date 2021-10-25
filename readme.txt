@@ -17,7 +17,7 @@ The plugin adds functionality of publications on your site.
 
 If you're a developer and would like to contribute to the source code of the plugin you can do so via our [GitHub Repository](https://github.com/plechev-64/userspace-publication).
 
-Want to add a new language to UserSpace Publication? Great! You can contribute via [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/userspace-publication).
+Want to add a new language to UserSpace Publication? Great! You can contribute via [translate.WordPress.org](https://translate.wordpress.org/projects/wp-plugins/userspace-publication).
 
 == Installation ==
 

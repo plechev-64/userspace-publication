@@ -2,731 +2,743 @@
 
 class USPP_Public_Form extends USPP_Public_Form_Fields {
 
-    public $post_id       = 0;
-    public $post_type     = 'post';
-    public $fields_options;
-    public $form_object;
-    public $post;
-    public $form_id;
-    public $current_field = array();
-    public $options       = array(
-        'preview' => 1,
-        'draft'   => 1,
-        'delete'  => 1
-    );
-    public $user_can      = array(
-        'upload'  => false,
-        'publish' => false,
-        'delete'  => false,
-        'draft'   => false,
-        'edit'    => false
-    );
-    public $core_fields   = array(
-        'post_content',
-        'post_title',
-        'post_uploader',
-        'post_excerpt',
-        'post_thumbnail'
-    );
-    public $tax_fields    = array();
-
-    function __construct( $args = false ) {
-        global $user_ID;
-
-        USP()->use_module( 'forms' );
-
-        $this->init_properties( $args );
-
-        uspp_publics_scripts();
-        uspp_publicform_style();
-
-        if ( isset( $_GET['uspp-post-edit'] ) ) {
-            $this->post_id = intval( $_GET['uspp-post-edit'] );
-        }
-
-        if ( $this->post_id ) {
+	public $post_id = 0;
+	public $post_type = 'post';
+	public $fields_options;
+	public $form_object;
+	public $post;
+	public $form_id;
+	public $current_field = [];
+	public $options = [
+		'preview' => 1,
+		'draft'   => 1,
+		'delete'  => 1,
+	];
+	public $user_can = [
+		'upload'  => false,
+		'publish' => false,
+		'delete'  => false,
+		'draft'   => false,
+		'edit'    => false,
+	];
+	public $core_fields = [
+		'post_content',
+		'post_title',
+		'post_uploader',
+		'post_excerpt',
+		'post_thumbnail',
+	];
+	public $tax_fields = [];
+
+	function __construct( $args = false ) {
+		global $user_ID;
+
+		USP()->use_module( 'forms' );
+
+		$this->init_properties( $args );
+
+		uspp_publication_scripts();
+		uspp_publicform_style();
+
+		if ( isset( $_GET['uspp-post-edit'] ) ) {
+			$this->post_id = intval( $_GET['uspp-post-edit'] );
+		}
+
+		if ( $this->post_id ) {
+
+			$this->post      = get_post( $this->post_id );
+			$this->post_type = $this->post->post_type;
+			$this->form_id   = get_post_meta( $this->post_id, 'publicform-id', 1 );
+		}
+
+		if ( ! $this->form_id ) {
+			$this->form_id = 1;
+		}
 
-            $this->post      = get_post( $this->post_id );
-            $this->post_type = $this->post->post_type;
-            $this->form_id   = get_post_meta( $this->post_id, 'publicform-id', 1 );
-        }
+		$this->setup_user_can();
+
+		if ( $this->user_can['publish'] && ! $user_ID ) {
+			add_filter( 'uspp_public_form_fields', [ $this, 'add_guest_fields' ], 10 );
+		}
+
+		add_filter( 'usp_custom_fields', [ $this, 'init_public_form_fields_filter' ], 10 );
+
+		parent::__construct( $this->post_type, [
+			'form_id' => $this->form_id,
+		] );
 
-        if ( ! $this->form_id )
-            $this->form_id = 1;
+		$this->init_options();
 
-        $this->setup_user_can();
+		do_action( 'uspp_public_form_init', $this->get_object_form() );
 
-        if ( $this->user_can['publish'] && ! $user_ID )
-            add_filter( 'uspp_public_form_fields', array( $this, 'add_guest_fields' ), 10 );
+		if ( $this->options['preview'] ) {
+			usp_dialog_scripts();
+		}
 
-        add_filter( 'usp_custom_fields', array( $this, 'init_public_form_fields_filter' ), 10 );
+		if ( $this->user_can['upload'] ) {
+			add_action( 'wp_footer', [ $this, 'init_form_scripts' ], 100 );
+		}
 
-        parent::__construct( $this->post_type, array(
-            'form_id' => $this->form_id
-        ) );
+		$this->form_object = $this->get_object_form();
 
-        $this->init_options();
+		do_action( 'uspp_pre_get_public_form', $this );
+	}
 
-        do_action( 'uspp_public_form_init', $this->get_object_form() );
+	function init_public_form_fields_filter( $fields ) {
+		return apply_filters( 'uspp_public_form_fields', $fields, $this->get_object_form(), $this );
+	}
 
-        if ( $this->options['preview'] )
-            usp_dialog_scripts();
+	function init_properties( $args ) {
+		$properties = get_class_vars( get_class( $this ) );
 
-        if ( $this->user_can['upload'] ) {
-            add_action( 'wp_footer', array( $this, 'init_form_scripts' ), 100 );
-        }
+		foreach ( $properties as $name => $val ) {
+			if ( isset( $args[ $name ] ) ) {
+				$this->$name = $args[ $name ];
+			}
+		}
+	}
 
-        $this->form_object = $this->get_object_form();
+	function get_object_form() {
 
-        do_action( 'uspp_pre_get_public_form', $this );
-    }
+		$dataForm = [];
 
-    function init_public_form_fields_filter( $fields ) {
-        return apply_filters( 'uspp_public_form_fields', $fields, $this->get_object_form(), $this );
-    }
+		$dataForm['post_id']      = $this->post_id;
+		$dataForm['post_type']    = $this->post_type;
+		$dataForm['post_status']  = ( $this->post_id ) ? $this->post->post_status : 'new';
+		$dataForm['post_content'] = ( $this->post_id ) ? $this->post->post_content : '';
+		$dataForm['post_excerpt'] = ( $this->post_id ) ? $this->post->post_excerpt : '';
+		$dataForm['post_title']   = ( $this->post_id ) ? $this->post->post_title : '';
 
-    function init_properties( $args ) {
-        $properties = get_class_vars( get_class( $this ) );
+		return ( object ) $dataForm;
+	}
 
-        foreach ( $properties as $name => $val ) {
-            if ( isset( $args[$name] ) )
-                $this->$name = $args[$name];
-        }
-    }
+	function add_guest_fields( $fields ) {
 
-    function get_object_form() {
+		$guestFields = [
+			[
+				'slug'     => 'user_login',
+				'title'    => __( 'Your Name', 'userspace-publication' ),
+				'required' => 1,
+				'type'     => 'text',
+			],
+			[
+				'slug'     => 'user_email',
+				'title'    => __( 'Your E-mail', 'userspace-publication' ),
+				'required' => 1,
+				'type'     => 'email',
+			],
+		];
 
-        $dataForm = array();
+		return array_merge( $guestFields, $fields );
+	}
 
-        $dataForm['post_id']      = $this->post_id;
-        $dataForm['post_type']    = $this->post_type;
-        $dataForm['post_status']  = ($this->post_id) ? $this->post->post_status : 'new';
-        $dataForm['post_content'] = ($this->post_id) ? $this->post->post_content : '';
-        $dataForm['post_excerpt'] = ($this->post_id) ? $this->post->post_excerpt : '';
-        $dataForm['post_title']   = ($this->post_id) ? $this->post->post_title : '';
+	function init_options() {
 
-        $dataForm = ( object ) $dataForm;
+		$this->options['preview'] = usp_get_option( 'uspp_public_preview' );
+		$this->options['draft']   = usp_get_option( 'uspp_public_draft' );
 
-        return $dataForm;
-    }
+		$this->options = apply_filters( 'uspp_public_form_options', $this->options, $this->get_object_form() );
+	}
 
-    function add_guest_fields( $fields ) {
+	function setup_user_can() {
+		global $user_ID;
 
-        $guestFields = array(
-            array(
-                'slug'     => 'user_login',
-                'title'    => __( 'Your Name', 'userspace-publication' ),
-                'required' => 1,
-                'type'     => 'text'
-            ),
-            array(
-                'slug'     => 'user_email',
-                'title'    => __( 'Your E-mail', 'userspace-publication' ),
-                'required' => 1,
-                'type'     => 'email'
-            )
-        );
+		$this->user_can['publish'] = true;
 
-        $fields = array_merge( $guestFields, $fields );
+		$user_can = usp_get_option( 'uspp_access_publicform', 2 );
 
-        return $fields;
-    }
+		if ( $user_can ) {
 
-    function init_options() {
+			if ( $user_ID ) {
 
-        $this->options['preview'] = usp_get_option( 'uspp_public_preview' );
-        $this->options['draft']   = usp_get_option( 'uspp_public_draft' );
+				$userinfo = get_userdata( $user_ID );
 
-        $this->options = apply_filters( 'uspp_public_form_options', $this->options, $this->get_object_form() );
-    }
+				if ( $userinfo->user_level >= $user_can ) {
+					$this->user_can['publish'] = true;
+				} else {
+					$this->user_can['publish'] = false;
+				}
+			} else {
 
-    function setup_user_can() {
-        global $user_ID;
+				$this->user_can['publish'] = false;
+			}
+		}
 
-        $this->user_can['publish'] = true;
+		$this->user_can['draft'] = $user_ID ? true : false;
 
-        $user_can = usp_get_option( 'uspp_access_publicform', 2 );
+		$this->user_can['upload'] = $this->user_can['publish'];
 
-        if ( $user_can ) {
+		if ( $user_ID && $this->post_id ) {
 
-            if ( $user_ID ) {
+			$this->user_can['edit'] = current_user_can( 'edit_post', $this->post_id );
 
-                $userinfo = get_userdata( $user_ID );
+			if ( ! $this->user_can['edit'] && 'post-group' == $this->post_type ) {
 
-                if ( $userinfo->user_level >= $user_can )
-                    $this->user_can['publish'] = true;
-                else
-                    $this->user_can['publish'] = false;
-            } else {
+				$this->user_can['edit'] = ( uspg_can_user_edit_post_group( $this->post_id ) ) ? true : false;
+			}
 
-                $this->user_can['publish'] = false;
-            }
-        }
+			$this->user_can['delete'] = $this->user_can['edit'];
+		}
 
-        $this->user_can['draft'] = $user_ID ? true : false;
+		$this->user_can = apply_filters( 'uspp_public_form_user_can', $this->user_can, $this->get_object_form() );
+	}
 
-        $this->user_can['upload'] = $this->user_can['publish'];
+	function get_errors() {
+		global $user_ID;
 
-        if ( $user_ID && $this->post_id ) {
+		$errors = [];
 
-            $this->user_can['edit'] = (current_user_can( 'edit_post', $this->post_id )) ? true : false;
+		if ( ! $this->user_can['publish'] ) {
 
-            if ( ! $this->user_can['edit'] && $this->post_type == 'post-group' ) {
+			if ( ! $user_ID ) {
+				$errors[] = __( 'You must be logged in to post. Login or register', 'userspace-publication' );
+			} else if ( 'post-group' == $this->post_type ) {
+				$errors[] = __( 'Sorry, but you have no rights to publish in this group :(', 'userspace-publication' );
+			} else {
+				$errors[] = __( 'Sorry, but you have no right to post on this site :(', 'userspace-publication' );
+			}
+		} else if ( $this->post_id && ! $this->user_can['edit'] ) {
+			$errors[] = __( 'You can not edit this publication :(', 'userspace-publication' );
+		}
 
-                $this->user_can['edit'] = (uspg_can_user_edit_post_group( $this->post_id )) ? true : false;
-            }
+		return apply_filters( 'uspp_public_form_errors', $errors, $this );
+	}
 
-            $this->user_can['delete'] = $this->user_can['edit'];
-        }
+	function get_errors_content() {
 
-        $this->user_can = apply_filters( 'uspp_public_form_user_can', $this->user_can, $this->get_object_form() );
-    }
+		$errorContent = '';
 
-    function get_errors() {
-        global $user_ID;
+		foreach ( $this->get_errors() as $error ) {
+			$errorContent .= usp_get_notice( [
+				'type' => 'error',
+				'text' => $error,
+			] );
+		}
 
-        $errors = array();
+		return $errorContent;
+	}
 
-        if ( ! $this->user_can['publish'] ) {
+	function get_form( $args = [] ) {
+		$content = '';
 
-            if ( ! $user_ID )
-                $errors[] = __( 'You must be logged in to post. Login or register', 'userspace-publication' );
-            else if ( $this->post_type == 'post-group' ) {
-                $errors[] = __( 'Sorry, but you have no rights to publish in this group :(', 'userspace-publication' );
-            } else {
-                $errors[] = __( 'Sorry, but you have no right to post on this site :(', 'userspace-publication' );
-            }
-        } else if ( $this->post_id && ! $this->user_can['edit'] ) {
-            $errors[] = __( 'You can not edit this publication :(', 'userspace-publication' );
-        }
+		if ( $this->get_errors() ) {
+			return $this->get_errors_content();
+		}
 
-        $errors = apply_filters( 'uspp_public_form_errors', $errors, $this );
+		if ( isset( $_GET['draft'] ) && 'saved' == $_GET['draft'] ) {
+			$content .= usp_get_notice( [
+				'type' => 'success',
+				'text' => __( 'The draft has been saved successfully!', 'userspace-publication' ),
+			] );
+		}
 
-        return $errors;
-    }
+		$dataPost = $this->get_object_form();
 
-    function get_errors_content() {
+		if ( $this->taxonomies ) {
 
-        $errorContent = '';
+			foreach ( $this->taxonomies as $tax_name => $object ) {
 
-        foreach ( $this->get_errors() as $error ) {
-            $errorContent .= usp_get_notice( [
-                'type' => 'error',
-                'text' => $error
-                ] );
-        }
+				$this->tax_fields[] = 'taxonomy-' . $tax_name;
+			}
+		}
 
-        return $errorContent;
-    }
+		$attrs = [
+			'data-form_id'   => $this->form_id,
+			'data-post_id'   => $this->post_id,
+			'data-post_type' => $this->post_type,
+			'class'          => [ 'uspp-public-form' ],
+		];
 
-    function get_form( $args = array() ) {
-        global $user_ID;
+		$attrs = apply_filters( 'uspp_public_form_attributes', $attrs, $dataPost );
 
-        $content = '';
+		$attrsForm = [];
+		foreach ( $attrs as $k => $v ) {
+			if ( is_array( $v ) ) {
+				$attrsForm[] = $k . '="' . implode( ' ', $v ) . '"';
+				continue;
+			}
+			$attrsForm[] = $k . '="' . $v . '"';
+		}
 
-        if ( $this->get_errors() ) {
+		$content .= '<div class="uspp-public-box usp-form usps__relative">';
 
-            return $this->get_errors_content();
-        }
+		$buttons = [];
 
-        if ( isset( $_GET['draft'] ) && $_GET['draft'] == 'saved' ) {
-            $content .= usp_get_notice( [
-                'type' => 'success',
-                'text' => __( 'The draft has been saved successfully!', 'userspace-publication' )
-                ] );
-        }
+		if ( usp_user_is_access_console() ) {
 
-        $dataPost = $this->get_object_form();
+			$buttons[] = [
+				'href'  => admin_url( 'admin.php?page=manage-public-form&post-type=' . $this->post_type . '&form-id=' . $this->form_id ),
+				'label' => __( 'Edit this form', 'userspace-publication' ),
+				'icon'  => 'fa-list',
+				'type'  => 'clear',
+				'class' => 'uspp-bttn__edit-form',
+			];
+		}
 
-        if ( $this->taxonomies ) {
+		$buttons = apply_filters( 'uspp_public_form_top_manager_args', $buttons, $this );
 
-            foreach ( $this->taxonomies as $taxname => $object ) {
+		if ( $buttons ) {
 
-                $this->tax_fields[] = 'taxonomy-' . $taxname;
-            }
-        }
+			$content .= '<div id="uspp-public-form-top-manager" class="usps usps__jc-end">';
 
-        $attrs = array(
-            'data-form_id'   => $this->form_id,
-            'data-post_id'   => $this->post_id,
-            'data-post_type' => $this->post_type,
-            'class'          => array( 'uspp-public-form' )
-        );
+			foreach ( $buttons as $button ) {
+				$content .= usp_get_button( $button );
+			}
 
-        $attrs = apply_filters( 'uspp_public_form_attributes', $attrs, $dataPost );
+			$content .= '</div>';
+		}
 
-        $attrsForm = array();
-        foreach ( $attrs as $k => $v ) {
-            if ( is_array( $v ) ) {
-                $attrsForm[] = $k . '="' . implode( ' ', $v ) . '"';
-                continue;
-            }
-            $attrsForm[] = $k . '="' . $v . '"';
-        }
+		$content .= '<form action="" method="post" ' . implode( ' ', $attrsForm ) . '>';
 
-        $content .= '<div class="uspp-public-box usp-form usps__relative">';
+		if ( $this->fields ) {
 
-        $buttons = [];
+			$content .= $this->get_content_form();
+		}
 
-        if ( usp_check_access_console() ) {
+		$content .= apply_filters( 'uspp_public_form', '', $this->get_object_form() );
 
-            $buttons[] = [
-                'href'  => admin_url( 'admin.php?page=manage-public-form&post-type=' . $this->post_type . '&form-id=' . $this->form_id ),
-                'label' => __( 'Edit this form', 'userspace-publication' ),
-                'icon'  => 'fa-list',
-                'type'  => 'clear',
-                'class' => 'uspp-bttn__edit-form'
-            ];
-        }
+		$content .= $this->get_primary_buttons();
 
-        $buttons = apply_filters( 'uspp_public_form_top_manager_args', $buttons, $this );
+		if ( $this->form_id ) {
+			$content .= '<input type="hidden" name="form_id" value="' . $this->form_id . '">';
+		}
 
-        if ( $buttons ) {
+		$content .= '<input type="hidden" name="post_id" value="' . $this->post_id . '">';
+		$content .= '<input type="hidden" name="post_type" value="' . $this->post_type . '">';
+		$content .= '<input type="hidden" name="uspp-edit-post" value="1">';
+		$content .= wp_nonce_field( 'uspp-edit-post', '_wpnonce', true, false );
+		$content .= '</form>';
 
-            $content .= '<div id="uspp-public-form-top-manager" class="usps usps__jc-end">';
+		if ( $this->user_can['delete'] && $this->options['delete'] ) {
 
-            foreach ( $buttons as $button ) {
-                $content .= usp_get_button( $button );
-            }
+			$content .= '<div id="uspp-form-delete-post" class="usp-field">';
 
-            $content .= '</div>';
-        }
+			$content .= $this->get_delete_box();
 
-        $content .= '<form action="" method="post" ' . implode( ' ', $attrsForm ) . '>';
+			$content .= '</div>';
+		}
 
-        if ( $this->fields ) {
+		$content .= apply_filters( 'uspp_after_public_form', '', $this->get_object_form() );
 
-            $content .= $this->get_content_form();
-        }
+		$content .= '</div>';
 
-        $content .= apply_filters( 'uspp_public_form', '', $this->get_object_form() );
+		return $content;
+	}
 
-        $content .= $this->get_primary_buttons();
+	function get_primary_buttons() {
 
-        if ( $this->form_id )
-            $content .= '<input type="hidden" name="form_id" value="' . $this->form_id . '">';
+		$buttons = [];
 
-        $content .= '<input type="hidden" name="post_id" value="' . $this->post_id . '">';
-        $content .= '<input type="hidden" name="post_type" value="' . $this->post_type . '">';
-        $content .= '<input type="hidden" name="uspp-edit-post" value="1">';
-        $content .= wp_nonce_field( 'uspp-edit-post', '_wpnonce', true, false );
-        $content .= '</form>';
+		if ( $this->post_id ) {
+			$buttons['gotopost'] = [
+				'href'  => ( 'publish' != $this->post->post_status ) ? get_bloginfo( 'wpurl' ) . '/?p=' . $this->post_id . '&preview=true' : get_permalink( $this->post_id ),
+				'label' => __( 'Go to the post', 'userspace-publication' ),
+				'attrs' => [
+					'target' => '_blank',
+				],
+				'id'    => 'uspp-view-post',
+				'icon'  => 'fa-share-square',
+			];
+		}
 
-        if ( $this->user_can['delete'] && $this->options['delete'] ) {
+		if ( $this->options['draft'] && $this->user_can['draft'] ) {
+			$buttons['draft'] = [
+				'onclick' => 'uspp_save_draft(this); return false;',
+				'label'   => __( 'Save as Draft', 'userspace-publication' ),
+				'id'      => 'uspp-draft-post',
+				'icon'    => 'fa-shield',
+			];
+		}
 
-            $content .= '<div id="uspp-form-delete-post" class="usp-field">';
+		if ( $this->options['preview'] ) {
+			$buttons['preview'] = [
+				'onclick' => 'uspp_preview(this); return false;',
+				'label'   => __( 'Preview', 'userspace-publication' ),
+				'id'      => 'uspp-preview-post',
+				'icon'    => 'fa-eye',
+			];
+		}
 
-            $content .= $this->get_delete_box();
+		$buttons['publish'] = [
+			'onclick' => 'uspp_publish(this); return false;',
+			'label'   => __( 'Publish', 'userspace-publication' ),
+			'id'      => 'uspp-publish-post',
+			'icon'    => 'fa-print',
+		];
 
-            $content .= '</div>';
-        }
+		$buttons = apply_filters( 'uspp_public_form_primary_buttons', $buttons, $this->get_object_form(), $this );
 
-        $content .= apply_filters( 'uspp_after_public_form', '', $this->get_object_form() );
+		if ( ! $buttons ) {
+			return false;
+		}
 
-        $content .= '</div>';
+		$content = '<div class="usp-field uspp-submit-public-form">';
 
-        return $content;
-    }
+		foreach ( $buttons as $button ) {
+			$content .= usp_get_button( $button );
+		}
 
-    function get_primary_buttons() {
+		$content .= '</div>';
 
-        $buttons = array();
+		return $content;
+	}
 
-        if ( $this->post_id ) {
-            $buttons['gotopost'] = array(
-                'href'  => $this->post->post_status != 'publish' ? get_bloginfo( 'wpurl' ) . '/?p=' . $this->post_id . '&preview=true' : get_permalink( $this->post_id ),
-                'label' => __( 'Go to the post', 'userspace-publication' ),
-                'attrs' => array(
-                    'target' => '_blank'
-                ),
-                'id'    => 'uspp-view-post',
-                'icon'  => 'fa-share-square'
-            );
-        }
+	function get_field_form( $field_id, $args = false ) {
 
-        if ( $this->options['draft'] && $this->user_can['draft'] ) {
-            $buttons['draft'] = array(
-                'onclick' => 'uspp_save_draft(this); return false;',
-                'label'   => __( 'Save as Draft', 'userspace-publication' ),
-                'id'      => 'uspp-draft-post',
-                'icon'    => 'fa-shield'
-            );
-        }
+		$dataPost = $this->get_object_form();
 
-        if ( $this->options['preview'] ) {
-            $buttons['preview'] = array(
-                'onclick' => 'uspp_preview(this); return false;',
-                'label'   => __( 'Preview', 'userspace-publication' ),
-                'id'      => 'uspp-preview-post',
-                'icon'    => 'fa-eye'
-            );
-        }
+		$field = $this->get_field( $field_id );
 
-        $buttons['publish'] = array(
-            'onclick' => 'uspp_publish(this); return false;',
-            'label'   => __( 'Publish', 'userspace-publication' ),
-            'id'      => 'uspp-publish-post',
-            'icon'    => 'fa-print'
-        );
+		if ( ! $field ) {
+			return false;
+		}
 
-        $buttons = apply_filters( 'uspp_public_form_primary_buttons', $buttons, $this->get_object_form(), $this );
+		$this->current_field = $field;
 
-        if ( ! $buttons )
-            return false;
+		$contentField = false;
 
-        $content = '<div class="usp-field uspp-submit-public-form">';
+		if ( $this->taxonomies && in_array( $field_id, $this->tax_fields ) ) {
+			$taxonomy = $this->is_taxonomy_field( $field_id );
 
-        foreach ( $buttons as $button ) {
-            $content .= usp_get_button( $button );
-        }
+			if ( $taxonomy ) {
+				$contentField = $this->get_terms_list( $taxonomy, $field_id );
+			}
+		} else {
 
-        $content .= '</div>';
+			if ( in_array( $field_id, $this->core_fields ) ) {
 
-        return $content;
-    }
+				if ( 'post_content' == $field_id ) {
+					$contentField = $this->get_editor( [
+						'post_content' => $dataPost->post_content,
+						'options'      => $field->get_prop( 'post-editor' ),
+					] );
 
-    function get_field_form( $field_id, $args = false ) {
+					$contentField .= $field->get_notice();
+				} else if ( 'post_excerpt' == $field_id ) {
 
-        $dataPost = $this->get_object_form();
+					$field->set_prop( 'value', $dataPost->post_excerpt );
 
-        $field = $this->get_field( $field_id );
+					$contentField = $field->get_field_input();
+				} else if ( 'post_title' == $field_id ) {
 
-        if ( ! $field )
-            return false;
+					$field->set_prop( 'value', esc_textarea( $dataPost->post_title ) );
 
-        $this->current_field = $field;
+					$contentField = $field->get_field_input( esc_textarea( $dataPost->post_title ) );
+				} else if ( 'uploader' == $field->type ) {
 
-        if ( $this->taxonomies && in_array( $field_id, $this->tax_fields ) ) {
+					if ( 'post_thumbnail' == $field_id ) {
 
-            if ( $taxonomy = $this->is_taxonomy_field( $field_id ) ) {
+						$field->set_prop( 'uploader_props', [
+							'post_parent' => $this->post_id,
+							'form_id'     => intval( $this->form_id ),
+							'post_type'   => $this->post_type,
+							'multiple'    => 0,
+							'crop'        => 1,
+						] );
 
-                $contentField = $this->get_terms_list( $taxonomy, $field_id );
-            }
-        } else {
+						$uploader = $field->get_uploader();
 
-            if ( in_array( $field_id, $this->core_fields ) ) {
+						if ( $this->post_id ) {
 
-                if ( $field_id == 'post_content' ) {
+							$thumbnail_id = get_post_meta( $this->post_id, '_thumbnail_id', 1 );
+						} else {
+							$session_id = ! empty( $_COOKIE['PHPSESSID'] ) ? sanitize_text_field( wp_unslash( $_COOKIE['PHPSESSID'] ) ) : '';
 
-                    $contentField = $this->get_editor( array(
-                        'post_content' => $dataPost->post_content,
-                        'options'      => $field->get_prop( 'post-editor' )
-                        ) );
+							$thumbnail_id = ( new USP_Temp_Media() )
+								->select( [ 'media_id' ] )
+								->where( [
+									'user_id'         => $uploader->user_id ? $uploader->user_id : 0,
+									'session_id'      => $uploader->user_id ? '' : $session_id,
+									'uploader_id__in' => [ 'post_thumbnail' ],
+								] )
+								->limit( 1 )
+								->get_var();
+						}
 
-                    $contentField .= $field->get_notice();
-                } else if ( $field_id == 'post_excerpt' ) {
+						if ( $thumbnail_id ) {
+							$field->set_prop( 'value', $thumbnail_id );
+						}
 
-                    $field->set_prop( 'value', $dataPost->post_excerpt );
+						$contentField = $field->get_field_input();
+					}
 
-                    $contentField = $field->get_field_input();
-                } else if ( $field_id == 'post_title' ) {
+					if ( 'post_uploader' == $field_id ) {
 
-                    $field->set_prop( 'value', esc_textarea( $dataPost->post_title ) );
+						$field->set_prop( 'uploader_props', [
+							'post_parent' => $this->post_id,
+							'form_id'     => intval( $this->form_id ),
+							'post_type'   => $this->post_type,
+						] );
 
-                    $contentField = $field->get_field_input( esc_textarea( $dataPost->post_title ) );
-                } else if ( $field->type == 'uploader' ) {
+						$uploader = $field->get_uploader();
 
-                    if ( $field_id == 'post_thumbnail' ) {
+						if ( $this->post_id ) {
+							$imagIds = ( new USP_Posts_Query() )->select( [ 'ID' ] )->where( [
+								'post_parent' => $this->post_id,
+								'post_type'   => 'attachment',
+							] )->limit( - 1 )->order( 'ASC' )->get_col();
+						} else {
+							$session_id = ! empty( $_COOKIE['PHPSESSID'] ) ? sanitize_text_field( wp_unslash( $_COOKIE['PHPSESSID'] ) ) : '';
 
-                        $field->set_prop( 'uploader_props', array(
-                            'post_parent' => $this->post_id,
-                            'form_id'     => intval( $this->form_id ),
-                            'post_type'   => $this->post_type,
-                            'multiple'    => 0,
-                            'crop'        => 1
-                        ) );
+							$imagIds = ( new USP_Temp_Media() )
+								->select( [ 'media_id' ] )
+								->where( [
+									'user_id'         => $uploader->user_id ? $uploader->user_id : 0,
+									'session_id'      => $uploader->user_id ? '' : $session_id,
+									'uploader_id__in' => [ 'post_uploader', 'post_thumbnail' ],
+								] )
+								->limit( - 1 )->order( 'ASC' )->get_col();
+						}
 
-                        $uploader = $field->get_uploader();
+						$contentField = $uploader->get_gallery( $imagIds );
 
-                        if ( $this->post_id ) {
+						$contentField .= $uploader->get_uploader();
 
-                            $thumbnail_id = get_post_meta( $this->post_id, '_thumbnail_id', 1 );
-                        } else {
-                            $session_id = isset( $_COOKIE['PHPSESSID'] ) && $_COOKIE['PHPSESSID'] ? $_COOKIE['PHPSESSID'] : 'none';
+						$contentField .= $field->get_notice();
+					}
+				}
+			} else {
 
-                            $thumbnail_id = ( new USP_Temp_Media() )
-                                ->select( [ 'media_id' ] )
-                                ->where( [
-                                    'user_id'         => $uploader->user_id ? $uploader->user_id : 0,
-                                    'session_id'      => $uploader->user_id ? '' : $session_id,
-                                    'uploader_id__in' => array( 'post_thumbnail' )
-                                ] )
-                                ->limit( 1 )
-                                ->get_var();
-                        }
+				if ( ! isset( $field->value ) ) {
+					$field->set_prop( 'value', ( $this->post_id ) ? get_post_meta( $this->post_id, $field_id, 1 ) : null );
+				}
 
-                        if ( $thumbnail_id ) {
-                            $field->set_prop( 'value', $thumbnail_id );
-                        }
+				$contentField = $field->get_field_input();
+			}
+		}
 
-                        $contentField = $field->get_field_input();
-                    }
+		if ( ! $contentField ) {
+			return false;
+		}
 
-                    if ( $field_id == 'post_uploader' ) {
+		$content = '<div id="form-field-' . $field_id . '" class="usp-field field-' . $field_id . '">';
 
-                        $field->set_prop( 'uploader_props', array(
-                            'post_parent' => $this->post_id,
-                            'form_id'     => intval( $this->form_id ),
-                            'post_type'   => $this->post_type
-                        ) );
+		$content .= $field->get_title();
 
-                        $uploader = $field->get_uploader();
+		$content .= $contentField;
 
-                        if ( $this->post_id ) {
-                            $imagIds = ( new USP_Posts_Query() )->select( [ 'ID' ] )->where( [
-                                    'post_parent' => $this->post_id,
-                                    'post_type'   => 'attachment',
-                                ] )->limit( -1 )->order( 'ASC' )->get_col();
-                        } else {
-                            $session_id = isset( $_COOKIE['PHPSESSID'] ) && $_COOKIE['PHPSESSID'] ? $_COOKIE['PHPSESSID'] : 'none';
+		$content .= '</div>';
 
-                            $imagIds = ( new USP_Temp_Media() )
-                                    ->select( [ 'media_id' ] )
-                                    ->where( [
-                                        'user_id'         => $uploader->user_id ? $uploader->user_id : 0,
-                                        'session_id'      => $uploader->user_id ? '' : $session_id,
-                                        'uploader_id__in' => array( 'post_uploader', 'post_thumbnail' )
-                                    ] )
-                                    ->limit( -1 )->order( 'ASC' )->get_col();
-                        }
+		return $content;
+	}
 
-                        $contentField = $uploader->get_gallery( $imagIds );
+	function get_terms_list( $taxonomy, $field_id ) {
 
-                        $contentField .= $uploader->get_uploader();
+		$field = $this->get_field( $field_id );
 
-                        $contentField .= $field->get_notice();
-                    }
-                }
-            } else {
+		$content = '<div class="uspp-terms-select taxonomy-' . $taxonomy . '">';
 
-                if ( ! isset( $field->value ) ) {
-                    $field->set_prop( 'value', ($this->post_id) ? get_post_meta( $this->post_id, $field_id, 1 ) : null  );
-                }
+		$terms = $field->isset_prop( 'values' ) ? $field->get_prop( 'values' ) : [];
 
-                $contentField = $field->get_field_input();
-            }
-        }
+		if ( $this->is_hierarchical_tax( $taxonomy ) ) {
 
-        if ( ! $contentField )
-            return false;
+			if ( 'post-group' == $this->post_type ) {
 
-        $content = '<div id="form-field-' . $field_id . '" class="usp-field field-' . $field_id . '">';
+				global $uspg_group;
 
-        $content .= $field->get_title();
+				$group_id = false;
+				if ( isset( $uspg_group->term_id ) && $uspg_group->term_id ) {
+					$group_id = $uspg_group->term_id;
+				} else if ( $this->post_id ) {
+					$group_id = uspg_get_group_id_by_post( $this->post_id );
+				}
 
-        $content .= $contentField;
+				$options_gr = uspg_get_options_group( $group_id );
 
-        $content .= '</div>';
+				$termList = uspg_get_tags_list_group( $options_gr['tags'], $this->post_id );
 
-        return $content;
-    }
+				if ( ! $termList ) {
+					return false;
+				}
 
-    function get_terms_list( $taxonomy, $field_id ) {
+				$content .= $termList;
+			} else {
+				$type_select = $field->get_prop( 'type-select' );
+				$type        = ( $type_select ) ? $type_select : 'select';
 
-        $field = $this->get_field( $field_id );
+				$number_select = $field->get_prop( 'number-select' );
+				$number        = ( $number_select ) ? $number_select : 1;
 
-        $content = '<div class="uspp-terms-select taxonomy-' . $taxonomy . '">';
+				$termList   = new USPP_List_Terms( $taxonomy, $type, $field->get_prop( 'required' ) );
+				$post_terms = $this->get_post_terms( $taxonomy );
 
-        $terms = $field->isset_prop( 'values' ) ? $field->get_prop( 'values' ) : array();
+				$content .= $termList->get_select_list( $this->get_allterms( $taxonomy ), $post_terms, $number, $terms );
+			}
+		} else {
 
-        if ( $this->is_hierarchical_tax( $taxonomy ) ) {
+			$content .= $this->tags_field( $taxonomy, $terms );
+		}
 
-            if ( $this->post_type == 'post-group' ) {
+		$content .= $field->get_notice();
 
-                global $uspg_group;
+		$content .= '</div>';
 
-                if ( isset( $uspg_group->term_id ) && $uspg_group->term_id ) {
-                    $group_id = $uspg_group->term_id;
-                } else if ( $this->post_id ) {
-                    $group_id = uspg_get_group_id_by_post( $this->post_id );
-                }
+		return $content;
+	}
 
-                $options_gr = uspg_get_options_group( $group_id );
+	function get_editor( $args = false ) {
 
-                $termList = uspg_get_tags_list_group( $options_gr['tags'], $this->post_id );
+		$wp_uploader = false;
+		$quicktags   = false;
+		$tinymce     = false;
 
-                if ( ! $termList )
-                    return false;
+		if ( isset( $args['options'] ) && is_array( $args['options'] ) ) {
 
-                $content .= $termList;
-            } else {
+			if ( in_array( 'media', $args['options'] ) ) {
+				$wp_uploader = true;
+			}
 
-                $type   = ($val    = $field->get_prop( 'type-select' )) ? $val : 'select';
-                $number = ($val    = $field->get_prop( 'number-select' )) ? $val : 1;
-                $req    = ($val    = $field->get_prop( 'number-select' )) ? $val : false;
+			if ( in_array( 'html', $args['options'] ) ) {
+				$quicktags = true;
+			}
 
-                $termList   = new USPP_List_Terms( $taxonomy, $type, $req );
-                $post_terms = $this->get_post_terms( $taxonomy );
+			if ( in_array( 'editor', $args['options'] ) ) {
+				$tinymce = true;
+			}
+		}
 
-                $content .= $termList->get_select_list( $this->get_allterms( $taxonomy ), $post_terms, $number, $terms );
-            }
-        } else {
+		$data = [
+			'wpautop'       => 1,
+			'media_buttons' => $wp_uploader,
+			'textarea_name' => 'post_content',
+			'textarea_rows' => 10,
+			'tabindex'      => null,
+			'editor_css'    => '',
+			'editor_class'  => 'autosave',
+			'teeny'         => 0,
+			'dfw'           => 0,
+			'tinymce'       => $tinymce,
+			'quicktags'     => $quicktags,
+		];
 
-            $content .= $this->tags_field( $taxonomy, $terms );
-        }
+		$post_content = ( isset( $args['post_content'] ) ) ? $args['post_content'] : false;
 
-        $content .= $field->get_notice();
+		ob_start();
 
-        $content .= '</div>';
+		wp_editor( $post_content, 'post_content', $data );
 
-        return $content;
-    }
+		$content = ob_get_contents();
 
-    function get_editor( $args = false ) {
+		ob_end_clean();
 
-        $wp_uploader = false;
-        $quicktags   = false;
-        $tinymce     = false;
+		return $content;
+	}
 
-        if ( isset( $args['options'] ) && is_array( $args['options'] ) ) {
+	function get_tags_checklist( $taxonomy, $t_args = [] ) {
 
-            if ( in_array( 'media', $args['options'] ) )
-                $wp_uploader = true;
+		if ( ! is_array( $t_args ) || false === $t_args ) {
+			return false;
+		}
 
-            if ( in_array( 'html', $args['options'] ) )
-                $quicktags = true;
+		$values         = [];
+		$checked_values = [];
+		$post_tags      = ( $this->post_id ) ? $this->get_tags( $this->post_id, $taxonomy ) : [];
 
-            if ( in_array( 'editor', $args['options'] ) )
-                $tinymce = true;
-        }
+		$tags = get_terms( $taxonomy, $t_args );
+		if ( 0 != $t_args['number'] && $tags ) {
 
-        $data = array( 'wpautop'       => 1
-            , 'media_buttons' => $wp_uploader
-            , 'textarea_name' => 'post_content'
-            , 'textarea_rows' => 10
-            , 'tabindex'      => null
-            , 'editor_css'    => ''
-            , 'editor_class'  => 'autosave'
-            , 'teeny'         => 0
-            , 'dfw'           => 0
-            , 'tinymce'       => $tinymce
-            , 'quicktags'     => $quicktags
-        );
+			foreach ( $tags as $tag ) {
 
-        $post_content = (isset( $args['post_content'] )) ? $args['post_content'] : false;
+				$checked = false;
 
-        ob_start();
+				if ( isset( $post_tags[ $tag->slug ] ) && $tag->name == $post_tags[ $tag->slug ]->name ) {
+					$checked = true;
+					unset( $post_tags[ $tag->slug ] );
+				}
 
-        wp_editor( $post_content, 'post_content', $data );
+				if ( $checked ) {
+					$checked_values[] = $tag->name;
+				}
 
-        $content = ob_get_contents();
+				$values[ $tag->name ] = $tag->name;
+			}
+		}
 
-        ob_end_clean();
+		if ( $post_tags ) {
 
-        return $content;
-    }
+			foreach ( $post_tags as $tag ) {
 
-    function get_tags_checklist( $taxonomy, $t_args = array() ) {
+				$checked_values[] = $tag->name;
 
-        if ( ! is_array( $t_args ) || $t_args === false )
-            return false;
+				$values[ $tag->name ] = $tag->name;
+			}
+		}
 
-        $values      = [];
-        $checkedVals = [];
-        $post_tags   = ($this->post_id) ? $this->get_tags( $this->post_id, $taxonomy ) : array();
+		if ( ! $values ) {
+			return false;
+		}
 
-        if ( $t_args['number'] != 0 && $tags = get_terms( $taxonomy, $t_args ) ) {
+		return USP_Field::setup( [
+			'type'       => 'checkbox',
+			'slug'       => $taxonomy . '-tags',
+			'input_name' => 'tags[' . $taxonomy . ']',
+			'required'   => $this->current_field->get_prop( 'required' ),
+			'values'     => $values,
+			'value'      => $checked_values,
+		] )->get_field_input();
+	}
 
-            foreach ( $tags as $tag ) {
+	function get_tags( $post_id, $taxonomy = 'post_tag' ) {
 
-                $checked = false;
+		$post_tags = get_the_terms( $post_id, $taxonomy );
 
-                if ( isset( $post_tags[$tag->slug] ) && $tag->name == $post_tags[$tag->slug]->name ) {
-                    $checked = true;
-                    unset( $post_tags[$tag->slug] );
-                }
+		$tags = [];
+		if ( $post_tags ) {
+			foreach ( $post_tags as $tag ) {
+				$tags[ $tag->slug ] = $tag;
+			}
+		}
 
-                if ( $checked ) {
-                    $checkedVals[] = $tag->name;
-                }
+		return $tags;
+	}
 
-                $values[$tag->name] = $tag->name;
-            }
-        }
+	function tags_field( $taxonomy, $terms ) {
 
-        if ( $post_tags ) {
+		if ( ! $this->taxonomies || ! isset( $this->taxonomies[ $taxonomy ] ) ) {
+			return false;
+		}
 
-            foreach ( $post_tags as $tag ) {
+		$args = [
+			'input_field' => $this->current_field->get_prop( 'input-tags' ),
+			'terms_cloud' => [
+				'hide_empty' => false,
+				'number'     => $this->current_field->get_prop( 'number-tags' ),
+				'orderby'    => 'count',
+				'order'      => 'DESC',
+				'include'    => $terms,
+			],
+		];
 
-                $checkedVals[] = $tag->name;
+		$args = apply_filters( 'uspp_public_form_tags', $args, $taxonomy, $this->get_object_form() );
 
-                $values[$tag->name] = $tag->name;
-            }
-        }
+		$content = $this->get_tags_checklist( $taxonomy, $args['terms_cloud'] );
 
-        if ( ! $values )
-            return false;
+		if ( $args['input_field'] ) {
+			$content .= $this->get_tags_input( $taxonomy );
+		}
 
-        return USP_Field::setup( [
-                'type'       => 'checkbox',
-                'slug'       => $taxonomy . '-tags',
-                'input_name' => 'tags[' . $taxonomy . ']',
-                'required'   => $this->current_field->get_prop( 'required' ),
-                'values'     => $values,
-                'value'      => $checkedVals
-            ] )->get_field_input();
-    }
+		if ( ! $content ) {
+			return false;
+		}
 
-    function get_tags( $post_id, $taxonomy = 'post_tag' ) {
+		return '<div class="uspp-tags-list">' . $content . '</div>';
+	}
 
-        $posttags = get_the_terms( $post_id, $taxonomy );
+	function get_tags_input( $taxonomy = 'post_tag' ) {
 
-        $tags = array();
-        if ( $posttags ) {
-            foreach ( $posttags as $tag ) {
-                $tags[$tag->slug] = $tag;
-            }
-        }
+		usp_autocomplete_scripts();
 
-        return $tags;
-    }
+		$args = [
+			'type'        => 'text',
+			'id'          => 'uspp-tags-' . $taxonomy,
+			'name'        => 'tags[' . $taxonomy . ']',
+			'placeholder' => $this->taxonomies[ $taxonomy ]->labels->new_item_name,
+			'label'       => '<span>' . $this->taxonomies[ $taxonomy ]->labels->add_new_item . '</span><br><small>' . $this->taxonomies[ $taxonomy ]->labels->name . ' ' . __( 'It separates by push of Enter button', 'userspace-publication' ) . '</small>',
+		];
 
-    function tags_field( $taxonomy, $terms ) {
+		$fields = uspp_form_field( $args );
 
-        if ( ! $this->taxonomies || ! isset( $this->taxonomies[$taxonomy] ) )
-            return false;
-
-        $args = array(
-            'input_field' => $this->current_field->get_prop( 'input-tags' ),
-            'terms_cloud' => array(
-                'hide_empty' => false,
-                'number'     => $this->current_field->get_prop( 'number-tags' ),
-                'orderby'    => 'count',
-                'order'      => 'DESC',
-                'include'    => $terms
-            )
-        );
-
-        $args = apply_filters( 'uspp_public_form_tags', $args, $taxonomy, $this->get_object_form() );
-
-        $content = $this->get_tags_checklist( $taxonomy, $args['terms_cloud'] );
-
-        if ( $args['input_field'] )
-            $content .= $this->get_tags_input( $taxonomy );
-
-        if ( ! $content )
-            return false;
-
-        $content = '<div class="uspp-tags-list">' . $content . '</div>';
-
-        return $content;
-    }
-
-    function get_tags_input( $taxonomy = 'post_tag' ) {
-
-        usp_autocomplete_scripts();
-
-        $args = array(
-            'type'        => 'text',
-            'id'          => 'uspp-tags-' . $taxonomy,
-            'name'        => 'tags[' . $taxonomy . ']',
-            'placeholder' => $this->taxonomies[$taxonomy]->labels->new_item_name,
-            'label'       => '<span>' . $this->taxonomies[$taxonomy]->labels->add_new_item . '</span><br><small>' . $this->taxonomies[$taxonomy]->labels->name . ' ' . __( 'It separates by push of Enter button', 'userspace-publication' ) . '</small>'
-        );
-
-        $fields = uspp_form_field( $args );
-
-        $fields .= "<script>
+		$fields .= "<script>
 		jQuery(window).on('load', function(){
 			jQuery('#uspp-tags-" . $taxonomy . "').magicSuggest({
 				data: USP.ajaxurl,
@@ -741,158 +753,152 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 		});
 		</script>";
 
-        return $fields;
-    }
+		return $fields;
+	}
 
-    function get_allterms( $taxonomy ) {
+	function get_allterms( $taxonomy ) {
 
-        $args = array(
-            'number'       => 0
-            , 'offset'       => 0
-            , 'orderby'      => 'id'
-            , 'order'        => 'ASC'
-            , 'hide_empty'   => false
-            , 'fields'       => 'all'
-            , 'slug'         => ''
-            , 'hierarchical' => true
-            , 'name__like'   => ''
-            , 'pad_counts'   => false
-            , 'get'          => ''
-            , 'child_of'     => 0
-            , 'parent'       => ''
-        );
+		$args = [
+			'number'       => 0,
+			'offset'       => 0,
+			'orderby'      => 'id',
+			'order'        => 'ASC',
+			'hide_empty'   => false,
+			'fields'       => 'all',
+			'slug'         => '',
+			'hierarchical' => true,
+			'name__like'   => '',
+			'pad_counts'   => false,
+			'get'          => '',
+			'child_of'     => 0,
+			'parent'       => '',
+		];
 
-        $args = apply_filters( 'uspp_public_form_hierarchical_terms', $args, $taxonomy, $this->get_object_form() );
+		$args = apply_filters( 'uspp_public_form_hierarchical_terms', $args, $taxonomy, $this->get_object_form() );
 
-        $allcats = get_terms( $taxonomy, $args );
+		return get_terms( $taxonomy, $args );
+	}
 
-        return $allcats;
-    }
+	function get_post_terms( $taxonomy ) {
 
-    function get_post_terms( $taxonomy ) {
+		if ( ! isset( $this->taxonomies[ $taxonomy ] ) ) {
+			return false;
+		}
 
-        if ( ! isset( $this->taxonomies[$taxonomy] ) )
-            return false;
+		$post_terms = get_the_terms( $this->post_id, $taxonomy );
 
-        if ( $this->post_type == 'post' && $taxonomy == 'category' ) {
+		if ( $post_terms ) {
 
-            $post_terms = get_the_terms( $this->post_id, $taxonomy );
-        } else {
+			foreach ( $post_terms as $key => $term ) {
 
-            $post_terms = get_the_terms( $this->post_id, $taxonomy );
-        }
+				foreach ( $post_terms as $t ) {
 
-        if ( $post_terms ) {
+					if ( $t->parent == $term->term_id ) {
+						unset( $post_terms[ $key ] );
+						break;
+					}
+				}
+			}
+		}
 
-            foreach ( $post_terms as $key => $term ) {
+		return $post_terms;
+	}
 
-                foreach ( $post_terms as $t ) {
+	function get_delete_box() {
+		global $user_ID;
 
-                    if ( $t->parent == $term->term_id ) {
-                        unset( $post_terms[$key] );
-                        break;
-                    }
-                }
-            }
-        }
+		if ( usp_user_has_role( $user_ID, [ 'administrator', 'editor' ] ) ) {
+			$content = usp_get_button( [
+				'label'      => __( 'Options delete post', 'userspace-publication' ),
+				'class'      => [ 'public-form-button uspp-delete-toggle' ],
+				'icon'       => 'fa-angle-down',
+				'icon_align' => 'right',
+			] );
+			$content .= '<div class="uspp-delete-form">';
+			$content .= '<form action="" method="post"  onsubmit="return confirm(\'' . __( 'Are you sure?', 'userspace-publication' ) . '\');">';
+			$content .= wp_nonce_field( 'uspp-delete-post', '_wpnonce', true, false );
+			$content .= $this->get_reasons_list();
+			$content .= '<div class="uspp-delete-text">' . __( 'or enter your own', 'userspace-publication' ) . '</div>';
+			$content .= '<textarea required id="reason_content" name="reason_content"></textarea>';
+			$content .= '<span id="uspp-without-notify" class="usp-checkbox-box checkbox-display-inline usps__inline usps__relative">'
+			            . '<input type="checkbox" id="uspp-delete-silence" class="checkbox-field" name="no-reason" onclick="(!document.getElementById(\'reason_content\').getAttribute(\'disabled\')) ? document.getElementById(\'reason_content\').setAttribute(\'disabled\', \'disabled\') : document.getElementById(\'reason_content\').removeAttribute(\'disabled\')" value="1"> '
+			            . '<label class="usp-label usps usps__ai-center usps__no-select" for="uspp-delete-silence">' . __( 'Without notice', 'userspace-publication' ) . '</label>'
+			            . '</span>';
+			$content .= usp_get_button( [
+				'submit' => true,
+				'label'  => __( 'Delete post', 'userspace-publication' ),
+				'icon'   => 'fa-trash',
+				'class'  => 'uspp-bttn-delete-post',
+			] );
+			$content .= '<input type="hidden" name="uspp-delete-post" value="1">';
+			$content .= '<input type="hidden" name="post_id" value="' . $this->post_id . '">';
+			$content .= '</form>';
+			$content .= '</div>';
+		} else {
 
-        return $post_terms;
-    }
+			$content = '<form method="post" action="" onsubmit="return confirm(\'' . __( 'Are you sure?', 'userspace-publication' ) . '\');">';
+			$content .= wp_nonce_field( 'uspp-delete-post', '_wpnonce', true, false );
+			$content .= usp_get_button( [
+				'submit' => true,
+				'label'  => __( 'Delete post', 'userspace-publication' ),
+				'class'  => 'uspp-bttn-delete-post',
+				'icon'   => 'fa-trash',
+			] );
+			$content .= '<input type="hidden" name="uspp-delete-post" value="1">';
+			$content .= '<input type="hidden" name="post_id" value="' . $this->post_id . '">';
+			$content .= '</form>';
+		}
 
-    function get_delete_box() {
-        global $user_ID;
+		return $content;
+	}
 
-        if ( usp_is_user_role( $user_ID, array( 'administrator', 'editor' ) ) ) {
-            $content = usp_get_button( array(
-                'label'      => __( 'Options delete post', 'userspace-publication' ),
-                'class'      => [ 'public-form-button uspp-delete-toggle' ],
-                'icon'       => 'fa-angle-down',
-                'icon_align' => 'right'
-                ) );
-            $content .= '<div class="uspp-delete-form">';
-            $content .= '<form action="" method="post"  onsubmit="return confirm(\'' . __( 'Are you sure?', 'userspace-publication' ) . '\');">';
-            $content .= wp_nonce_field( 'uspp-delete-post', '_wpnonce', true, false );
-            $content .= $this->get_reasons_list();
-            $content .= '<div class="uspp-delete-text">' . __( 'or enter your own', 'userspace-publication' ) . '</div>';
-            $content .= '<textarea required id="reason_content" name="reason_content"></textarea>';
-            $content .= '<span id="uspp-without-notify" class="usp-checkbox-box checkbox-display-inline usps__inline usps__relative">'
-                . '<input type="checkbox" id="uspp-delete-silence" class="checkbox-field" name="no-reason" onclick="(!document.getElementById(\'reason_content\').getAttribute(\'disabled\')) ? document.getElementById(\'reason_content\').setAttribute(\'disabled\', \'disabled\') : document.getElementById(\'reason_content\').removeAttribute(\'disabled\')" value="1"> '
-                . '<label class="usp-label usps usps__ai-center usps__no-select" for="uspp-delete-silence">' . __( 'Without notice', 'userspace-publication' ) . '</label>'
-                . '</span>';
-            $content .= usp_get_button( array(
-                'submit' => true,
-                'label'  => __( 'Delete post', 'userspace-publication' ),
-                'icon'   => 'fa-trash',
-                'class'  => 'uspp-bttn-delete-post'
-                ) );
-            $content .= '<input type="hidden" name="uspp-delete-post" value="1">';
-            $content .= '<input type="hidden" name="post_id" value="' . $this->post_id . '">';
-            $content .= '</form>';
-            $content .= '</div>';
-        } else {
+	function get_reasons_list() {
 
-            $content = '<form method="post" action="" onsubmit="return confirm(\'' . __( 'Are you sure?', 'userspace-publication' ) . '\');">';
-            $content .= wp_nonce_field( 'uspp-delete-post', '_wpnonce', true, false );
-            $content .= usp_get_button( array(
-                'submit' => true,
-                'label'  => __( 'Delete post', 'userspace-publication' ),
-                'class'  => 'uspp-bttn-delete-post',
-                'icon'   => 'fa-trash'
-                ) );
-            $content .= '<input type="hidden" name="uspp-delete-post" value="1">';
-            $content .= '<input type="hidden" name="post_id" value="' . $this->post_id . '">';
-            $content .= '</form>';
-        }
+		$reasons = [
+			[
+				'value'   => __( 'Does not correspond the topic', 'userspace-publication' ),
+				'content' => __( 'The publication does not correspond to the site topic', 'userspace-publication' ),
+			],
+			[
+				'value'   => __( 'Not completed', 'userspace-publication' ),
+				'content' => __( 'Publication does not correspond the rules', 'userspace-publication' ),
+			],
+			[
+				'value'   => __( 'Advertising/Spam', 'userspace-publication' ),
+				'content' => __( 'Publication labeled as advertising or spam', 'userspace-publication' ),
+			],
+		];
 
-        return $content;
-    }
+		$reasons = apply_filters( 'uspp_public_form_delete_reasons', $reasons, $this->get_object_form() );
 
-    function get_reasons_list() {
+		if ( ! $reasons ) {
+			return false;
+		}
 
-        $reasons = array(
-            array(
-                'value'   => __( 'Does not correspond the topic', 'userspace-publication' ),
-                'content' => __( 'The publication does not correspond to the site topic', 'userspace-publication' ),
-            ),
-            array(
-                'value'   => __( 'Not completed', 'userspace-publication' ),
-                'content' => __( 'Publication does not correspond the rules', 'userspace-publication' ),
-            ),
-            array(
-                'value'   => __( 'Advertising/Spam', 'userspace-publication' ),
-                'content' => __( 'Publication labeled as advertising or spam', 'userspace-publication' ),
-            )
-        );
+		$content = '<div class="uspp-delete-text">' . __( 'Use blank notice', 'userspace-publication' ) . ':</div>';
 
-        $reasons = apply_filters( 'uspp_public_form_delete_reasons', $reasons, $this->get_object_form() );
+		foreach ( $reasons as $reason ) {
+			$content .= usp_get_button( [
+				'onclick' => 'document.getElementById("reason_content").value="' . $reason['content'] . '"',
+				'label'   => $reason['value'],
+				'class'   => 'uspp-reason-bttn',
+			] );
+		}
 
-        if ( ! $reasons )
-            return false;
+		return $content;
+	}
 
-        $content = '<div class="uspp-delete-text">' . __( 'Use blank notice', 'userspace-publication' ) . ':</div>';
+	function init_form_scripts() {
 
-        foreach ( $reasons as $reason ) {
-            $content .= usp_get_button( array(
-                'onclick' => 'document.getElementById("reason_content").value="' . $reason['content'] . '"',
-                'label'   => $reason['value'],
-                'class'   => 'uspp-reason-bttn'
-                ) );
-        }
+		$obj = $this->form_object;
 
-        return $content;
-    }
-
-    function init_form_scripts() {
-
-        $obj = $this->form_object;
-
-        echo '<script type="text/javascript">'
-        . 'uspp_init_public_form({'
-        . 'post_type:"' . $obj->post_type . '",'
-        . 'post_id:"' . $obj->post_id . '",'
-        . 'post_status:"' . $obj->post_status . '",'
-        . 'form_id:"' . $this->form_id . '"'
-        . '});</script>';
-    }
+		echo '<script type="text/javascript">'
+		     . 'uspp_init_public_form({'
+		     . 'post_type:"' . esc_js( $obj->post_type ) . '",'
+		     . 'post_id:"' . esc_js( $obj->post_id ) . '",'
+		     . 'post_status:"' . esc_js( $obj->post_status ) . '",'
+		     . 'form_id:"' . esc_js( $this->form_id ) . '"'
+		     . '});</script>';
+	}
 
 }

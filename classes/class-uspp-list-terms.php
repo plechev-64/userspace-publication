@@ -2,299 +2,313 @@
 
 class USPP_List_Terms {
 
-    public $taxonomy;
-    public $required;
-    public $terms;
-    public $selected_term;
-    public $datalist;
-    public $post_terms;
-    public $include_terms;
-    public $select_amount;
-    public $type_output;
-    public $first_option;
+	public $taxonomy;
+	public $required;
+	public $terms;
+	public $selected_term;
+	public $datalist;
+	public $post_terms;
+	public $include_terms;
+	public $select_amount;
+	public $type_output;
+	public $first_option;
 
-    function __construct( $taxonomy = false, $type_output = 'select', $required = false ) {
+	function __construct( $taxonomy = false, $type_output = 'select', $required = false ) {
 
-        $this->taxonomy    = $taxonomy;
-        $this->type_output = $type_output;
-        $this->required    = $required;
-    }
+		$this->taxonomy    = $taxonomy;
+		$this->type_output = $type_output;
+		$this->required    = $required;
+	}
 
-    function get_select_list( $terms, $post_terms, $select_amount, $include_terms = false, $type_output = false, $first = false ) {
+	function get_select_list( $terms, $post_terms, $select_amount, $include_terms = false, $type_output = false, $first = false ) {
 
-        $this->include_terms = ($include_terms) ? $include_terms : false;
+		$this->include_terms = ( $include_terms ) ? $include_terms : false;
 
-        $this->terms    = $terms;
-        $this->datalist = $this->setup_data( $terms );
+		$this->terms    = $terms;
+		$this->datalist = $this->setup_data( $terms );
 
-        $this->first_option = ($first) ? true : false;
-        $this->post_terms   = ($post_terms) ? $this->setup_data( $post_terms, false ) : 0;
+		$this->first_option = ( $first ) ? true : false;
+		$this->post_terms   = ( $post_terms ) ? $this->setup_data( $post_terms, false ) : 0;
 
-        $this->select_amount = $select_amount;
+		$this->select_amount = $select_amount;
 
-        if ( $type_output )
-            $this->type_output = $type_output;
+		if ( $type_output ) {
+			$this->type_output = $type_output;
+		}
 
-        $method = 'get_' . $this->type_output;
+		$method = 'get_' . $this->type_output;
 
-        return $this->$method();
-    }
+		return $this->$method();
+	}
 
-    function get_select() {
+	function get_select() {
 
-        $content = '<div class="uspp-terms-select">';
+		$content = '<div class="uspp-terms-select">';
 
-        for ( $a = 0; $a < $this->select_amount; $a ++ ) {
+		for ( $a = 0; $a < $this->select_amount; $a ++ ) {
 
-            $this->selected_term = false;
+			$this->selected_term = false;
 
-            $content .= '<div class="category-list usp-field-input type-select-input">';
+			$content .= '<div class="category-list usp-field-input type-select-input">';
 
-            $content .= '<select class="postform" name="cats[' . $this->taxonomy . '][]">';
+			$content .= '<select class="postform" name="cats[' . $this->taxonomy . '][]">';
 
-            if ( $a > 0 || $this->first_option )
-                $content .= '<option value="">' . __( 'Not selected', 'userspace-publication' ) . '</option>';
+			if ( $a > 0 || $this->first_option ) {
+				$content .= '<option value="">' . __( 'Not selected', 'userspace-publication' ) . '</option>';
+			}
 
-            $content .= $this->get_options_list();
+			$content .= $this->get_options_list();
 
-            $content .= '</select>';
+			$content .= '</select>';
 
-            $content .= '</div>';
-        }
+			$content .= '</div>';
+		}
 
-        $content .= '</div>';
+		$content .= '</div>';
 
-        return $content;
-    }
+		return $content;
+	}
 
-    function get_multiselect() {
+	function get_multiselect() {
 
-        usp_multiselect_scripts();
+		usp_multiselect_scripts();
 
-        $content = '<div class="uspp-terms-select">';
+		$content = '<div class="uspp-terms-select">';
 
-        for ( $a = 0; $a < $this->select_amount; $a ++ ) {
+		for ( $a = 0; $a < $this->select_amount; $a ++ ) {
 
-            $this->selected_term = false;
+			$this->selected_term = false;
 
-            $content .= '<div class="category-list usp-field-input type-multiselect-input">';
+			$content .= '<div class="category-list usp-field-input type-multiselect-input">';
 
-            $content .= '<select id="taxonomy-field-' . $this->taxonomy . '" class="postform" name="cats[' . $this->taxonomy . '][]" multiple>';
+			$content .= '<select id="taxonomy-field-' . $this->taxonomy . '" class="postform" name="cats[' . $this->taxonomy . '][]" multiple>';
 
-            if ( $a > 0 || $this->first_option )
-                $content .= '<option value="">' . __( 'Not selected', 'userspace-publication' ) . '</option>';
+			if ( $a > 0 || $this->first_option ) {
+				$content .= '<option value="">' . __( 'Not selected', 'userspace-publication' ) . '</option>';
+			}
 
-            $content .= $this->get_options_list();
+			$content .= $this->get_options_list();
 
-            $content .= '</select>';
+			$content .= '</select>';
 
-            $content .= '</div>';
-        }
+			$content .= '</div>';
+		}
 
-        $content .= '</div>';
+		$content .= '</div>';
 
-        $content .= '<script>jQuery(window).on("load", function() {jQuery("#taxonomy-field-' . $this->taxonomy . '").multiselect({
+		$content .= '<script>jQuery(window).on("load", function() {jQuery("#taxonomy-field-' . $this->taxonomy . '").multiselect({
     search: true,
     maxPlaceholderOpts: 5,
     texts: {
-        placeholder: "' . __( 'Select some options', 'userspace' ) . '",
-        search: "' . __( 'Search', 'userspace' ) . '",
-        selectedOptions: " ' . __( 'selected', 'userspace' ) . '",
+        placeholder: "' . __( 'Select some options', 'userspace-publication' ) . '",
+        search: "' . __( 'Search', 'userspace-publication' ) . '",
+        selectedOptions: " ' . __( 'selected', 'userspace-publication' ) . '",
     }
 });});</script>';
 
-        return $content;
-    }
+		return $content;
+	}
 
-    function get_checkbox() {
+	function get_checkbox() {
 
-        $content = '<div class="uspp-terms-select">';
+		$content = '<div class="uspp-terms-select">';
 
-        $content .= '<div class="category-list usp-field-input type-checkbox-input">';
+		$content .= '<div class="category-list usp-field-input type-checkbox-input">';
 
-        $content .= $this->get_checkbox_list();
+		$content .= $this->get_checkbox_list();
 
-        $content .= '</div>';
+		$content .= '</div>';
 
-        $content .= '</div>';
+		$content .= '</div>';
 
-        return $content;
-    }
+		return $content;
+	}
 
-    function setup_data( $terms, $forInc = true ) {
+	function setup_data( $terms, $forInc = true ) {
 
-        $newterms = array();
-        foreach ( $terms as $term ) {
-            $newterms[$term->term_id] = array(
-                'term_id' => $term->term_id,
-                'name'    => $term->name,
-                'parent'  => $term->parent
-            );
-        }
+		$new_terms = [];
+		foreach ( $terms as $term ) {
+			$new_terms[ $term->term_id ] = [
+				'term_id' => $term->term_id,
+				'name'    => $term->name,
+				'parent'  => $term->parent,
+			];
+		}
 
-        $datalist = array();
+		$datalist = [];
 
-        if ( $forInc && $this->include_terms ) {
+		if ( $forInc && $this->include_terms ) {
 
-            foreach ( $this->include_terms as $incID ) {
+			foreach ( $this->include_terms as $incID ) {
 
-                foreach ( $newterms as $term_id => $term ) {
+				foreach ( $new_terms as $term_id => $term ) {
 
-                    if ( $term_id != $incID )
-                        continue;
+					if ( $term_id != $incID ) {
+						continue;
+					}
 
-                    $datalist[$term_id]           = $term;
-                    $datalist[$term_id]['parent'] = 0;
+					$datalist[ $term_id ]           = $term;
+					$datalist[ $term_id ]['parent'] = 0;
 
-                    $childrens = $this->get_childrens( $term_id );
+					$childrens = $this->get_childrens( $term_id );
 
-                    if ( $childrens ) {
+					if ( $childrens ) {
 
-                        $datalist[$term_id]['childrens'] = $childrens;
+						$datalist[ $term_id ]['childrens'] = $childrens;
 
-                        $childs_tree = $this->get_childrens_tree( $term_id );
+						$child_tree = $this->get_childrens_tree( $term_id );
 
-                        if ( $childs_tree ) {
+						if ( $child_tree ) {
 
-                            foreach ( $childs_tree as $child_id ) {
+							foreach ( $child_tree as $child_id ) {
 
-                                $datalist[$child_id] = $newterms[$child_id];
+								$datalist[ $child_id ] = $new_terms[ $child_id ];
 
-                                $childs = $this->get_childrens( $child_id );
+								$get_childrens = $this->get_childrens( $child_id );
 
-                                if ( $childs ) {
-                                    $datalist[$child_id]['childrens'] = $childs;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } else {
+								if ( $get_childrens ) {
+									$datalist[ $child_id ]['childrens'] = $get_childrens;
+								}
+							}
+						}
+					}
+				}
+			}
+		} else {
 
-            foreach ( $newterms as $term_id => $term ) {
+			foreach ( $new_terms as $term_id => $term ) {
 
-                $datalist[$term_id] = $term;
+				$datalist[ $term_id ] = $term;
 
-                $childrens = $this->get_childrens( $term_id, $newterms );
+				$childrens = $this->get_childrens( $term_id );
 
-                if ( $childrens ) {
-                    $datalist[$term_id]['childrens'] = $childrens;
-                }
-            }
-        }
+				if ( $childrens ) {
+					$datalist[ $term_id ]['childrens'] = $childrens;
+				}
+			}
+		}
 
-        return $datalist;
-    }
+		return $datalist;
+	}
 
-    function get_childrens_tree( $term_id ) {
-        $childrens     = $this->get_childrens( $term_id );
-        $sub_childrens = $childrens;
-        foreach ( $childrens as $child_id ) {
-            $sub_childrens = array_merge( $this->get_childrens_tree( $child_id ), $sub_childrens );
-        }
-        return $sub_childrens;
-    }
+	function get_childrens_tree( $term_id ) {
+		$childrens     = $this->get_childrens( $term_id );
+		$sub_childrens = $childrens;
+		foreach ( $childrens as $child_id ) {
+			$sub_childrens = array_merge( $this->get_childrens_tree( $child_id ), $sub_childrens );
+		}
 
-    function get_childrens( $term_id ) {
-        $childs = array();
-        foreach ( $this->terms as $term ) {
-            if ( $term->parent != $term_id )
-                continue;
-            $childs[] = $term->term_id;
-        }
-        return $childs;
-    }
+		return $sub_childrens;
+	}
 
-    function get_options_list( $term_ids = false ) {
+	function get_childrens( $term_id ) {
+		$childrens = [];
+		foreach ( $this->terms as $term ) {
+			if ( $term->parent != $term_id ) {
+				continue;
+			}
+			$childrens[] = $term->term_id;
+		}
 
-        $terms_data = ($term_ids) ? $this->get_terms_data( $term_ids ) : $this->datalist;
+		return $childrens;
+	}
 
-        if ( ! $terms_data )
-            return false;
+	function get_options_list( $term_ids = false ) {
 
-        $options = array();
+		$terms_data = ( $term_ids ) ? $this->get_terms_data( $term_ids ) : $this->datalist;
 
-        foreach ( $terms_data as $term_id => $term ) {
+		if ( ! $terms_data ) {
+			return false;
+		}
 
-            if ( $term['parent'] )
-                continue;
+		$options = [];
 
-            if ( isset( $term['childrens'] ) && $term['childrens'] ) {
-                $options[] = '<optgroup label="' . $term['name'] . '">' . $this->get_options_list( $term['childrens'] ) . '</optgroup>';
-                continue;
-            }
+		foreach ( $terms_data as $term_id => $term ) {
 
-            if ( $this->post_terms ) {
+			if ( $term['parent'] ) {
+				continue;
+			}
 
-                if ( ! $this->selected_term && selected( isset( $this->post_terms[$term_id] ), true, false ) ) {
+			if ( isset( $term['childrens'] ) && $term['childrens'] ) {
+				$options[] = '<optgroup label="' . $term['name'] . '">' . $this->get_options_list( $term['childrens'] ) . '</optgroup>';
+				continue;
+			}
 
-                    unset( $this->post_terms[$term_id] );
+			if ( $this->post_terms ) {
 
-                    $this->selected_term = $term_id;
-                }
-            }
+				if ( ! $this->selected_term && selected( isset( $this->post_terms[ $term_id ] ), true, false ) ) {
 
-            $options[] = '<option ' . selected( $this->selected_term, $term_id, false ) . ' value="' . $term_id . '">' . $term['name'] . '</option>';
+					unset( $this->post_terms[ $term_id ] );
 
-            if ( $this->type_output == 'multiselect' ) {
-                $this->selected_term = false;
-            }
-        }
+					$this->selected_term = $term_id;
+				}
+			}
 
-        if ( ! $options )
-            return false;
+			$options[] = '<option ' . selected( $this->selected_term, $term_id, false ) . ' value="' . $term_id . '">' . $term['name'] . '</option>';
 
-        return implode( '', $options );
-    }
+			if ( 'multiselect' == $this->type_output ) {
+				$this->selected_term = false;
+			}
+		}
 
-    function get_terms_data( $term_ids ) {
-        $terms = array();
-        foreach ( $term_ids as $term_id ) {
-            $terms[$term_id]           = $this->datalist[$term_id];
-            $terms[$term_id]['parent'] = 0;
-        }
-        return $terms;
-    }
+		if ( ! $options ) {
+			return false;
+		}
 
-    function get_checkbox_list( $term_ids = false ) {
+		return implode( '', $options );
+	}
 
-        $terms_data = ($term_ids) ? $this->get_terms_data( $term_ids ) : $this->datalist;
+	function get_terms_data( $term_ids ) {
+		$terms = [];
+		foreach ( $term_ids as $term_id ) {
+			$terms[ $term_id ]           = $this->datalist[ $term_id ];
+			$terms[ $term_id ]['parent'] = 0;
+		}
 
-        foreach ( $terms_data as $term_id => $term ) {
+		return $terms;
+	}
 
-            if ( $term['parent'] )
-                continue;
+	function get_checkbox_list( $term_ids = false ) {
 
-            if ( isset( $term['childrens'] ) ) {
-                $options[] = '<div class="child-list-category">'
-                    . '<div class="uspp-parent-category">' . $term['name'] . '</div>'
-                    . $this->get_checkbox_list( $term['childrens'] )
-                    . '</div>';
-                continue;
-            }
+		$terms_data = ( $term_ids ) ? $this->get_terms_data( $term_ids ) : $this->datalist;
 
-            $args = array(
-                'type'    => 'checkbox',
-                'id'      => 'category-' . $term_id,
-                'name'    => 'cats[' . $this->taxonomy . '][]',
-                'checked' => checked( isset( $this->post_terms[$term_id] ), true, false ),
-                'label'   => $term['name'],
-                'value'   => $term_id
-            );
+		$options = false;
+		foreach ( $terms_data as $term_id => $term ) {
 
-            if ( $this->required ) {
-                $args['required'] = true;
-                $args['class']    = 'required-checkbox';
-            }
+			if ( $term['parent'] ) {
+				continue;
+			}
 
-            $options[] = uspp_form_field( $args );
-        }
+			if ( isset( $term['childrens'] ) ) {
+				$options[] = '<div class="child-list-category">'
+				             . '<div class="uspp-parent-category">' . $term['name'] . '</div>'
+				             . $this->get_checkbox_list( $term['childrens'] )
+				             . '</div>';
+				continue;
+			}
 
-        if ( ! $options )
-            return false;
+			$args = [
+				'type'    => 'checkbox',
+				'id'      => 'category-' . $term_id,
+				'name'    => 'cats[' . $this->taxonomy . '][]',
+				'checked' => checked( isset( $this->post_terms[ $term_id ] ), true, false ),
+				'label'   => $term['name'],
+				'value'   => $term_id,
+			];
 
-        return implode( '', $options );
-    }
+			if ( $this->required ) {
+				$args['required'] = true;
+				$args['class']    = 'required-checkbox';
+			}
+
+			$options[] = uspp_form_field( $args );
+		}
+
+		if ( ! $options ) {
+			return false;
+		}
+
+		return implode( '', $options );
+	}
 
 }

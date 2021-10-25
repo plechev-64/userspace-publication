@@ -1,118 +1,122 @@
 <?php
 
 class USPP_Public_Form_Manager extends USPP_Public_Form_Fields {
-    function __construct( $post_type, $args = false ) {
+	function __construct( $post_type, $args = false ) {
 
-        parent::__construct( $post_type, $args );
-    }
+		parent::__construct( $post_type, $args );
+	}
 
-    function form_navi() {
+	function form_navi() {
 
-        $post_types = get_post_types( array(
-            'public'   => true,
-            '_builtin' => false
-            ), 'objects' );
+		$post_types = get_post_types( [
+			'public'   => true,
+			'_builtin' => false,
+		], 'objects' );
 
-        $types = array( 'post' => __( 'Posts', 'userspace-publication' ) );
+		$types = [ 'post' => __( 'Posts', 'userspace-publication' ) ];
 
-        foreach ( $post_types as $post_type ) {
-            $types[$post_type->name] = $post_type->label;
-        }
+		foreach ( $post_types as $post_type ) {
+			$types[ $post_type->name ] = $post_type->label;
+		}
 
-        $content = '<div class="usp-custom-fields-navi">';
+		$content = '<div class="usp-custom-fields-navi">';
 
-        $content .= '<ul class="usp-types-list usps">';
+		$content .= '<ul class="usp-types-list usps">';
 
-        foreach ( $types as $type => $name ) {
+		foreach ( $types as $type => $name ) {
 
-            $class = ($this->post_type == $type) ? 'class="usps__inline current-item"' : '';
+			$class = ( $this->post_type == $type ) ? 'class="usps__inline current-item"' : '';
 
-            $content .= '<li ' . $class . '><a class="usps__inline usps__ai-center" href="' . admin_url( 'admin.php?page=manage-public-form&post-type=' . $type ) . '">' . $name . '</a></li>';
-        }
+			$content .= '<li ' . $class . '><a class="usps__inline usps__ai-center" href="' . admin_url( 'admin.php?page=manage-public-form&post-type=' . $type ) . '">' . $name . '</a></li>';
+		}
 
-        $content .= '</ul>';
+		$content .= '</ul>';
 
-        $content .= '</div>';
+		$content .= '</div>';
 
-        //if ( $this->post_type == 'post' ) {
+		//if ( $this->post_type == 'post' ) {
 
-        global $wpdb;
+		global $wpdb;
 
-        $form_id = 1;
+		$form_id = 1;
 
-        $postForms = $wpdb->get_col( "SELECT option_name FROM " . $wpdb->options . " WHERE option_name LIKE 'uspp_fields_" . $this->post_type . "_%' AND option_name NOT LIKE '%_structure' ORDER BY option_id ASC" );
+		// phpcs:ignore
+		$postForms = $wpdb->get_col( "SELECT option_name FROM " . $wpdb->options . " WHERE option_name LIKE 'uspp_fields_" . $this->post_type . "_%' AND option_name NOT LIKE '%_structure' ORDER BY option_id ASC" );
 
-        if ( $postForms )
-            natcasesort( $postForms );
+		if ( $postForms ) {
+			natcasesort( $postForms );
+		}
 
-        $content .= '<div class="usp-custom-fields-navi">';
+		$content .= '<div class="usp-custom-fields-navi">';
 
-        $content .= '<ul class="usp-types-list">';
+		$content .= '<ul class="usp-types-list">';
 
-        foreach ( $postForms as $name ) {
-            preg_match( "/uspp_fields_" . $this->post_type . "_(\d+)\z/", $name, $matches );
+		foreach ( $postForms as $name ) {
+			preg_match( "/uspp_fields_" . $this->post_type . "_(\d+)\z/", $name, $matches );
 
-            if ( ! $matches )
-                continue;
+			if ( ! $matches ) {
+				continue;
+			}
 
-            $id = intval( $matches[1] );
+			$id = intval( $matches[1] );
 
-            if ( ! $id )
-                continue;
+			if ( ! $id ) {
+				continue;
+			}
 
-            $form_id = $id;
+			$form_id = $id;
 
-            $class = ($this->form_id == $form_id) ? 'class="usps__inline current-item"' : '';
+			$class = ( $this->form_id == $form_id ) ? 'class="usps__inline current-item"' : '';
 
-            $content .= '<li ' . $class . '><a class="usps__inline usps__ai-center" href="' . admin_url( 'admin.php?page=manage-public-form&post-type=' . $this->post_type . '&form-id=' . $form_id ) . '">' . __( 'Form', 'userspace-publication' ) . ' ID: ' . $form_id . '</a></li>';
-        }
+			$content .= '<li ' . $class . '><a class="usps__inline usps__ai-center" href="' . admin_url( 'admin.php?page=manage-public-form&post-type=' . $this->post_type . '&form-id=' . $form_id ) . '">' . __( 'Form', 'userspace-publication' ) . ' ID: ' . $form_id . '</a></li>';
+		}
 
-        $content .= '<li class="usps__inline"><a class="usps__inline usps__ai-center action-form" href="' . wp_nonce_url( admin_url( 'admin.php?page=manage-public-form&form-action=new-form&post-type=' . $this->post_type . '&form-id=' . ($form_id + 1) ), 'uspp-form-action' ) . '"><i class="uspi fa-plus"></i><span>' . __( 'Add form', 'userspace-publication' ) . '</span></a></li>';
+		$content .= '<li class="usps__inline"><a class="usps__inline usps__ai-center action-form" href="' . wp_nonce_url( admin_url( 'admin.php?page=manage-public-form&form-action=new-form&post-type=' . $this->post_type . '&form-id=' . ( $form_id + 1 ) ), 'uspp-form-action' ) . '"><i class="uspi fa-plus"></i><span>' . __( 'Add form', 'userspace-publication' ) . '</span></a></li>';
 
-        $content .= '</ul>';
+		$content .= '</ul>';
 
-        $content .= '</div>';
+		$content .= '</div>';
 
-        $actionButtons = array(
-            array(
-                'label'   => __( 'Copy', 'userspace-publication' ),
-                'icon'    => 'fa-copy',
-                'onclick' => 'usp_manager_copy_fields("' . $this->post_type . '_' . ($form_id + 1) . '");'
-            )
-        );
+		$actionButtons = [
+			[
+				'label'   => __( 'Copy', 'userspace-publication' ),
+				'icon'    => 'fa-copy',
+				'onclick' => 'usp_manager_copy_fields("' . $this->post_type . '_' . ( $form_id + 1 ) . '");',
+			],
+		];
 
-        if ( $this->form_id != 1 ) {
+		if ( 1 != $this->form_id ) {
 
-            $actionButtons = array_merge( array(
-                array(
-                    'label' => __( 'Delete form', 'userspace-publication' ),
-                    'icon'  => 'fa-trash',
-                    'href'  => wp_nonce_url( admin_url( 'admin.php?page=manage-public-form&form-action=delete-form&post-type=' . $this->post_type . '&form-id=' . $this->form_id ), 'uspp-form-action' )
-                )
-                ), $actionButtons );
-        }
+			$actionButtons = array_merge( [
+				[
+					'label' => __( 'Delete form', 'userspace-publication' ),
+					'icon'  => 'fa-trash',
+					'href'  => wp_nonce_url( admin_url( 'admin.php?page=manage-public-form&form-action=delete-form&post-type=' . $this->post_type . '&form-id=' . $this->form_id ), 'uspp-form-action' ),
+				],
+			], $actionButtons );
+		}
 
-        $actionButtons = apply_filters( 'uspp_public_form_admin_actions_args', $actionButtons, $this );
+		$actionButtons = apply_filters( 'uspp_public_form_admin_actions_args', $actionButtons, $this );
 
-        if ( $actionButtons ) {
+		if ( $actionButtons ) {
 
-            $content .= '<div class="uspp-custom-fields-menu">';
+			$content .= '<div class="uspp-custom-fields-menu">';
 
-            $content .= '<ul class="usp-types-list">';
+			$content .= '<ul class="usp-types-list">';
 
-            foreach ( $actionButtons as $actionButton ) {
+			foreach ( $actionButtons as $actionButton ) {
 
-                $actionButton['class'] = 'action-button';
+				$actionButton['class'] = 'action-button';
 
-                $content .= '<li class="usps__inline">' . usp_get_button( $actionButton ) . '</li>';
-            }
+				$content .= '<li class="usps__inline">' . usp_get_button( $actionButton ) . '</li>';
+			}
 
-            $content .= '</ul>';
+			$content .= '</ul>';
 
-            $content .= '</div>';
-        }
+			$content .= '</div>';
+		}
 
-        return $content;
-    }
+		return $content;
+	}
 
 }
