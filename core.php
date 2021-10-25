@@ -2,12 +2,11 @@
 
 /** @noinspection PhpUnused */
 function uspp_get_postslist( $post_type ) {
-	global $user_LK;
 
 	uspp_postlist_style();
 
 	$manager = new USPP_Author_Postlist( [
-		'post_author' => $user_LK,
+		'post_author' => USP()->office()->get_owner_id(),
 		'post_type'   => $post_type,
 	] );
 

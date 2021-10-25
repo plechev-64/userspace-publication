@@ -1,24 +1,15 @@
 <?php
 
-/**
- * @method init_custom_prop( string $string, mixed|null $param )
- */
 class USPP_Author_Postlist extends USP_Table_Manager {
 
-	public $post_author;
-	public $post_type;
+	private $_required_params = [
+		'orderby' => 'post_date',
+		'order'   => 'DESC',
+		'number'  => 24
+	];
 
 	function __construct( $args = [] ) {
-		$this->init_custom_prop( 'post_type', isset( $args['post_type'] ) ? $args['post_type'] : null );
-
-		$this->init_custom_prop( 'post_author', isset( $args['post_author'] ) ? $args['post_author'] : null );
-
-		parent::
-		__construct( [
-			'number'       => 24,
-			'is_ajax'      => 1,
-			'reset_filter' => false,
-		] );
+		parent:: __construct( array_merge( $this->_required_params, $args ) );
 	}
 
 	function get_query() {
@@ -26,7 +17,7 @@ class USPP_Author_Postlist extends USP_Table_Manager {
 
 		$postStatus = [ 'publish' ];
 
-		if ( $user_ID == $this->post_author ) {
+		if ( $user_ID == $this->get_param( 'post_author' ) ) {
 			$postStatus[] = 'private';
 			$postStatus[] = 'pending';
 			$postStatus[] = 'draft';
@@ -41,11 +32,10 @@ class USPP_Author_Postlist extends USP_Table_Manager {
 				'post_status',
 			] )
 			->where( [
-				'post_author'     => absint( $this->post_author ),
-				'post_type'       => sanitize_text_field( $this->post_type ),
+				'post_author'     => absint( $this->get_param( 'post_author' ) ),
+				'post_type'       => sanitize_text_field( $this->get_param( 'post_type' ) ),
 				'post_status__in' => $postStatus,
-			] )
-			->orderby( 'wp_posts.post_date', 'DESC' );
+			] );
 	}
 
 	function get_table_cols() {
