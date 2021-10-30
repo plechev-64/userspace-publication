@@ -168,7 +168,7 @@ function uspp_get_author_block() {
 		'id__in'      => $post->post_author,
 		'search'      => 0,
 		'template'    => 'rows',
-		'custom_data' => 'posts, comments, user_registered',
+		'custom_data' => 'posts, comments, user_registered, rating',
 	] );
 
 	$content .= $manager->get_manager();
