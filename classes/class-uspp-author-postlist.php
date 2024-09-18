@@ -24,7 +24,7 @@ class USPP_Author_Postlist extends USP_Table_Manager {
 			$postStatus[] = 'trash';
 		}
 
-		return ( new USP_Posts_Query() )
+		return ( new PostsQuery() )
 			->select( [
 				'ID',
 				'post_date',

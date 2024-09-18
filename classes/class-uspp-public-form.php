@@ -444,7 +444,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 						} else {
 							$session_id = ! empty( $_COOKIE['PHPSESSID'] ) ? sanitize_text_field( wp_unslash( $_COOKIE['PHPSESSID'] ) ) : '';
 
-							$thumbnail_id = ( new USP_Temp_Media() )
+							$thumbnail_id = ( new TempMediaQuery() )
 								->select( [ 'media_id' ] )
 								->where( [
 									'user_id'         => $uploader->user_id ? $uploader->user_id : 0,
@@ -473,14 +473,14 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 						$uploader = $field->get_uploader();
 
 						if ( $this->post_id ) {
-							$imagIds = ( new USP_Posts_Query() )->select( [ 'ID' ] )->where( [
+							$imagIds = ( new PostsQuery() )->select( [ 'ID' ] )->where( [
 								'post_parent' => $this->post_id,
 								'post_type'   => 'attachment',
 							] )->limit( - 1 )->order( 'ASC' )->get_col();
 						} else {
 							$session_id = ! empty( $_COOKIE['PHPSESSID'] ) ? sanitize_text_field( wp_unslash( $_COOKIE['PHPSESSID'] ) ) : '';
 
-							$imagIds = ( new USP_Temp_Media() )
+							$imagIds = ( new TempMediaQuery() )
 								->select( [ 'media_id' ] )
 								->where( [
 									'user_id'         => $uploader->user_id ? $uploader->user_id : 0,
