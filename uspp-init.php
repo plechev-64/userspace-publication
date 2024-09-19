@@ -164,7 +164,7 @@ function uspp_get_author_block() {
 
 	USP()->use_module( 'users-list' );
 
-	$manager = new USP_Users_Manager( [
+	$manager = new UsersManager( [
 		'id__in'      => $post->post_author,
 		'search'      => 0,
 		'template'    => 'rows',

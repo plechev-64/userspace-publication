@@ -1,6 +1,6 @@
 <?php
 
-class USPP_Author_Postlist extends USP_Table_Manager {
+class USPP_Author_Postlist extends TableManager {
 
 	private $_required_params = [
 		'orderby' => 'post_date',

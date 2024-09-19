@@ -668,7 +668,7 @@ class USPP_Public_Form extends USPP_Public_Form_Fields {
 			return false;
 		}
 
-		return USP_Field::setup( [
+		return Field::setup( [
 			'type'       => 'checkbox',
 			'slug'       => $taxonomy . '-tags',
 			'input_name' => 'tags[' . $taxonomy . ']',
