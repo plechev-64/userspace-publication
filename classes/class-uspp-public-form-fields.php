@@ -2,7 +2,7 @@
 
 USP()->use_module( 'fields-manager' );
 
-class USPP_Public_Form_Fields extends USP_Fields_Manager {
+class USPP_Public_Form_Fields extends FieldsManager {
 
 	public $taxonomies;
 	public $post_type = 'post';
