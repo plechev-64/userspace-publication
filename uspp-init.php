@@ -7,8 +7,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 add_action( 'usp_before_init', 'uspp_loading_dependencies' );
 function uspp_loading_dependencies() {
-	USP()->use_module( 'content-manager' );
-
 	require_once USPP_PATH . 'classes/class-uspp-form-fields.php';
 	require_once USPP_PATH . 'classes/class-uspp-edit-terms-list.php';
 	require_once USPP_PATH . 'classes/class-uspp-list-terms.php';
@@ -161,8 +159,6 @@ function uspp_get_author_block() {
 
 	$content = '<div id="uspp_block_author">';
 	$content .= '<h3>' . __( 'Publication author', 'userspace-publication' ) . '</h3>';
-
-	USP()->use_module( 'users-list' );
 
 	$manager = new UsersManager( [
 		'id__in'      => $post->post_author,

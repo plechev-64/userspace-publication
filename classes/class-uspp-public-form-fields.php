@@ -1,7 +1,5 @@
 <?php
 
-USP()->use_module( 'fields-manager' );
-
 class USPP_Public_Form_Fields extends FieldsManager {
 
 	public $taxonomies;
