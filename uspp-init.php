@@ -29,19 +29,19 @@ function uspp_loading_dependencies() {
 }
 
 function uspp_publication_scripts() {
-	usp_enqueue_script( 'uspp-publication', USPP_URL . 'assets/js/public-form.js' );
+	wp_enqueue_script( 'uspp-publication', USPP_URL . 'assets/js/public-form.js' );
 }
 
 function uspp_block_author_style() {
-	usp_enqueue_style( 'uspp-author', USPP_URL . 'assets/css/block-author.css' );
+	wp_enqueue_script( 'uspp-author', USPP_URL . 'assets/css/block-author.css' );
 }
 
 function uspp_postlist_style() {
-	usp_enqueue_style( 'uspp-post-list', USPP_URL . 'assets/css/author-post-list.css' );
+	wp_enqueue_script( 'uspp-post-list', USPP_URL . 'assets/css/author-post-list.css' );
 }
 
 function uspp_publicform_style() {
-	usp_enqueue_style( 'uspp-publicform', USPP_URL . 'assets/css/public-form.css' );
+	wp_enqueue_style( 'uspp-publicform', USPP_URL . 'assets/css/public-form.css' );
 }
 
 add_filter( 'usp_init_js_variables', 'uspp_public_add_js_locale', 10 );
